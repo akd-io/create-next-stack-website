@@ -1,4 +1,4 @@
-import { Button, Radio, RadioGroup } from "@chakra-ui/react";
+import { Button, Radio, RadioGroup, Stack } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Section } from "../../components/Section";
@@ -18,11 +18,6 @@ const H2 = styled.h2`
 
   font-size: 1.5rem;
   font-weight: bold;
-`;
-
-const StyledRadioGroup = styled(RadioGroup)`
-  display: flex;
-  flex-direction: column;
 `;
 
 type FormData = {
@@ -55,14 +50,16 @@ const LandingPageTemplate = () => {
               name={formDataKeys.packageManager}
               control={control}
               render={({ field }) => (
-                <StyledRadioGroup {...field}>
-                  <Radio id="radio-yarn" value="yarn">
-                    Yarn
-                  </Radio>
-                  <Radio id="radio-npm" value="npm">
-                    npm
-                  </Radio>
-                </StyledRadioGroup>
+                <RadioGroup {...field}>
+                  <Stack direction="column">
+                    <Radio id="radio-yarn" value="yarn">
+                      Yarn
+                    </Radio>
+                    <Radio id="radio-npm" value="npm">
+                      npm
+                    </Radio>
+                  </Stack>
+                </RadioGroup>
               )}
             />
 
