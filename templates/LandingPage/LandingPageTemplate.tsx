@@ -56,8 +56,12 @@ const LandingPageTemplate = () => {
               control={control}
               render={({ field }) => (
                 <StyledRadioGroup {...field}>
-                  <Radio value="yarn">Yarn</Radio>
-                  <Radio value="npm">npm</Radio>
+                  <Radio id="radio-yarn" value="yarn">
+                    Yarn
+                  </Radio>
+                  <Radio id="radio-npm" value="npm">
+                    npm
+                  </Radio>
                 </StyledRadioGroup>
               )}
             />
