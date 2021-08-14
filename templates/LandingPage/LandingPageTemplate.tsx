@@ -7,6 +7,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import styled from "@emotion/styled";
+import { useCallback } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Section } from "../../components/Section";
 import { arrayToKeyToKeyMap } from "../../utils/arrayToKeyToKeyMap";
@@ -57,10 +58,10 @@ const LandingPageTemplate = () => {
     defaultValues: defaultFormData,
   });
 
-  const handleValidSubmit: SubmitHandler<FormData> = (formData) => {
+  const handleValidSubmit: SubmitHandler<FormData> = useCallback((formData) => {
     // TODO: Implement
     alert(JSON.stringify(formData, null, 2));
-  };
+  }, []);
 
   return (
     <>
