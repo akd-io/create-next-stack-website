@@ -1,4 +1,11 @@
-import { Button, Radio, RadioGroup, Stack } from "@chakra-ui/react";
+import {
+  Button,
+  Checkbox,
+  CheckboxGroup,
+  Radio,
+  RadioGroup,
+  Stack,
+} from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Section } from "../../components/Section";
@@ -21,11 +28,27 @@ const H2 = styled.h2`
   font-weight: bold;
 `;
 
+const packageManagers = arrayToKeyToKeyMap(["yarn", "npm"]);
+const stylingMethods = arrayToKeyToKeyMap([
+  "emotion",
+  "styled-components",
+  "css-modules",
+  "css-modules-with-sass",
+]);
+const formStateManagementLibraries = arrayToKeyToKeyMap([
+  "react-hook-form",
+  "formik",
+]);
+
 type FormData = {
-  packageManager: "yarn" | "npm";
+  packageManager: keyof typeof packageManagers;
+  stylingMethod: keyof typeof stylingMethods;
+  formStateManagement: Array<keyof typeof formStateManagementLibraries>;
 };
 const defaultFormData: FormData = {
   packageManager: "yarn",
+  stylingMethod: "emotion",
+  formStateManagement: ["react-hook-form"],
 };
 const formDataKeys = objectToKeyToKeyMap(defaultFormData);
 
@@ -44,25 +67,80 @@ const LandingPageTemplate = () => {
       <main>
         <Section>
           <H1>Create Next Stack</H1>
-          <form onSubmit={handleSubmit(handleValidSubmit)}>
-            <H2>Package manager</H2>
 
-            <Controller
-              name={formDataKeys.packageManager}
-              control={control}
-              render={({ field }) => (
-                <RadioGroup {...field}>
-                  <Stack direction="column">
-                    <Radio id="radio-yarn" value="yarn">
-                      Yarn
-                    </Radio>
-                    <Radio id="radio-npm" value="npm">
-                      npm
-                    </Radio>
-                  </Stack>
-                </RadioGroup>
-              )}
-            />
+          <form onSubmit={handleSubmit(handleValidSubmit)}>
+            <Stack direction="column" spacing="8">
+              <div>
+                <H2>Package manager</H2>
+                <Controller
+                  name={formDataKeys.packageManager}
+                  control={control}
+                  render={({ field }) => (
+                    <RadioGroup {...field}>
+                      <Stack direction="column">
+                        {Object.keys(packageManagers).map((packageManager) => (
+                          <Radio
+                            key={packageManager}
+                            id={`radio-${packageManager}`}
+                            value={packageManager}
+                          >
+                            {packageManager}
+                          </Radio>
+                        ))}
+                      </Stack>
+                    </RadioGroup>
+                  )}
+                />
+              </div>
+
+              <div>
+                <H2>Styling method</H2>
+                <Controller
+                  name={formDataKeys.stylingMethod}
+                  control={control}
+                  render={({ field }) => (
+                    <RadioGroup {...field}>
+                      <Stack direction="column">
+                        {Object.keys(stylingMethods).map((stylingMethod) => (
+                          <Radio
+                            key={stylingMethod}
+                            id={`radio-${stylingMethod}`}
+                            value={stylingMethod}
+                          >
+                            {stylingMethod}
+                          </Radio>
+                        ))}
+                      </Stack>
+                    </RadioGroup>
+                  )}
+                />
+              </div>
+
+              <div>
+                <H2>Form state management</H2>
+                <Controller
+                  name={formDataKeys.formStateManagement}
+                  control={control}
+                  render={({ field }) => (
+                    <CheckboxGroup {...field}>
+                      <Stack direction="column">
+                        {Object.keys(formStateManagementLibraries).map(
+                          (formStateManagementLibrary) => (
+                            <Checkbox
+                              key={formStateManagementLibrary}
+                              id={`radio-${formStateManagementLibrary}`}
+                              value={formStateManagementLibrary}
+                            >
+                              {formStateManagementLibrary}
+                            </Checkbox>
+                          )
+                        )}
+                      </Stack>
+                    </CheckboxGroup>
+                  )}
+                />
+              </div>
+            </Stack>
 
             <Button type="submit">Submit</Button>
           </form>
