@@ -2,7 +2,7 @@ type KeyToKeyMap<T extends Record<string, unknown>> = {
   [value in keyof T]: value;
 };
 
-export const getKeyToKeyMap = <T extends Record<string, unknown>>(
+export const objectToKeyToKeyMap = <T extends Record<string, unknown>>(
   object: T
 ): KeyToKeyMap<T> => {
   const keyToKeyMap: { [key: string]: string } = {};

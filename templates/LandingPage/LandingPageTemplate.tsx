@@ -2,7 +2,8 @@ import { Button, Radio, RadioGroup, Stack } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Section } from "../../components/Section";
-import { getKeyToKeyMap } from "../../utils/getKeyToKeyMap";
+import { arrayToKeyToKeyMap } from "../../utils/arrayToKeyToKeyMap";
+import { objectToKeyToKeyMap } from "../../utils/objectToKeyToKeyMap";
 
 const H1 = styled.h1`
   margin: 0;
@@ -26,7 +27,7 @@ type FormData = {
 const defaultFormData: FormData = {
   packageManager: "yarn",
 };
-const formDataKeys = getKeyToKeyMap(defaultFormData);
+const formDataKeys = objectToKeyToKeyMap(defaultFormData);
 
 const LandingPageTemplate = () => {
   const { register, control, handleSubmit } = useForm<FormData>({
