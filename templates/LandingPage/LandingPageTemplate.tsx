@@ -1,84 +1,168 @@
-import Script from "next/script";
-import { H1 } from "./components/H1";
-import { H2 } from "./components/H2";
-import { InlineCode } from "./components/InlineCode";
-import { Paragraph } from "./components/Paragraph";
-import { Section } from "./components/Section";
-import { Subtitle } from "./components/Subtitle";
-import styles from "./LandingPageTemplate.module.css";
+import {
+  Box,
+  Heading,
+  ListItem,
+  Stack,
+  Text,
+  UnorderedList,
+} from "@chakra-ui/react";
+import { css, Global } from "@emotion/react";
+import { useCallback } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Anchor } from "../../components/Anchor";
+import { Section } from "../../components/Section";
+import { arrayToKeyToKeyMap } from "../../utils/arrayToKeyToKeyMap";
+import { objectToKeyToKeyMap } from "../../utils/objectToKeyToKeyMap";
+
+const globalStyles = css`
+  body {
+    background-color: #eee;
+  }
+`;
+
+const packageManagers = arrayToKeyToKeyMap(["yarn", "npm"]);
+const stylingMethods = arrayToKeyToKeyMap([
+  "emotion",
+  "styled-components",
+  "css-modules",
+  "css-modules-with-sass",
+]);
+const formStateManagementLibraries = arrayToKeyToKeyMap([
+  "react-hook-form",
+  "formik",
+]);
+
+type FormData = {
+  packageManager: keyof typeof packageManagers;
+  stylingMethod: keyof typeof stylingMethods;
+  formStateManagement: Array<keyof typeof formStateManagementLibraries>;
+};
+const defaultFormData: FormData = {
+  packageManager: "yarn",
+  stylingMethod: "emotion",
+  formStateManagement: ["react-hook-form"],
+};
+const formDataKeys = objectToKeyToKeyMap(defaultFormData);
 
 const LandingPageTemplate = () => {
-  const onConfettiLoad = () => {
-    setTimeout(() => {
-      const colors = [
-        "#26ccff",
-        "#a25afd",
-        "#ff5e7e",
-        "#88ff5a",
-        "#fcff42",
-        "#ffa62d",
-        "#ff36ff",
-      ];
-      const end = Date.now() + 5 * 1000;
+  const { register, control, handleSubmit } = useForm<FormData>({
+    defaultValues: defaultFormData,
+  });
 
-      (function frame() {
-        (window as any).confetti({
-          particleCount: colors.length,
-          angle: 60,
-          spread: 55,
-          origin: { x: 0, y: 0.6 },
-          colors,
-        });
-        (window as any).confetti({
-          particleCount: colors.length,
-          angle: 120,
-          spread: 55,
-          origin: { x: 1, y: 0.6 },
-          colors,
-        });
-
-        if (Date.now() < end) {
-          setTimeout(() => {
-            requestAnimationFrame(frame);
-          }, 50);
-        }
-      })();
-    }, 1000);
-  };
+  const handleValidSubmit: SubmitHandler<FormData> = useCallback((formData) => {
+    // TODO: Implement
+    alert(JSON.stringify(formData, null, 2));
+  }, []);
 
   return (
     <>
-      <Script
-        src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"
-        strategy="afterInteractive"
-        onLoad={onConfettiLoad}
-      />
+      <Global styles={globalStyles} />
       <main>
         <Section>
-          <H1>Your project is a go! 🎉</H1>
-          <Subtitle>
-            Get started by editing <InlineCode>pages/index.tsx</InlineCode>
-          </Subtitle>
-        </Section>
-        <Section className={styles.grayBackground}>
-          <H2>Learning resources</H2>
-          <Paragraph>
-            If you are using a technology for the first time, you can find
-            related links in the generated <InlineCode>README.md</InlineCode>{" "}
-            file that might prove helpful.
-          </Paragraph>
+          <Stack spacing="16" align="center">
+            <Stack align="center" spacing="1">
+              <Heading
+                as="h1"
+                size="3xl"
+                bgGradient="linear(to-bl, #ED88FD, #5B45E4)"
+                bgClip="text"
+                textAlign="center"
+                fontWeight="800"
+              >
+                Create Next Stack
+              </Heading>
+              <Text
+                fontSize="1.25em"
+                fontWeight="bold"
+                bgGradient="linear(to-bl, #ED88FD, #5B45E4)"
+                bgClip="text"
+                textAlign="center"
+              >
+                The ultimate starter kit for Next.js
+              </Text>
+            </Stack>
+
+            {/* TODO: Insert social icons */}
+
+            <Stack maxWidth="600" spacing="4">
+              <Text>
+                <b>Create Next Stack</b> is a website and CLI tool used to
+                easily set up the boilerplate of new{" "}
+                <Anchor href="https://nextjs.org/docs/api-reference/create-next-app">
+                  Next.js
+                </Anchor>{" "}
+                apps.
+              </Text>
+              <Text>
+                Where{" "}
+                <Anchor href="https://nextjs.org/docs/api-reference/create-next-app">
+                  Create Next App
+                </Anchor>{" "}
+                lets you choose a single template only, Create Next Stack lets
+                you pick and choose an array of technologies often used
+                alongside Next.js, and free you of the pain of making them work
+                together.
+              </Text>
+            </Stack>
+
+            <Box
+              width="100%"
+              borderRadius="50"
+              padding="70"
+              background="white"
+              boxShadow="0 10px 50px rgba(0,0,0,0.1)"
+            >
+              <Stack spacing="4">
+                <Heading as="h2" size="lg">
+                  Setup form coming soon
+                </Heading>
+                <Text>
+                  Until the new setup form is here, install Node.js and run the
+                  following command to use the interactive CLI tool directly:
+                </Text>
+                <Text>
+                  <UnorderedList paddingLeft="2">
+                    <ListItem>
+                      <code
+                        css={css`
+                          white-space: nowrap;
+                        `}
+                      >
+                        npx create-next-stack
+                      </code>
+                    </ListItem>
+                  </UnorderedList>
+                </Text>
+                <Text>
+                  You can also find more information on the following GitHub
+                  repositories:
+                </Text>
+                <Text>
+                  <UnorderedList paddingLeft="2">
+                    <ListItem>
+                      CLI:{" "}
+                      <Anchor href="https://github.com/akd-io/create-next-stack">
+                        create-next-stack
+                      </Anchor>{" "}
+                    </ListItem>
+                    <ListItem>
+                      Website:{" "}
+                      <Anchor href="https://github.com/akd-io/create-next-stack-website">
+                        create-next-stack-website
+                      </Anchor>
+                    </ListItem>
+                  </UnorderedList>
+                </Text>
+              </Stack>
+            </Box>
+
+            <Text>
+              Created by{" "}
+              <Anchor href="https://twitter.com/akd_io">@akd_io</Anchor>
+            </Text>
+          </Stack>
         </Section>
       </main>
-      <footer>
-        <Section>
-          <Paragraph>
-            Generated by{" "}
-            <a href="https://github.com/akd-io/create-next-stack">
-              Create Next Stack
-            </a>
-          </Paragraph>
-        </Section>
-      </footer>
     </>
   );
 };
