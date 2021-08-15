@@ -6,9 +6,11 @@ import {
   Radio,
   RadioGroup,
   Stack,
+  Text,
 } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Anchor } from "../../components/Anchor";
 import { Section } from "../../components/Section";
 import { arrayToKeyToKeyMap } from "../../utils/arrayToKeyToKeyMap";
 import { objectToKeyToKeyMap } from "../../utils/objectToKeyToKeyMap";
@@ -51,15 +53,58 @@ const LandingPageTemplate = () => {
     <>
       <main>
         <Section>
-          <Stack spacing="8" align="flex-start">
-            <Heading as="h1" size="2xl">
-              Create Next Stack
-            </Heading>
+          <Stack spacing="16" align="center">
+            <Stack align="center" spacing="1">
+              <Heading
+                as="h1"
+                size="3xl"
+                bgGradient="linear(to-bl, #ED88FD, #5B45E4)"
+                bgClip="text"
+              >
+                Create Next Stack
+              </Heading>
+              <Text
+                fontSize="21"
+                fontWeight="bold"
+                bgGradient="linear(to-bl, #ED88FD, #5B45E4)"
+                bgClip="text"
+              >
+                The ultimate starter kit for Next.js
+              </Text>
+            </Stack>
+
+            {/* TODO: Insert social icons */}
+
+            <Stack maxWidth="600" spacing="4">
+              <Text>
+                <b>Create Next Stack</b> is a website and interactive CLI tool
+                used to easily set up the boilerplate of new{" "}
+                <Anchor href="https://nextjs.org/docs/api-reference/create-next-app">
+                  Next.js
+                </Anchor>{" "}
+                apps.
+              </Text>
+              <Text>
+                Where{" "}
+                <Anchor href="https://nextjs.org/docs/api-reference/create-next-app">
+                  Create Next App
+                </Anchor>{" "}
+                lets you choose a single template only, Create Next Stack lets
+                you pick and choose an array of technologies often used
+                alongside Next.js, and free you of the pain of making them work
+                together.
+              </Text>
+            </Stack>
 
             <form onSubmit={handleSubmit(handleValidSubmit)}>
+              <Heading as="h2" marginBottom="4">
+                Pick your technologies
+              </Heading>
               <Stack spacing="8">
                 <Stack spacing="4">
-                  <Heading>Package manager</Heading>
+                  <Heading as="h3" size="md">
+                    Package manager
+                  </Heading>
                   <Controller
                     name={formDataKeys.packageManager}
                     control={control}
@@ -84,7 +129,9 @@ const LandingPageTemplate = () => {
                 </Stack>
 
                 <Stack spacing="4">
-                  <Heading>Styling method</Heading>
+                  <Heading as="h3" size="md">
+                    Styling method
+                  </Heading>
                   <Controller
                     name={formDataKeys.stylingMethod}
                     control={control}
@@ -107,7 +154,9 @@ const LandingPageTemplate = () => {
                 </Stack>
 
                 <Stack spacing="4">
-                  <Heading>Form state management</Heading>
+                  <Heading as="h3" size="md">
+                    Form state management
+                  </Heading>
                   <Controller
                     name={formDataKeys.formStateManagement}
                     control={control}
@@ -130,13 +179,18 @@ const LandingPageTemplate = () => {
                     )}
                   />
                 </Stack>
-                <Stack alignItems="center">
+                <Stack align="center">
                   <Button type="submit" size="lg">
                     Create Next Stack
                   </Button>
                 </Stack>
               </Stack>
             </form>
+
+            <Text>
+              Created by{" "}
+              <Anchor href="https://twitter.com/akd_io">@akd_io</Anchor>
+            </Text>
           </Stack>
         </Section>
       </main>
