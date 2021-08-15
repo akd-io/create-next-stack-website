@@ -7,7 +7,7 @@ import {
   Radio,
   RadioGroup,
   Stack,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import { css, Global } from "@emotion/react";
 import { useCallback } from "react";
@@ -36,6 +36,7 @@ const formStateManagementLibraries = arrayToKeyToKeyMap([
 ]);
 const formattingLibraries = arrayToKeyToKeyMap(["prettier"]);
 const componentLibraries = arrayToKeyToKeyMap(["chakra"]);
+const animationLibraries = arrayToKeyToKeyMap(["framer-motion"]);
 
 type FormData = {
   packageManager: keyof typeof packageManagers;
@@ -43,6 +44,7 @@ type FormData = {
   formStateManagement: Array<keyof typeof formStateManagementLibraries>;
   formatting: Array<keyof typeof formattingLibraries>;
   componentLibraries: Array<keyof typeof componentLibraries>;
+  animationLibraries: Array<keyof typeof animationLibraries>;
 };
 const defaultFormData: FormData = {
   packageManager: "yarn",
@@ -50,6 +52,7 @@ const defaultFormData: FormData = {
   formStateManagement: [formStateManagementLibraries["react-hook-form"]],
   formatting: [formattingLibraries.prettier],
   componentLibraries: [componentLibraries.chakra],
+  animationLibraries: [animationLibraries["framer-motion"]],
 };
 const formDataKeys = objectToKeyToKeyMap(defaultFormData);
 
@@ -252,6 +255,33 @@ const LandingPageTemplate = () => {
                                   value={componentLibrary}
                                 >
                                   {componentLibrary}
+                                </Checkbox>
+                              )
+                            )}
+                          </Stack>
+                        </CheckboxGroup>
+                      )}
+                    />
+                  </Stack>
+
+                  <Stack spacing="4">
+                    <Heading as="h3" size="md">
+                      Animation
+                    </Heading>
+                    <Controller
+                      name={formDataKeys.animationLibraries}
+                      control={control}
+                      render={({ field }) => (
+                        <CheckboxGroup {...field}>
+                          <Stack direction="column">
+                            {Object.keys(animationLibraries).map(
+                              (animationLibrary) => (
+                                <Checkbox
+                                  key={animationLibrary}
+                                  id={`radio-${animationLibrary}`}
+                                  value={animationLibrary}
+                                >
+                                  {animationLibrary}
                                 </Checkbox>
                               )
                             )}
