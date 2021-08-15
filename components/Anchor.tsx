@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { ComponentProps, FC } from "react";
 
 const StyledText = styled(Text)`
+  font-weight: bold;
   color: #319bff;
 
   :hover {

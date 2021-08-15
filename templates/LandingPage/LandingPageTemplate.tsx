@@ -69,14 +69,17 @@ const LandingPageTemplate = () => {
                 size="3xl"
                 bgGradient="linear(to-bl, #ED88FD, #5B45E4)"
                 bgClip="text"
+                textAlign="center"
+                fontWeight="800"
               >
                 Create Next Stack
               </Heading>
               <Text
-                fontSize="21"
+                fontSize="1.25em"
                 fontWeight="bold"
                 bgGradient="linear(to-bl, #ED88FD, #5B45E4)"
                 bgClip="text"
+                textAlign="center"
               >
                 The ultimate starter kit for Next.js
               </Text>
@@ -86,8 +89,8 @@ const LandingPageTemplate = () => {
 
             <Stack maxWidth="600" spacing="4">
               <Text>
-                <b>Create Next Stack</b> is a website and interactive CLI tool
-                used to easily set up the boilerplate of new{" "}
+                <b>Create Next Stack</b> is a website and CLI tool used to
+                easily set up the boilerplate of new{" "}
                 <Anchor href="https://nextjs.org/docs/api-reference/create-next-app">
                   Next.js
                 </Anchor>{" "}
