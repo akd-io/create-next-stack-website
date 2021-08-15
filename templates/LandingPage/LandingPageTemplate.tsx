@@ -38,6 +38,7 @@ const formattingLibraries = arrayToKeyToKeyMap(["prettier"]);
 const componentLibraries = arrayToKeyToKeyMap(["chakra"]);
 const animationLibraries = arrayToKeyToKeyMap(["framer-motion"]);
 const continuousIntegrations = arrayToKeyToKeyMap(["github-actions"]);
+const miscellaneousOptions = arrayToKeyToKeyMap(["formatting-pre-commit-hook"]);
 
 type FormData = {
   packageManager: keyof typeof packageManagers;
@@ -47,6 +48,7 @@ type FormData = {
   componentLibraries: Array<keyof typeof componentLibraries>;
   animationLibraries: Array<keyof typeof animationLibraries>;
   continuousIntegrations: Array<keyof typeof continuousIntegrations>;
+  miscellaneousOptions: Array<keyof typeof miscellaneousOptions>;
 };
 const defaultFormData: FormData = {
   packageManager: "yarn",
@@ -56,6 +58,7 @@ const defaultFormData: FormData = {
   componentLibraries: [componentLibraries.chakra],
   animationLibraries: [animationLibraries["framer-motion"]],
   continuousIntegrations: [continuousIntegrations["github-actions"]],
+  miscellaneousOptions: [miscellaneousOptions["formatting-pre-commit-hook"]],
 };
 const formDataKeys = objectToKeyToKeyMap(defaultFormData);
 
@@ -312,6 +315,33 @@ const LandingPageTemplate = () => {
                                   value={continuousIntegration}
                                 >
                                   {continuousIntegration}
+                                </Checkbox>
+                              )
+                            )}
+                          </Stack>
+                        </CheckboxGroup>
+                      )}
+                    />
+                  </Stack>
+
+                  <Stack spacing="4">
+                    <Heading as="h3" size="md">
+                      Miscellaneous
+                    </Heading>
+                    <Controller
+                      name={formDataKeys.miscellaneousOptions}
+                      control={control}
+                      render={({ field }) => (
+                        <CheckboxGroup {...field}>
+                          <Stack direction="column">
+                            {Object.keys(miscellaneousOptions).map(
+                              (miscellaneousOption) => (
+                                <Checkbox
+                                  key={miscellaneousOption}
+                                  id={`radio-${miscellaneousOption}`}
+                                  value={miscellaneousOption}
+                                >
+                                  {miscellaneousOption}
                                 </Checkbox>
                               )
                             )}
