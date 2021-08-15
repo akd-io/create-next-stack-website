@@ -34,16 +34,19 @@ const formStateManagementLibraries = arrayToKeyToKeyMap([
   "react-hook-form",
   "formik",
 ]);
+const formattingLibraries = arrayToKeyToKeyMap(["prettier"]);
 
 type FormData = {
   packageManager: keyof typeof packageManagers;
   stylingMethod: keyof typeof stylingMethods;
   formStateManagement: Array<keyof typeof formStateManagementLibraries>;
+  formatting: Array<keyof typeof formattingLibraries>;
 };
 const defaultFormData: FormData = {
   packageManager: "yarn",
   stylingMethod: "emotion",
-  formStateManagement: ["react-hook-form"],
+  formStateManagement: [formStateManagementLibraries["react-hook-form"]],
+  formatting: [formattingLibraries.prettier],
 };
 const formDataKeys = objectToKeyToKeyMap(defaultFormData);
 
@@ -200,6 +203,34 @@ const LandingPageTemplate = () => {
                       )}
                     />
                   </Stack>
+
+                  <Stack spacing="4">
+                    <Heading as="h3" size="md">
+                      Formatting
+                    </Heading>
+                    <Controller
+                      name={formDataKeys.formatting}
+                      control={control}
+                      render={({ field }) => (
+                        <CheckboxGroup {...field}>
+                          <Stack direction="column">
+                            {Object.keys(formattingLibraries).map(
+                              (formattingLibrary) => (
+                                <Checkbox
+                                  key={formattingLibrary}
+                                  id={`radio-${formattingLibrary}`}
+                                  value={formattingLibrary}
+                                >
+                                  {formattingLibrary}
+                                </Checkbox>
+                              )
+                            )}
+                          </Stack>
+                        </CheckboxGroup>
+                      )}
+                    />
+                  </Stack>
+
                   <Stack align="center">
                     <Button type="submit" size="lg">
                       Create Next Stack
