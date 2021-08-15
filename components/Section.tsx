@@ -1,31 +1,15 @@
-import styled from "@emotion/styled";
+import { Box, Stack } from "@chakra-ui/react";
 import { ComponentProps, FC } from "react";
 
-const StyledSection = styled.section`
-  padding: 50px 30px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  text-align: center;
-`;
-
-const ContentContainer = styled.div`
-  max-width: 800px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-export const Section: FC<ComponentProps<"section">> = ({
-  children,
-  ...props
-}) => {
+type SectionProps = ComponentProps<typeof Stack> & {
+  boxProps?: ComponentProps<typeof Box>;
+};
+export const Section: FC<SectionProps> = ({ boxProps, children, ...props }) => {
   return (
-    <StyledSection {...props}>
-      <ContentContainer>{children}</ContentContainer>
-    </StyledSection>
+    <Stack padding="50px 30px" alignItems="center" as="section" {...props}>
+      <Box maxWidth="800" {...boxProps}>
+        {children}
+      </Box>
+    </Stack>
   );
 };
