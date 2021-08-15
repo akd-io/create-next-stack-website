@@ -1,8 +1,8 @@
 import {
   Box,
-  Button,
   Checkbox,
   CheckboxGroup,
+  Code,
   Heading,
   Radio,
   RadioGroup,
@@ -10,7 +10,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { css, Global } from "@emotion/react";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Anchor } from "../../components/Anchor";
 import { Section } from "../../components/Section";
@@ -63,14 +63,62 @@ const defaultFormData: FormData = {
 const formDataKeys = objectToKeyToKeyMap(defaultFormData);
 
 const LandingPageTemplate = () => {
-  const { register, control, handleSubmit } = useForm<FormData>({
+  const { control, watch, handleSubmit } = useForm<FormData>({
     defaultValues: defaultFormData,
   });
 
-  const handleValidSubmit: SubmitHandler<FormData> = useCallback((formData) => {
-    // TODO: Implement
-    alert(JSON.stringify(formData, null, 2));
+  const [output, setOutput] = useState<string>("");
+
+  const formData = watch();
+
+  const updateCommand: SubmitHandler<FormData> = useCallback((formData) => {
+    const args = ["npx", "create-next-stack@0.1.4"];
+
+    // Package manager
+    args.push(`--packageManager=${formData.packageManager}`);
+
+    // Styling method
+    args.push(`--stylingMethod=${formData.stylingMethod}`);
+
+    // Form State Management
+    if (formData.formStateManagement.includes("react-hook-form")) {
+      args.push("--react-hook-form");
+    }
+    if (formData.formStateManagement.includes("formik")) {
+      args.push("--formik");
+    }
+
+    // Formatting
+    if (formData.formatting.includes("prettier")) {
+      args.push("--prettier");
+    }
+
+    // Component Libraries
+    if (formData.componentLibraries.includes("chakra")) {
+      args.push("--chakra");
+    }
+
+    // Animation Libraries
+    if (formData.animationLibraries.includes("framer-motion")) {
+      args.push("--framer-motion");
+    }
+
+    // Continuous Integrations
+    if (formData.continuousIntegrations.includes("github-actions")) {
+      args.push("--github-actions");
+    }
+
+    // Miscellaneous Options
+    if (formData.miscellaneousOptions.includes("formatting-pre-commit-hook")) {
+      args.push("--formatting-pre-commit-hook");
+    }
+
+    setOutput(args.join(" "));
   }, []);
+
+  useEffect(() => {
+    updateCommand(formData);
+  }, [updateCommand, formData]);
 
   return (
     <>
@@ -130,8 +178,8 @@ const LandingPageTemplate = () => {
               background="white"
               boxShadow="0 10px 50px rgba(0,0,0,0.1)"
             >
-              <form onSubmit={handleSubmit(handleValidSubmit)}>
-                <Heading as="h2" marginBottom="6">
+              <form>
+                <Heading as="h2" size="lg" marginBottom="6">
                   Pick your technologies
                 </Heading>
 
@@ -358,15 +406,23 @@ const LandingPageTemplate = () => {
                   </Stack>
                 </Stack>
 
-                <Stack align="center" marginTop="16">
-                  <Button
-                    variant="solid"
-                    colorScheme="blue"
-                    type="submit"
-                    size="lg"
-                  >
-                    Create Next Stack
-                  </Button>
+                <Stack marginTop="16">
+                  {output !== "" ? (
+                    <>
+                      <Heading as="h2" size="lg">
+                        Command
+                      </Heading>
+                      <Text>
+                        Run the following command in your preferred directory:
+                      </Text>
+                      <Stack>
+                        <Code padding="4">{output}</Code>
+                      </Stack>
+                      {/* TODO: Add Copy button:
+                        <Button>Copy</Button>
+                      */}
+                    </>
+                  ) : null}
                 </Stack>
               </form>
             </Box>
