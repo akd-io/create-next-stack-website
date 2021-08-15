@@ -134,228 +134,234 @@ const LandingPageTemplate = () => {
                 <Heading as="h2" marginBottom="6">
                   Pick your technologies
                 </Heading>
-                <Stack spacing="8">
-                  <Stack spacing="4">
-                    <Heading as="h3" size="md">
-                      Package manager
-                    </Heading>
-                    <Controller
-                      name={formDataKeys.packageManager}
-                      control={control}
-                      render={({ field }) => (
-                        <RadioGroup {...field}>
-                          <Stack direction="column">
-                            {Object.keys(packageManagers).map(
-                              (packageManager) => (
-                                <Radio
-                                  key={packageManager}
-                                  id={`radio-${packageManager}`}
-                                  value={packageManager}
-                                >
-                                  {packageManager}
-                                </Radio>
-                              )
-                            )}
-                          </Stack>
-                        </RadioGroup>
-                      )}
-                    />
+
+                <Stack
+                  spacing={["8", "8", "16"]}
+                  direction={["column", "column", "row"]}
+                >
+                  <Stack spacing="8" flexBasis="100%">
+                    <Stack spacing="4">
+                      <Heading as="h3" size="md">
+                        Package manager
+                      </Heading>
+                      <Controller
+                        name={formDataKeys.packageManager}
+                        control={control}
+                        render={({ field }) => (
+                          <RadioGroup {...field}>
+                            <Stack direction="column">
+                              {Object.keys(packageManagers).map(
+                                (packageManager) => (
+                                  <Radio
+                                    key={packageManager}
+                                    id={`radio-${packageManager}`}
+                                    value={packageManager}
+                                  >
+                                    {packageManager}
+                                  </Radio>
+                                )
+                              )}
+                            </Stack>
+                          </RadioGroup>
+                        )}
+                      />
+                    </Stack>
+                    <Stack spacing="4">
+                      <Heading as="h3" size="md">
+                        Styling method
+                      </Heading>
+                      <Controller
+                        name={formDataKeys.stylingMethod}
+                        control={control}
+                        render={({ field }) => (
+                          <RadioGroup {...field}>
+                            <Stack direction="column">
+                              {Object.keys(stylingMethods).map(
+                                (stylingMethod) => (
+                                  <Radio
+                                    key={stylingMethod}
+                                    id={`radio-${stylingMethod}`}
+                                    value={stylingMethod}
+                                  >
+                                    {stylingMethod}
+                                  </Radio>
+                                )
+                              )}
+                            </Stack>
+                          </RadioGroup>
+                        )}
+                      />
+                    </Stack>
+                    <Stack spacing="4">
+                      <Heading as="h3" size="md">
+                        Form state management
+                      </Heading>
+                      <Controller
+                        name={formDataKeys.formStateManagement}
+                        control={control}
+                        render={({ field }) => (
+                          <CheckboxGroup {...field}>
+                            <Stack direction="column">
+                              {Object.keys(formStateManagementLibraries).map(
+                                (formStateManagementLibrary) => (
+                                  <Checkbox
+                                    key={formStateManagementLibrary}
+                                    id={`radio-${formStateManagementLibrary}`}
+                                    value={formStateManagementLibrary}
+                                  >
+                                    {formStateManagementLibrary}
+                                  </Checkbox>
+                                )
+                              )}
+                            </Stack>
+                          </CheckboxGroup>
+                        )}
+                      />
+                    </Stack>
                   </Stack>
 
-                  <Stack spacing="4">
-                    <Heading as="h3" size="md">
-                      Styling method
-                    </Heading>
-                    <Controller
-                      name={formDataKeys.stylingMethod}
-                      control={control}
-                      render={({ field }) => (
-                        <RadioGroup {...field}>
-                          <Stack direction="column">
-                            {Object.keys(stylingMethods).map(
-                              (stylingMethod) => (
-                                <Radio
-                                  key={stylingMethod}
-                                  id={`radio-${stylingMethod}`}
-                                  value={stylingMethod}
-                                >
-                                  {stylingMethod}
-                                </Radio>
-                              )
-                            )}
-                          </Stack>
-                        </RadioGroup>
-                      )}
-                    />
-                  </Stack>
+                  <Stack spacing="8" flexBasis="100%">
+                    <Stack spacing="4">
+                      <Heading as="h3" size="md">
+                        Formatting
+                      </Heading>
+                      <Controller
+                        name={formDataKeys.formatting}
+                        control={control}
+                        render={({ field }) => (
+                          <CheckboxGroup {...field}>
+                            <Stack direction="column">
+                              {Object.keys(formattingLibraries).map(
+                                (formattingLibrary) => (
+                                  <Checkbox
+                                    key={formattingLibrary}
+                                    id={`radio-${formattingLibrary}`}
+                                    value={formattingLibrary}
+                                  >
+                                    {formattingLibrary}
+                                  </Checkbox>
+                                )
+                              )}
+                            </Stack>
+                          </CheckboxGroup>
+                        )}
+                      />
+                    </Stack>
 
-                  <Stack spacing="4">
-                    <Heading as="h3" size="md">
-                      Form state management
-                    </Heading>
-                    <Controller
-                      name={formDataKeys.formStateManagement}
-                      control={control}
-                      render={({ field }) => (
-                        <CheckboxGroup {...field}>
-                          <Stack direction="column">
-                            {Object.keys(formStateManagementLibraries).map(
-                              (formStateManagementLibrary) => (
-                                <Checkbox
-                                  key={formStateManagementLibrary}
-                                  id={`radio-${formStateManagementLibrary}`}
-                                  value={formStateManagementLibrary}
-                                >
-                                  {formStateManagementLibrary}
-                                </Checkbox>
-                              )
-                            )}
-                          </Stack>
-                        </CheckboxGroup>
-                      )}
-                    />
-                  </Stack>
+                    <Stack spacing="4">
+                      <Heading as="h3" size="md">
+                        Component libraries
+                      </Heading>
+                      <Controller
+                        name={formDataKeys.componentLibraries}
+                        control={control}
+                        render={({ field }) => (
+                          <CheckboxGroup {...field}>
+                            <Stack direction="column">
+                              {Object.keys(componentLibraries).map(
+                                (componentLibrary) => (
+                                  <Checkbox
+                                    key={componentLibrary}
+                                    id={`radio-${componentLibrary}`}
+                                    value={componentLibrary}
+                                  >
+                                    {componentLibrary}
+                                  </Checkbox>
+                                )
+                              )}
+                            </Stack>
+                          </CheckboxGroup>
+                        )}
+                      />
+                    </Stack>
 
-                  <Stack spacing="4">
-                    <Heading as="h3" size="md">
-                      Formatting
-                    </Heading>
-                    <Controller
-                      name={formDataKeys.formatting}
-                      control={control}
-                      render={({ field }) => (
-                        <CheckboxGroup {...field}>
-                          <Stack direction="column">
-                            {Object.keys(formattingLibraries).map(
-                              (formattingLibrary) => (
-                                <Checkbox
-                                  key={formattingLibrary}
-                                  id={`radio-${formattingLibrary}`}
-                                  value={formattingLibrary}
-                                >
-                                  {formattingLibrary}
-                                </Checkbox>
-                              )
-                            )}
-                          </Stack>
-                        </CheckboxGroup>
-                      )}
-                    />
-                  </Stack>
+                    <Stack spacing="4">
+                      <Heading as="h3" size="md">
+                        Animation
+                      </Heading>
+                      <Controller
+                        name={formDataKeys.animationLibraries}
+                        control={control}
+                        render={({ field }) => (
+                          <CheckboxGroup {...field}>
+                            <Stack direction="column">
+                              {Object.keys(animationLibraries).map(
+                                (animationLibrary) => (
+                                  <Checkbox
+                                    key={animationLibrary}
+                                    id={`radio-${animationLibrary}`}
+                                    value={animationLibrary}
+                                  >
+                                    {animationLibrary}
+                                  </Checkbox>
+                                )
+                              )}
+                            </Stack>
+                          </CheckboxGroup>
+                        )}
+                      />
+                    </Stack>
 
-                  <Stack spacing="4">
-                    <Heading as="h3" size="md">
-                      Component libraries
-                    </Heading>
-                    <Controller
-                      name={formDataKeys.componentLibraries}
-                      control={control}
-                      render={({ field }) => (
-                        <CheckboxGroup {...field}>
-                          <Stack direction="column">
-                            {Object.keys(componentLibraries).map(
-                              (componentLibrary) => (
-                                <Checkbox
-                                  key={componentLibrary}
-                                  id={`radio-${componentLibrary}`}
-                                  value={componentLibrary}
-                                >
-                                  {componentLibrary}
-                                </Checkbox>
-                              )
-                            )}
-                          </Stack>
-                        </CheckboxGroup>
-                      )}
-                    />
-                  </Stack>
+                    <Stack spacing="4">
+                      <Heading as="h3" size="md">
+                        Continuous integration
+                      </Heading>
+                      <Controller
+                        name={formDataKeys.continuousIntegrations}
+                        control={control}
+                        render={({ field }) => (
+                          <CheckboxGroup {...field}>
+                            <Stack direction="column">
+                              {Object.keys(continuousIntegrations).map(
+                                (continuousIntegration) => (
+                                  <Checkbox
+                                    key={continuousIntegration}
+                                    id={`radio-${continuousIntegration}`}
+                                    value={continuousIntegration}
+                                  >
+                                    {continuousIntegration}
+                                  </Checkbox>
+                                )
+                              )}
+                            </Stack>
+                          </CheckboxGroup>
+                        )}
+                      />
+                    </Stack>
 
-                  <Stack spacing="4">
-                    <Heading as="h3" size="md">
-                      Animation
-                    </Heading>
-                    <Controller
-                      name={formDataKeys.animationLibraries}
-                      control={control}
-                      render={({ field }) => (
-                        <CheckboxGroup {...field}>
-                          <Stack direction="column">
-                            {Object.keys(animationLibraries).map(
-                              (animationLibrary) => (
-                                <Checkbox
-                                  key={animationLibrary}
-                                  id={`radio-${animationLibrary}`}
-                                  value={animationLibrary}
-                                >
-                                  {animationLibrary}
-                                </Checkbox>
-                              )
-                            )}
-                          </Stack>
-                        </CheckboxGroup>
-                      )}
-                    />
+                    <Stack spacing="4">
+                      <Heading as="h3" size="md">
+                        Miscellaneous
+                      </Heading>
+                      <Controller
+                        name={formDataKeys.miscellaneousOptions}
+                        control={control}
+                        render={({ field }) => (
+                          <CheckboxGroup {...field}>
+                            <Stack direction="column">
+                              {Object.keys(miscellaneousOptions).map(
+                                (miscellaneousOption) => (
+                                  <Checkbox
+                                    key={miscellaneousOption}
+                                    id={`radio-${miscellaneousOption}`}
+                                    value={miscellaneousOption}
+                                  >
+                                    {miscellaneousOption}
+                                  </Checkbox>
+                                )
+                              )}
+                            </Stack>
+                          </CheckboxGroup>
+                        )}
+                      />
+                    </Stack>
                   </Stack>
+                </Stack>
 
-                  <Stack spacing="4">
-                    <Heading as="h3" size="md">
-                      Continuous integration
-                    </Heading>
-                    <Controller
-                      name={formDataKeys.continuousIntegrations}
-                      control={control}
-                      render={({ field }) => (
-                        <CheckboxGroup {...field}>
-                          <Stack direction="column">
-                            {Object.keys(continuousIntegrations).map(
-                              (continuousIntegration) => (
-                                <Checkbox
-                                  key={continuousIntegration}
-                                  id={`radio-${continuousIntegration}`}
-                                  value={continuousIntegration}
-                                >
-                                  {continuousIntegration}
-                                </Checkbox>
-                              )
-                            )}
-                          </Stack>
-                        </CheckboxGroup>
-                      )}
-                    />
-                  </Stack>
-
-                  <Stack spacing="4">
-                    <Heading as="h3" size="md">
-                      Miscellaneous
-                    </Heading>
-                    <Controller
-                      name={formDataKeys.miscellaneousOptions}
-                      control={control}
-                      render={({ field }) => (
-                        <CheckboxGroup {...field}>
-                          <Stack direction="column">
-                            {Object.keys(miscellaneousOptions).map(
-                              (miscellaneousOption) => (
-                                <Checkbox
-                                  key={miscellaneousOption}
-                                  id={`radio-${miscellaneousOption}`}
-                                  value={miscellaneousOption}
-                                >
-                                  {miscellaneousOption}
-                                </Checkbox>
-                              )
-                            )}
-                          </Stack>
-                        </CheckboxGroup>
-                      )}
-                    />
-                  </Stack>
-
-                  <Stack align="center">
-                    <Button type="submit" size="lg">
-                      Create Next Stack
-                    </Button>
-                  </Stack>
+                <Stack align="center" marginTop="8">
+                  <Button type="submit" size="lg">
+                    Create Next Stack
+                  </Button>
                 </Stack>
               </form>
             </Box>
