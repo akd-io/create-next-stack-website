@@ -7,7 +7,7 @@ import {
   Radio,
   RadioGroup,
   Stack,
-  Text,
+  Text
 } from "@chakra-ui/react";
 import { css, Global } from "@emotion/react";
 import { useCallback } from "react";
@@ -35,18 +35,21 @@ const formStateManagementLibraries = arrayToKeyToKeyMap([
   "formik",
 ]);
 const formattingLibraries = arrayToKeyToKeyMap(["prettier"]);
+const componentLibraries = arrayToKeyToKeyMap(["chakra"]);
 
 type FormData = {
   packageManager: keyof typeof packageManagers;
   stylingMethod: keyof typeof stylingMethods;
   formStateManagement: Array<keyof typeof formStateManagementLibraries>;
   formatting: Array<keyof typeof formattingLibraries>;
+  componentLibraries: Array<keyof typeof componentLibraries>;
 };
 const defaultFormData: FormData = {
   packageManager: "yarn",
   stylingMethod: "emotion",
   formStateManagement: [formStateManagementLibraries["react-hook-form"]],
   formatting: [formattingLibraries.prettier],
+  componentLibraries: [componentLibraries.chakra],
 };
 const formDataKeys = objectToKeyToKeyMap(defaultFormData);
 
@@ -222,6 +225,33 @@ const LandingPageTemplate = () => {
                                   value={formattingLibrary}
                                 >
                                   {formattingLibrary}
+                                </Checkbox>
+                              )
+                            )}
+                          </Stack>
+                        </CheckboxGroup>
+                      )}
+                    />
+                  </Stack>
+
+                  <Stack spacing="4">
+                    <Heading as="h3" size="md">
+                      Component libraries
+                    </Heading>
+                    <Controller
+                      name={formDataKeys.componentLibraries}
+                      control={control}
+                      render={({ field }) => (
+                        <CheckboxGroup {...field}>
+                          <Stack direction="column">
+                            {Object.keys(componentLibraries).map(
+                              (componentLibrary) => (
+                                <Checkbox
+                                  key={componentLibrary}
+                                  id={`radio-${componentLibrary}`}
+                                  value={componentLibrary}
+                                >
+                                  {componentLibrary}
                                 </Checkbox>
                               )
                             )}
