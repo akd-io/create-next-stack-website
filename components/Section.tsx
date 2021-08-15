@@ -7,7 +7,7 @@ type SectionProps = ComponentProps<typeof Stack> & {
 export const Section: FC<SectionProps> = ({ boxProps, children, ...props }) => {
   return (
     <Stack padding="50px 30px" alignItems="center" as="section" {...props}>
-      <Box maxWidth="800" {...boxProps}>
+      <Box width="100%" maxWidth="800" {...boxProps}>
         {children}
       </Box>
     </Stack>
