@@ -37,6 +37,7 @@ const formStateManagementLibraries = arrayToKeyToKeyMap([
 const formattingLibraries = arrayToKeyToKeyMap(["prettier"]);
 const componentLibraries = arrayToKeyToKeyMap(["chakra"]);
 const animationLibraries = arrayToKeyToKeyMap(["framer-motion"]);
+const continuousIntegrations = arrayToKeyToKeyMap(["github-actions"]);
 
 type FormData = {
   packageManager: keyof typeof packageManagers;
@@ -45,6 +46,7 @@ type FormData = {
   formatting: Array<keyof typeof formattingLibraries>;
   componentLibraries: Array<keyof typeof componentLibraries>;
   animationLibraries: Array<keyof typeof animationLibraries>;
+  continuousIntegrations: Array<keyof typeof continuousIntegrations>;
 };
 const defaultFormData: FormData = {
   packageManager: "yarn",
@@ -53,6 +55,7 @@ const defaultFormData: FormData = {
   formatting: [formattingLibraries.prettier],
   componentLibraries: [componentLibraries.chakra],
   animationLibraries: [animationLibraries["framer-motion"]],
+  continuousIntegrations: [continuousIntegrations["github-actions"]],
 };
 const formDataKeys = objectToKeyToKeyMap(defaultFormData);
 
@@ -282,6 +285,33 @@ const LandingPageTemplate = () => {
                                   value={animationLibrary}
                                 >
                                   {animationLibrary}
+                                </Checkbox>
+                              )
+                            )}
+                          </Stack>
+                        </CheckboxGroup>
+                      )}
+                    />
+                  </Stack>
+
+                  <Stack spacing="4">
+                    <Heading as="h3" size="md">
+                      Continuous integration
+                    </Heading>
+                    <Controller
+                      name={formDataKeys.continuousIntegrations}
+                      control={control}
+                      render={({ field }) => (
+                        <CheckboxGroup {...field}>
+                          <Stack direction="column">
+                            {Object.keys(continuousIntegrations).map(
+                              (continuousIntegration) => (
+                                <Checkbox
+                                  key={continuousIntegration}
+                                  id={`radio-${continuousIntegration}`}
+                                  value={continuousIntegration}
+                                >
+                                  {continuousIntegration}
                                 </Checkbox>
                               )
                             )}
