@@ -2,9 +2,7 @@ import { css, Global } from "@emotion/react";
 import React from "react";
 
 const globalStyles = css`
-  code {
-    font-family: "Roboto Mono", monospace;
-  }
+  // No global styles
 `;
 
 const WithDefaultGlobalStyles: React.FC = ({ children }) => {
