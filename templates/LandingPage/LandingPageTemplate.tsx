@@ -358,8 +358,13 @@ const LandingPageTemplate = () => {
                   </Stack>
                 </Stack>
 
-                <Stack align="center" marginTop="8">
-                  <Button type="submit" size="lg">
+                <Stack align="center" marginTop="16">
+                  <Button
+                    variant="solid"
+                    colorScheme="blue"
+                    type="submit"
+                    size="lg"
+                  >
                     Create Next Stack
                   </Button>
                 </Stack>
