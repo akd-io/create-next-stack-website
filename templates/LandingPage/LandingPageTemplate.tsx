@@ -318,7 +318,7 @@ const LandingPageTemplate = () => {
                                 ([_, formStateManagementLibrary]) => (
                                   <Checkbox
                                     key={formStateManagementLibrary}
-                                    id={`radio-${formStateManagementLibrary}`}
+                                    id={`checkbox-${formStateManagementLibrary}`}
                                     value={formStateManagementLibrary}
                                   >
                                     {options[formStateManagementLibrary].label}
@@ -347,7 +347,7 @@ const LandingPageTemplate = () => {
                                 ([_, formattingLibrary]) => (
                                   <Checkbox
                                     key={formattingLibrary}
-                                    id={`radio-${formattingLibrary}`}
+                                    id={`checkbox-${formattingLibrary}`}
                                     value={formattingLibrary}
                                   >
                                     {options[formattingLibrary].label}
@@ -374,7 +374,7 @@ const LandingPageTemplate = () => {
                                 ([_, componentLibrary]) => (
                                   <Checkbox
                                     key={componentLibrary}
-                                    id={`radio-${componentLibrary}`}
+                                    id={`checkbox-${componentLibrary}`}
                                     value={componentLibrary}
                                   >
                                     {options[componentLibrary].label}
@@ -401,7 +401,7 @@ const LandingPageTemplate = () => {
                                 ([_, animationLibrary]) => (
                                   <Checkbox
                                     key={animationLibrary}
-                                    id={`radio-${animationLibrary}`}
+                                    id={`checkbox-${animationLibrary}`}
                                     value={animationLibrary}
                                   >
                                     {options[animationLibrary].label}
@@ -428,7 +428,7 @@ const LandingPageTemplate = () => {
                                 ([_, continuousIntegration]) => (
                                   <Checkbox
                                     key={continuousIntegration}
-                                    id={`radio-${continuousIntegration}`}
+                                    id={`checkbox-${continuousIntegration}`}
                                     value={continuousIntegration}
                                   >
                                     {options[continuousIntegration].label}
@@ -455,7 +455,7 @@ const LandingPageTemplate = () => {
                                 ([_, miscellaneousOption]) => (
                                   <Checkbox
                                     key={miscellaneousOption}
-                                    id={`radio-${miscellaneousOption}`}
+                                    id={`checkbox-${miscellaneousOption}`}
                                     value={miscellaneousOption}
                                   >
                                     {options[miscellaneousOption].label}
