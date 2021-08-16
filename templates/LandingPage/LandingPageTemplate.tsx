@@ -6,16 +6,14 @@ import {
   CheckboxGroup,
   Code,
   Heading,
-  Link,
   Radio,
   RadioGroup,
   Stack,
   Text,
 } from "@chakra-ui/react";
 import { css, Global } from "@emotion/react";
-import { faGithub, faTwitter } from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback, useEffect, useState } from "react";
+import GitHubButton from "react-github-btn";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Anchor } from "../../components/Anchor";
 import { Section } from "../../components/Section";
@@ -217,27 +215,21 @@ const LandingPageTemplate = () => {
                 </Text>
               </Stack>
 
-              <Stack direction="row" spacing="2">
-                <Link
-                  href="https://github.com/akd-io/create-next-stack"
-                  isExternal
-                >
-                  <FontAwesomeIcon height="2em" icon={faGithub} />
-                </Link>
-                <Link href="https://twitter.com/akd_io" isExternal>
-                  <FontAwesomeIcon height="2em" icon={faTwitter} />
-                </Link>
-              </Stack>
+              <GitHubButton
+                href="https://github.com/akd-io/create-next-stack"
+                data-size="large"
+                data-show-count="true"
+                aria-label="Star Create Next Stack on GitHub"
+              >
+                Star
+              </GitHubButton>
             </Stack>
 
             <Stack maxWidth="600" spacing="4">
               <Text>
                 <b>Create Next Stack</b> is a website and CLI tool used to
                 easily set up the boilerplate of new{" "}
-                <Anchor
-                  href="https://nextjs.org/docs/api-reference/create-next-app"
-                  isExternal
-                >
+                <Anchor href="https://nextjs.org" isExternal>
                   Next.js <ExternalLinkIcon mx="2px" />
                 </Anchor>{" "}
                 apps.
