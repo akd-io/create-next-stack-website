@@ -24,22 +24,78 @@ const globalStyles = css`
   }
 `;
 
-const packageManagers = arrayToKeyToKeyMap(["yarn", "npm"]);
+/*
+// TODO: Make use of Option when adding CIF
+type Option = {
+  key: string;
+  label: string;
+};
+*/
+
+// TODO: Strengthen types using a constrained identity function
+const options = {
+  yarn: { key: "yarn", value: "yarn", label: "Yarn" },
+  npm: { key: "npm", value: "npm", label: "npm" },
+  emotion: { key: "emotion", value: "emotion", label: "Emotion" },
+  styledComponents: {
+    key: "styledComponents",
+    value: "styled-components",
+    label: "Styled Components",
+  },
+  cssModules: {
+    key: "cssModules",
+    value: "css-modules",
+    label: "CSS Modules",
+  },
+  cssModulesWithSass: {
+    key: "cssModulesWithSass",
+    value: "css-modules-with-sass",
+    label: "CSS Modules with Sass",
+  },
+  reactHookForm: {
+    key: "reactHookForm",
+    value: "react-hook-form",
+    label: "React Hook Form",
+  },
+  formik: { key: "formik", value: "formik", label: "Formik" },
+  prettier: { key: "prettier", value: "prettier", label: "Prettier" },
+  chakra: { key: "chakra", value: "chakra", label: "Chakra UI" },
+  framerMotion: {
+    key: "framerMotion",
+    value: "framer-motion",
+    label: "Framer Motion",
+  },
+  githubActions: {
+    key: "githubActions",
+    value: "github-actions",
+    label: "GitHub Actions",
+  },
+  formattingPreCommitHook: {
+    key: "formattingPreCommitHook",
+    value: "formatting-pre-commit-hook",
+    label: "Formatting Pre-Commit Hook",
+  },
+} as const;
+const optionKeys = objectToKeyToKeyMap(options);
+
+const packageManagers = arrayToKeyToKeyMap([optionKeys.yarn, optionKeys.npm]);
 const stylingMethods = arrayToKeyToKeyMap([
-  "emotion",
-  "styled-components",
-  "css-modules",
-  "css-modules-with-sass",
+  optionKeys.emotion,
+  optionKeys.styledComponents,
+  optionKeys.cssModules,
+  optionKeys.cssModulesWithSass,
 ]);
 const formStateManagementLibraries = arrayToKeyToKeyMap([
-  "react-hook-form",
-  "formik",
+  optionKeys.reactHookForm,
+  optionKeys.formik,
 ]);
-const formattingLibraries = arrayToKeyToKeyMap(["prettier"]);
-const componentLibraries = arrayToKeyToKeyMap(["chakra"]);
-const animationLibraries = arrayToKeyToKeyMap(["framer-motion"]);
-const continuousIntegrations = arrayToKeyToKeyMap(["github-actions"]);
-const miscellaneousOptions = arrayToKeyToKeyMap(["formatting-pre-commit-hook"]);
+const formattingLibraries = arrayToKeyToKeyMap([optionKeys.prettier]);
+const componentLibraries = arrayToKeyToKeyMap([optionKeys.chakra]);
+const animationLibraries = arrayToKeyToKeyMap([optionKeys.framerMotion]);
+const continuousIntegrations = arrayToKeyToKeyMap([optionKeys.githubActions]);
+const miscellaneousOptions = arrayToKeyToKeyMap([
+  optionKeys.formattingPreCommitHook,
+]);
 
 type FormData = {
   packageManager: keyof typeof packageManagers;
@@ -52,14 +108,14 @@ type FormData = {
   miscellaneousOptions: Array<keyof typeof miscellaneousOptions>;
 };
 const defaultFormData: FormData = {
-  packageManager: "yarn",
-  stylingMethod: "emotion",
-  formStateManagement: [formStateManagementLibraries["react-hook-form"]],
-  formatting: [formattingLibraries.prettier],
-  componentLibraries: [componentLibraries.chakra],
-  animationLibraries: [animationLibraries["framer-motion"]],
-  continuousIntegrations: [continuousIntegrations["github-actions"]],
-  miscellaneousOptions: [miscellaneousOptions["formatting-pre-commit-hook"]],
+  packageManager: optionKeys.yarn,
+  stylingMethod: optionKeys.emotion,
+  formStateManagement: [optionKeys.reactHookForm],
+  formatting: [optionKeys.prettier],
+  componentLibraries: [optionKeys.chakra],
+  animationLibraries: [optionKeys.framerMotion],
+  continuousIntegrations: [optionKeys.githubActions],
+  miscellaneousOptions: [optionKeys.formattingPreCommitHook],
 };
 const formDataKeys = objectToKeyToKeyMap(defaultFormData);
 
@@ -76,41 +132,43 @@ const LandingPageTemplate = () => {
     const args = ["npx", "create-next-stack@0.1.4"];
 
     // Package manager
-    args.push(`--packageManager=${formData.packageManager}`);
+    args.push(`--package-manager=${options[formData.packageManager].value}`);
 
     // Styling method
-    args.push(`--stylingMethod=${formData.stylingMethod}`);
+    args.push(`--styling=${options[formData.stylingMethod].value}`);
 
     // Form State Management
-    if (formData.formStateManagement.includes("react-hook-form")) {
+    if (formData.formStateManagement.includes(optionKeys.reactHookForm)) {
       args.push("--react-hook-form");
     }
-    if (formData.formStateManagement.includes("formik")) {
+    if (formData.formStateManagement.includes(optionKeys.formik)) {
       args.push("--formik");
     }
 
     // Formatting
-    if (formData.formatting.includes("prettier")) {
+    if (formData.formatting.includes(optionKeys.prettier)) {
       args.push("--prettier");
     }
 
     // Component Libraries
-    if (formData.componentLibraries.includes("chakra")) {
+    if (formData.componentLibraries.includes(optionKeys.chakra)) {
       args.push("--chakra");
     }
 
     // Animation Libraries
-    if (formData.animationLibraries.includes("framer-motion")) {
+    if (formData.animationLibraries.includes(optionKeys.framerMotion)) {
       args.push("--framer-motion");
     }
 
     // Continuous Integrations
-    if (formData.continuousIntegrations.includes("github-actions")) {
+    if (formData.continuousIntegrations.includes(optionKeys.githubActions)) {
       args.push("--github-actions");
     }
 
     // Miscellaneous Options
-    if (formData.miscellaneousOptions.includes("formatting-pre-commit-hook")) {
+    if (
+      formData.miscellaneousOptions.includes(optionKeys.formattingPreCommitHook)
+    ) {
       args.push("--formatting-pre-commit-hook");
     }
 
@@ -201,17 +259,17 @@ const LandingPageTemplate = () => {
                       <Controller
                         name={formDataKeys.packageManager}
                         control={control}
-                        render={({ field }) => (
-                          <RadioGroup {...field}>
+                        render={({ field: { ref, ...restField } }) => (
+                          <RadioGroup {...restField}>
                             <Stack direction="column">
-                              {Object.keys(packageManagers).map(
-                                (packageManager) => (
+                              {Object.entries(packageManagers).map(
+                                ([_, packageManager]) => (
                                   <Radio
                                     key={packageManager}
                                     id={`radio-${packageManager}`}
                                     value={packageManager}
                                   >
-                                    {packageManager}
+                                    {options[packageManager].label}
                                   </Radio>
                                 )
                               )}
@@ -230,14 +288,14 @@ const LandingPageTemplate = () => {
                         render={({ field }) => (
                           <RadioGroup {...field}>
                             <Stack direction="column">
-                              {Object.keys(stylingMethods).map(
-                                (stylingMethod) => (
+                              {Object.entries(stylingMethods).map(
+                                ([_, stylingMethod]) => (
                                   <Radio
                                     key={stylingMethod}
                                     id={`radio-${stylingMethod}`}
                                     value={stylingMethod}
                                   >
-                                    {stylingMethod}
+                                    {options[stylingMethod].label}
                                   </Radio>
                                 )
                               )}
@@ -256,14 +314,14 @@ const LandingPageTemplate = () => {
                         render={({ field }) => (
                           <CheckboxGroup {...field}>
                             <Stack direction="column">
-                              {Object.keys(formStateManagementLibraries).map(
-                                (formStateManagementLibrary) => (
+                              {Object.entries(formStateManagementLibraries).map(
+                                ([_, formStateManagementLibrary]) => (
                                   <Checkbox
                                     key={formStateManagementLibrary}
                                     id={`radio-${formStateManagementLibrary}`}
                                     value={formStateManagementLibrary}
                                   >
-                                    {formStateManagementLibrary}
+                                    {options[formStateManagementLibrary].label}
                                   </Checkbox>
                                 )
                               )}
@@ -285,14 +343,14 @@ const LandingPageTemplate = () => {
                         render={({ field }) => (
                           <CheckboxGroup {...field}>
                             <Stack direction="column">
-                              {Object.keys(formattingLibraries).map(
-                                (formattingLibrary) => (
+                              {Object.entries(formattingLibraries).map(
+                                ([_, formattingLibrary]) => (
                                   <Checkbox
                                     key={formattingLibrary}
                                     id={`radio-${formattingLibrary}`}
                                     value={formattingLibrary}
                                   >
-                                    {formattingLibrary}
+                                    {options[formattingLibrary].label}
                                   </Checkbox>
                                 )
                               )}
@@ -312,14 +370,14 @@ const LandingPageTemplate = () => {
                         render={({ field }) => (
                           <CheckboxGroup {...field}>
                             <Stack direction="column">
-                              {Object.keys(componentLibraries).map(
-                                (componentLibrary) => (
+                              {Object.entries(componentLibraries).map(
+                                ([_, componentLibrary]) => (
                                   <Checkbox
                                     key={componentLibrary}
                                     id={`radio-${componentLibrary}`}
                                     value={componentLibrary}
                                   >
-                                    {componentLibrary}
+                                    {options[componentLibrary].label}
                                   </Checkbox>
                                 )
                               )}
@@ -339,14 +397,14 @@ const LandingPageTemplate = () => {
                         render={({ field }) => (
                           <CheckboxGroup {...field}>
                             <Stack direction="column">
-                              {Object.keys(animationLibraries).map(
-                                (animationLibrary) => (
+                              {Object.entries(animationLibraries).map(
+                                ([_, animationLibrary]) => (
                                   <Checkbox
                                     key={animationLibrary}
                                     id={`radio-${animationLibrary}`}
                                     value={animationLibrary}
                                   >
-                                    {animationLibrary}
+                                    {options[animationLibrary].label}
                                   </Checkbox>
                                 )
                               )}
@@ -366,14 +424,14 @@ const LandingPageTemplate = () => {
                         render={({ field }) => (
                           <CheckboxGroup {...field}>
                             <Stack direction="column">
-                              {Object.keys(continuousIntegrations).map(
-                                (continuousIntegration) => (
+                              {Object.entries(continuousIntegrations).map(
+                                ([_, continuousIntegration]) => (
                                   <Checkbox
                                     key={continuousIntegration}
                                     id={`radio-${continuousIntegration}`}
                                     value={continuousIntegration}
                                   >
-                                    {continuousIntegration}
+                                    {options[continuousIntegration].label}
                                   </Checkbox>
                                 )
                               )}
@@ -393,14 +451,14 @@ const LandingPageTemplate = () => {
                         render={({ field }) => (
                           <CheckboxGroup {...field}>
                             <Stack direction="column">
-                              {Object.keys(miscellaneousOptions).map(
-                                (miscellaneousOption) => (
+                              {Object.entries(miscellaneousOptions).map(
+                                ([_, miscellaneousOption]) => (
                                   <Checkbox
                                     key={miscellaneousOption}
                                     id={`radio-${miscellaneousOption}`}
                                     value={miscellaneousOption}
                                   >
-                                    {miscellaneousOption}
+                                    {options[miscellaneousOption].label}
                                   </Checkbox>
                                 )
                               )}
