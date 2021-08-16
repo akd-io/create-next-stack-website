@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Checkbox,
   CheckboxGroup,
   Code,
@@ -63,7 +64,7 @@ const defaultFormData: FormData = {
 const formDataKeys = objectToKeyToKeyMap(defaultFormData);
 
 const LandingPageTemplate = () => {
-  const { control, watch, handleSubmit } = useForm<FormData>({
+  const { control, watch } = useForm<FormData>({
     defaultValues: defaultFormData,
   });
 
@@ -119,6 +120,11 @@ const LandingPageTemplate = () => {
   useEffect(() => {
     updateCommand(formData);
   }, [updateCommand, formData]);
+
+  const handleCopyClick = useCallback(async () => {
+    await navigator.clipboard.writeText(output);
+    // TODO: Add a success popup
+  }, [output]);
 
   return (
     <>
@@ -418,9 +424,9 @@ const LandingPageTemplate = () => {
                       <Stack>
                         <Code padding="4">{output}</Code>
                       </Stack>
-                      {/* TODO: Add Copy button:
-                        <Button>Copy</Button>
-                      */}
+                      <Button type="button" onClick={handleCopyClick}>
+                        Copy
+                      </Button>
                     </>
                   ) : null}
                 </Stack>
