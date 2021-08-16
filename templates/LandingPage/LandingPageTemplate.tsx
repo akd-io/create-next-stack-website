@@ -303,6 +303,7 @@ const LandingPageTemplate = () => {
                           )}
                         />
                       </Stack>
+
                       <Stack spacing="4">
                         <Heading as="h3" size="md">
                           Styling method
@@ -331,6 +332,7 @@ const LandingPageTemplate = () => {
                           )}
                         />
                       </Stack>
+
                       <Stack spacing="4">
                         <Heading as="h3" size="md">
                           Form state management
@@ -520,22 +522,20 @@ const LandingPageTemplate = () => {
                     </Anchor>
                   </Text>
 
-                  {output !== "" ? (
-                    <Stack spacing="4">
-                      <Heading as="h2" size="lg">
-                        Command
-                      </Heading>
-                      <Text>
-                        Run the following command in your preferred directory:
-                      </Text>
-                      <Stack>
-                        <Code padding="4">{output}</Code>
-                      </Stack>
-                      <Button type="button" onClick={handleCopyClick}>
-                        Copy
-                      </Button>
+                  <Stack spacing="4">
+                    <Heading as="h2" size="lg">
+                      Command
+                    </Heading>
+                    <Text>
+                      Run the following command in your preferred directory:
+                    </Text>
+                    <Stack>
+                      <Code padding="4">{output}</Code>
                     </Stack>
-                  ) : null}
+                    <Button type="button" onClick={handleCopyClick}>
+                      Copy
+                    </Button>
+                  </Stack>
                 </Stack>
               </form>
             </Box>
@@ -545,11 +545,10 @@ const LandingPageTemplate = () => {
               <Anchor href="https://akd.io/" isExternal>
                 Anders Damgaard
               </Anchor>{" "}
-              (
+              &ndash;{" "}
               <Anchor href="https://twitter.com/akd_io" isExternal>
                 @akd_io
               </Anchor>
-              )
             </Text>
           </Stack>
         </Section>
