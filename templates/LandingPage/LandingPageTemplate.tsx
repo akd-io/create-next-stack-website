@@ -1,3 +1,4 @@
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -5,12 +6,15 @@ import {
   CheckboxGroup,
   Code,
   Heading,
+  Link,
   Radio,
   RadioGroup,
   Stack,
   Text,
 } from "@chakra-ui/react";
 import { css, Global } from "@emotion/react";
+import { faGithub, faTwitter } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Anchor } from "../../components/Anchor";
@@ -190,43 +194,61 @@ const LandingPageTemplate = () => {
       <main>
         <Section>
           <Stack spacing="16" align="center">
-            <Stack align="center" spacing="1">
-              <Heading
-                as="h1"
-                size="3xl"
-                bgGradient="linear(to-tr, brand.600, brand.400)"
-                bgClip="text"
-                textAlign="center"
-                fontWeight="800"
-              >
-                Create Next Stack
-              </Heading>
-              <Text
-                fontSize="1.25em"
-                fontWeight="bold"
-                bgGradient="linear(to-tr, brand.600, brand.400)"
-                bgClip="text"
-                textAlign="center"
-              >
-                The ultimate starter kit for Next.js
-              </Text>
-            </Stack>
+            <Stack align="center" spacing="6">
+              <Stack align="center" spacing="1">
+                <Heading
+                  as="h1"
+                  size="3xl"
+                  bgGradient="linear(to-tr, brand.600, brand.400)"
+                  bgClip="text"
+                  textAlign="center"
+                  fontWeight="800"
+                >
+                  Create Next Stack
+                </Heading>
+                <Text
+                  fontSize="1.25em"
+                  fontWeight="bold"
+                  bgGradient="linear(to-tr, brand.600, brand.400)"
+                  bgClip="text"
+                  textAlign="center"
+                >
+                  The ultimate starter kit for Next.js
+                </Text>
+              </Stack>
 
-            {/* TODO: Insert social icons */}
+              <Stack direction="row" spacing="2">
+                <Link
+                  href="https://github.com/akd-io/create-next-stack"
+                  isExternal
+                >
+                  <FontAwesomeIcon height="2em" icon={faGithub} />
+                </Link>
+                <Link href="https://twitter.com/akd_io" isExternal>
+                  <FontAwesomeIcon height="2em" icon={faTwitter} />
+                </Link>
+              </Stack>
+            </Stack>
 
             <Stack maxWidth="600" spacing="4">
               <Text>
                 <b>Create Next Stack</b> is a website and CLI tool used to
                 easily set up the boilerplate of new{" "}
-                <Anchor href="https://nextjs.org/docs/api-reference/create-next-app">
-                  Next.js
+                <Anchor
+                  href="https://nextjs.org/docs/api-reference/create-next-app"
+                  isExternal
+                >
+                  Next.js <ExternalLinkIcon mx="2px" />
                 </Anchor>{" "}
                 apps.
               </Text>
               <Text>
                 Where{" "}
-                <Anchor href="https://nextjs.org/docs/api-reference/create-next-app">
-                  Create Next App
+                <Anchor
+                  href="https://nextjs.org/docs/api-reference/create-next-app"
+                  isExternal
+                >
+                  Create Next App <ExternalLinkIcon mx="2px" />
                 </Anchor>{" "}
                 lets you choose a single template only, Create Next Stack lets
                 you pick and choose an array of technologies often used
@@ -490,8 +512,11 @@ const LandingPageTemplate = () => {
                   <Text align="center">
                     Missing your favorite technology?
                     <br />
-                    <Anchor href="https://github.com/akd-io/create-next-stack/issues">
-                      Open an issue on GitHub.
+                    <Anchor
+                      href="https://github.com/akd-io/create-next-stack/issues"
+                      isExternal
+                    >
+                      Open an issue on GitHub <ExternalLinkIcon mx="2px" />
                     </Anchor>
                   </Text>
 
@@ -517,7 +542,14 @@ const LandingPageTemplate = () => {
 
             <Text>
               Created by{" "}
-              <Anchor href="https://twitter.com/akd_io">@akd_io</Anchor>
+              <Anchor href="https://akd.io/" isExternal>
+                Anders Damgaard
+              </Anchor>{" "}
+              (
+              <Anchor href="https://twitter.com/akd_io" isExternal>
+                @akd_io
+              </Anchor>
+              )
             </Text>
           </Stack>
         </Section>
