@@ -550,17 +550,6 @@ const LandingPageTemplate = () => {
                     </Stack>
                   </Stack>
 
-                  <Text align="center">
-                    Missing your favorite technology?
-                    <br />
-                    <Anchor
-                      href="https://github.com/akd-io/create-next-stack/issues"
-                      isExternal
-                    >
-                      Open an issue on GitHub <ExternalLinkIcon mx="2px" />
-                    </Anchor>
-                  </Text>
-
                   <Stack spacing="4">
                     <Heading as="h2" size="lg">
                       Command
@@ -575,6 +564,17 @@ const LandingPageTemplate = () => {
                       Copy
                     </Button>
                   </Stack>
+
+                  <Text align="center">
+                    Missing your favorite technology or encountering a bug?{" "}
+                    <br />
+                    <Anchor
+                      href="https://github.com/akd-io/create-next-stack/issues"
+                      isExternal
+                    >
+                      Open an issue on GitHub <ExternalLinkIcon mx="2px" />
+                    </Anchor>
+                  </Text>
                 </Stack>
               </form>
             </Box>
