@@ -122,7 +122,7 @@ const defaultFormData: FormData = {
 const formDataKeys = objectToKeyToKeyMap(defaultFormData);
 
 const LandingPageTemplate = () => {
-  const { control, watch } = useForm<FormData>({
+  const { control, watch, setValue } = useForm<FormData>({
     defaultValues: defaultFormData,
   });
 
@@ -279,8 +279,8 @@ const LandingPageTemplate = () => {
                           <Controller
                             name={formDataKeys.packageManager}
                             control={control}
-                            render={({ field: { ref, ...restField } }) => (
-                              <RadioGroup {...restField}>
+                            render={({ field: { ref, ...rest } }) => (
+                              <RadioGroup {...rest}>
                                 <Stack spacing="3">
                                   {Object.entries(packageManagers).map(
                                     ([_, packageManager]) => (
@@ -308,8 +308,8 @@ const LandingPageTemplate = () => {
                           <Controller
                             name={formDataKeys.stylingMethod}
                             control={control}
-                            render={({ field }) => (
-                              <RadioGroup {...field}>
+                            render={({ field: { ref, ...rest } }) => (
+                              <RadioGroup {...rest}>
                                 <Stack spacing="3">
                                   {Object.entries(stylingMethods).map(
                                     ([_, stylingMethod]) => (
@@ -319,6 +319,21 @@ const LandingPageTemplate = () => {
                                         key={stylingMethod}
                                         id={`radio-${stylingMethod}`}
                                         value={stylingMethod}
+                                        onChange={(e) => {
+                                          if (
+                                            e.target.value !==
+                                            stylingMethods.emotion
+                                          ) {
+                                            setValue(
+                                              "componentLibraries",
+                                              formData.componentLibraries.filter(
+                                                (value) =>
+                                                  value !==
+                                                  componentLibraries.chakra
+                                              )
+                                            );
+                                          }
+                                        }}
                                       >
                                         {options[stylingMethod].label}
                                       </Radio>
@@ -337,8 +352,8 @@ const LandingPageTemplate = () => {
                           <Controller
                             name={formDataKeys.formStateManagement}
                             control={control}
-                            render={({ field }) => (
-                              <CheckboxGroup {...field}>
+                            render={({ field: { ref, ...rest } }) => (
+                              <CheckboxGroup {...rest}>
                                 <Stack spacing="3">
                                   {Object.entries(
                                     formStateManagementLibraries
@@ -371,22 +386,34 @@ const LandingPageTemplate = () => {
                           <Controller
                             name={formDataKeys.formatting}
                             control={control}
-                            render={({ field }) => (
-                              <CheckboxGroup {...field}>
+                            render={({ field: { ref, ...rest } }) => (
+                              <CheckboxGroup {...rest}>
                                 <Stack spacing="3">
-                                  {Object.entries(formattingLibraries).map(
-                                    ([_, formattingLibrary]) => (
-                                      <Checkbox
-                                        size="md"
-                                        colorScheme="purple"
-                                        key={formattingLibrary}
-                                        id={`checkbox-${formattingLibrary}`}
-                                        value={formattingLibrary}
-                                      >
-                                        {options[formattingLibrary].label}
-                                      </Checkbox>
-                                    )
-                                  )}
+                                  <Checkbox
+                                    size="md"
+                                    colorScheme="purple"
+                                    id={`checkbox-${optionKeys.prettier}`}
+                                    value={optionKeys.prettier}
+                                    onChange={(e) => {
+                                      if (
+                                        !e.target.checked &&
+                                        formData.miscellaneousOptions.includes(
+                                          miscellaneousOptions.formattingPreCommitHook
+                                        )
+                                      ) {
+                                        setValue(
+                                          "miscellaneousOptions",
+                                          formData.miscellaneousOptions.filter(
+                                            (miscellaneousOption) =>
+                                              miscellaneousOption !==
+                                              optionKeys.formattingPreCommitHook
+                                          )
+                                        );
+                                      }
+                                    }}
+                                  >
+                                    {options[optionKeys.prettier].label}
+                                  </Checkbox>
                                 </Stack>
                               </CheckboxGroup>
                             )}
@@ -400,22 +427,36 @@ const LandingPageTemplate = () => {
                           <Controller
                             name={formDataKeys.componentLibraries}
                             control={control}
-                            render={({ field }) => (
-                              <CheckboxGroup {...field}>
+                            render={({ field: { ref, ...rest } }) => (
+                              <CheckboxGroup {...rest}>
                                 <Stack spacing="3">
-                                  {Object.entries(componentLibraries).map(
-                                    ([_, componentLibrary]) => (
-                                      <Checkbox
-                                        size="md"
-                                        colorScheme="purple"
-                                        key={componentLibrary}
-                                        id={`checkbox-${componentLibrary}`}
-                                        value={componentLibrary}
-                                      >
-                                        {options[componentLibrary].label}
-                                      </Checkbox>
-                                    )
-                                  )}
+                                  <Checkbox
+                                    size="md"
+                                    colorScheme="purple"
+                                    id={`checkbox-${optionKeys.chakra}`}
+                                    value={optionKeys.chakra}
+                                    isDisabled={
+                                      formData.stylingMethod !==
+                                      optionKeys.emotion
+                                    }
+                                    title="test"
+                                    onChange={(e) => {
+                                      if (e.target.checked) {
+                                        if (
+                                          !formData.animationLibraries.includes(
+                                            optionKeys.framerMotion
+                                          )
+                                        ) {
+                                          setValue("animationLibraries", [
+                                            ...formData.animationLibraries,
+                                            optionKeys.framerMotion,
+                                          ]);
+                                        }
+                                      }
+                                    }}
+                                  >
+                                    {options[optionKeys.chakra].label}
+                                  </Checkbox>
                                 </Stack>
                               </CheckboxGroup>
                             )}
@@ -429,8 +470,8 @@ const LandingPageTemplate = () => {
                           <Controller
                             name={formDataKeys.animationLibraries}
                             control={control}
-                            render={({ field }) => (
-                              <CheckboxGroup {...field}>
+                            render={({ field: { ref, ...rest } }) => (
+                              <CheckboxGroup {...rest}>
                                 <Stack spacing="3">
                                   {Object.entries(animationLibraries).map(
                                     ([_, animationLibrary]) => (
@@ -458,8 +499,8 @@ const LandingPageTemplate = () => {
                           <Controller
                             name={formDataKeys.continuousIntegrations}
                             control={control}
-                            render={({ field }) => (
-                              <CheckboxGroup {...field}>
+                            render={({ field: { ref, ...rest } }) => (
+                              <CheckboxGroup {...rest}>
                                 <Stack spacing="3">
                                   {Object.entries(continuousIntegrations).map(
                                     ([_, continuousIntegration]) => (
@@ -487,22 +528,34 @@ const LandingPageTemplate = () => {
                           <Controller
                             name={formDataKeys.miscellaneousOptions}
                             control={control}
-                            render={({ field }) => (
-                              <CheckboxGroup {...field}>
+                            render={({ field: { ref, ...rest } }) => (
+                              <CheckboxGroup {...rest}>
                                 <Stack spacing="3">
-                                  {Object.entries(miscellaneousOptions).map(
-                                    ([_, miscellaneousOption]) => (
-                                      <Checkbox
-                                        size="md"
-                                        colorScheme="purple"
-                                        key={miscellaneousOption}
-                                        id={`checkbox-${miscellaneousOption}`}
-                                        value={miscellaneousOption}
-                                      >
-                                        {options[miscellaneousOption].label}
-                                      </Checkbox>
-                                    )
-                                  )}
+                                  <Checkbox
+                                    size="md"
+                                    colorScheme="purple"
+                                    id={`checkbox-${optionKeys.formattingPreCommitHook}`}
+                                    value={optionKeys.formattingPreCommitHook}
+                                    onChange={(e) => {
+                                      if (
+                                        e.target.checked &&
+                                        !formData.formatting.includes(
+                                          optionKeys.prettier
+                                        )
+                                      ) {
+                                        setValue("formatting", [
+                                          ...formData.formatting,
+                                          optionKeys.prettier,
+                                        ]);
+                                      }
+                                    }}
+                                  >
+                                    {
+                                      options[
+                                        optionKeys.formattingPreCommitHook
+                                      ].label
+                                    }
+                                  </Checkbox>
                                 </Stack>
                               </CheckboxGroup>
                             )}
