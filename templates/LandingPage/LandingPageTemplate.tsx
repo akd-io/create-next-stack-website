@@ -17,7 +17,6 @@ import GitHubButton from "react-github-btn";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Anchor } from "../../components/Anchor";
 import { Section } from "../../components/Section";
-import { arrayToKeyToKeyMap } from "../../utils/arrayToKeyToKeyMap";
 import { objectToKeyToKeyMap } from "../../utils/objectToKeyToKeyMap";
 
 const globalStyles = css`
@@ -80,34 +79,32 @@ const options = {
 } as const;
 const optionKeys = objectToKeyToKeyMap(options);
 
-const packageManagers = arrayToKeyToKeyMap([optionKeys.yarn, optionKeys.npm]);
-const stylingMethods = arrayToKeyToKeyMap([
+const packageManagers = [optionKeys.yarn, optionKeys.npm];
+const stylingMethods = [
   optionKeys.emotion,
   optionKeys.styledComponents,
   optionKeys.cssModules,
   optionKeys.cssModulesWithSass,
-]);
-const formStateManagementLibraries = arrayToKeyToKeyMap([
+];
+const formStateManagementLibraries = [
   optionKeys.reactHookForm,
   optionKeys.formik,
-]);
-const formattingLibraries = arrayToKeyToKeyMap([optionKeys.prettier]);
-const componentLibraries = arrayToKeyToKeyMap([optionKeys.chakra]);
-const animationLibraries = arrayToKeyToKeyMap([optionKeys.framerMotion]);
-const continuousIntegrations = arrayToKeyToKeyMap([optionKeys.githubActions]);
-const miscellaneousOptions = arrayToKeyToKeyMap([
-  optionKeys.formattingPreCommitHook,
-]);
+];
+const formattingLibraries = [optionKeys.prettier];
+const componentLibraries = [optionKeys.chakra];
+const animationLibraries = [optionKeys.framerMotion];
+const continuousIntegrations = [optionKeys.githubActions];
+const miscellaneousOptions = [optionKeys.formattingPreCommitHook];
 
 type FormData = {
-  packageManager: keyof typeof packageManagers;
-  stylingMethod: keyof typeof stylingMethods;
-  formStateManagement: Array<keyof typeof formStateManagementLibraries>;
-  formatting: Array<keyof typeof formattingLibraries>;
-  componentLibraries: Array<keyof typeof componentLibraries>;
-  animationLibraries: Array<keyof typeof animationLibraries>;
-  continuousIntegrations: Array<keyof typeof continuousIntegrations>;
-  miscellaneousOptions: Array<keyof typeof miscellaneousOptions>;
+  packageManager: typeof packageManagers[number];
+  stylingMethod: typeof stylingMethods[number];
+  formStateManagement: Array<typeof formStateManagementLibraries[number]>;
+  formatting: Array<typeof formattingLibraries[number]>;
+  componentLibraries: Array<typeof componentLibraries[number]>;
+  animationLibraries: Array<typeof animationLibraries[number]>;
+  continuousIntegrations: Array<typeof continuousIntegrations[number]>;
+  miscellaneousOptions: Array<typeof miscellaneousOptions[number]>;
 };
 const defaultFormData: FormData = {
   packageManager: optionKeys.yarn,
@@ -125,10 +122,9 @@ const LandingPageTemplate = () => {
   const { control, watch, setValue } = useForm<FormData>({
     defaultValues: defaultFormData,
   });
+  const formData = watch();
 
   const [output, setOutput] = useState<string>("");
-
-  const formData = watch();
 
   const updateCommand: SubmitHandler<FormData> = useCallback((formData) => {
     const args = ["npx", "create-next-stack@0.1.4"];
@@ -282,19 +278,17 @@ const LandingPageTemplate = () => {
                             render={({ field: { ref, ...rest } }) => (
                               <RadioGroup {...rest}>
                                 <Stack spacing="3">
-                                  {Object.entries(packageManagers).map(
-                                    ([_, packageManager]) => (
-                                      <Radio
-                                        size="md"
-                                        colorScheme="purple"
-                                        key={packageManager}
-                                        id={`radio-${packageManager}`}
-                                        value={packageManager}
-                                      >
-                                        {options[packageManager].label}
-                                      </Radio>
-                                    )
-                                  )}
+                                  {packageManagers.map((packageManager) => (
+                                    <Radio
+                                      size="md"
+                                      colorScheme="purple"
+                                      key={packageManager}
+                                      id={`radio-${packageManager}`}
+                                      value={packageManager}
+                                    >
+                                      {options[packageManager].label}
+                                    </Radio>
+                                  ))}
                                 </Stack>
                               </RadioGroup>
                             )}
@@ -311,34 +305,30 @@ const LandingPageTemplate = () => {
                             render={({ field: { ref, ...rest } }) => (
                               <RadioGroup {...rest}>
                                 <Stack spacing="3">
-                                  {Object.entries(stylingMethods).map(
-                                    ([_, stylingMethod]) => (
-                                      <Radio
-                                        size="md"
-                                        colorScheme="purple"
-                                        key={stylingMethod}
-                                        id={`radio-${stylingMethod}`}
-                                        value={stylingMethod}
-                                        onChange={(e) => {
-                                          if (
-                                            e.target.value !==
-                                            stylingMethods.emotion
-                                          ) {
-                                            setValue(
-                                              "componentLibraries",
-                                              formData.componentLibraries.filter(
-                                                (value) =>
-                                                  value !==
-                                                  componentLibraries.chakra
-                                              )
-                                            );
-                                          }
-                                        }}
-                                      >
-                                        {options[stylingMethod].label}
-                                      </Radio>
-                                    )
-                                  )}
+                                  {stylingMethods.map((stylingMethod) => (
+                                    <Radio
+                                      size="md"
+                                      colorScheme="purple"
+                                      key={stylingMethod}
+                                      id={`radio-${stylingMethod}`}
+                                      value={stylingMethod}
+                                      onChange={(e) => {
+                                        if (
+                                          e.target.value !== optionKeys.emotion
+                                        ) {
+                                          setValue(
+                                            "componentLibraries",
+                                            formData.componentLibraries.filter(
+                                              (value) =>
+                                                value !== optionKeys.chakra
+                                            )
+                                          );
+                                        }
+                                      }}
+                                    >
+                                      {options[stylingMethod].label}
+                                    </Radio>
+                                  ))}
                                 </Stack>
                               </RadioGroup>
                             )}
@@ -355,22 +345,22 @@ const LandingPageTemplate = () => {
                             render={({ field: { ref, ...rest } }) => (
                               <CheckboxGroup {...rest}>
                                 <Stack spacing="3">
-                                  {Object.entries(
-                                    formStateManagementLibraries
-                                  ).map(([_, formStateManagementLibrary]) => (
-                                    <Checkbox
-                                      size="md"
-                                      colorScheme="purple"
-                                      key={formStateManagementLibrary}
-                                      id={`checkbox-${formStateManagementLibrary}`}
-                                      value={formStateManagementLibrary}
-                                    >
-                                      {
-                                        options[formStateManagementLibrary]
-                                          .label
-                                      }
-                                    </Checkbox>
-                                  ))}
+                                  {formStateManagementLibraries.map(
+                                    (formStateManagementLibrary) => (
+                                      <Checkbox
+                                        size="md"
+                                        colorScheme="purple"
+                                        key={formStateManagementLibrary}
+                                        id={`checkbox-${formStateManagementLibrary}`}
+                                        value={formStateManagementLibrary}
+                                      >
+                                        {
+                                          options[formStateManagementLibrary]
+                                            .label
+                                        }
+                                      </Checkbox>
+                                    )
+                                  )}
                                 </Stack>
                               </CheckboxGroup>
                             )}
@@ -398,7 +388,7 @@ const LandingPageTemplate = () => {
                                       if (
                                         !e.target.checked &&
                                         formData.miscellaneousOptions.includes(
-                                          miscellaneousOptions.formattingPreCommitHook
+                                          optionKeys.formattingPreCommitHook
                                         )
                                       ) {
                                         setValue(
@@ -473,8 +463,8 @@ const LandingPageTemplate = () => {
                             render={({ field: { ref, ...rest } }) => (
                               <CheckboxGroup {...rest}>
                                 <Stack spacing="3">
-                                  {Object.entries(animationLibraries).map(
-                                    ([_, animationLibrary]) => (
+                                  {animationLibraries.map(
+                                    (animationLibrary) => (
                                       <Checkbox
                                         size="md"
                                         colorScheme="purple"
@@ -502,8 +492,8 @@ const LandingPageTemplate = () => {
                             render={({ field: { ref, ...rest } }) => (
                               <CheckboxGroup {...rest}>
                                 <Stack spacing="3">
-                                  {Object.entries(continuousIntegrations).map(
-                                    ([_, continuousIntegration]) => (
+                                  {continuousIntegrations.map(
+                                    (continuousIntegration) => (
                                       <Checkbox
                                         size="md"
                                         colorScheme="purple"
