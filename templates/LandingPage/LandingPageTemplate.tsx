@@ -194,7 +194,7 @@ const LandingPageTemplate = () => {
               <Heading
                 as="h1"
                 size="3xl"
-                bgGradient="linear(to-bl, #ED88FD, #5B45E4)"
+                bgGradient="linear(to-tr, brand.600, brand.400)"
                 bgClip="text"
                 textAlign="center"
                 fontWeight="800"
@@ -204,7 +204,7 @@ const LandingPageTemplate = () => {
               <Text
                 fontSize="1.25em"
                 fontWeight="bold"
-                bgGradient="linear(to-bl, #ED88FD, #5B45E4)"
+                bgGradient="linear(to-tr, brand.600, brand.400)"
                 bgClip="text"
                 textAlign="center"
               >
@@ -261,10 +261,12 @@ const LandingPageTemplate = () => {
                         control={control}
                         render={({ field: { ref, ...restField } }) => (
                           <RadioGroup {...restField}>
-                            <Stack direction="column">
+                            <Stack spacing="3">
                               {Object.entries(packageManagers).map(
                                 ([_, packageManager]) => (
                                   <Radio
+                                    size="lg"
+                                    colorScheme="purple"
                                     key={packageManager}
                                     id={`radio-${packageManager}`}
                                     value={packageManager}
@@ -287,10 +289,12 @@ const LandingPageTemplate = () => {
                         control={control}
                         render={({ field }) => (
                           <RadioGroup {...field}>
-                            <Stack direction="column">
+                            <Stack spacing="3">
                               {Object.entries(stylingMethods).map(
                                 ([_, stylingMethod]) => (
                                   <Radio
+                                    size="lg"
+                                    colorScheme="purple"
                                     key={stylingMethod}
                                     id={`radio-${stylingMethod}`}
                                     value={stylingMethod}
@@ -313,10 +317,12 @@ const LandingPageTemplate = () => {
                         control={control}
                         render={({ field }) => (
                           <CheckboxGroup {...field}>
-                            <Stack direction="column">
+                            <Stack spacing="3">
                               {Object.entries(formStateManagementLibraries).map(
                                 ([_, formStateManagementLibrary]) => (
                                   <Checkbox
+                                    size="lg"
+                                    colorScheme="purple"
                                     key={formStateManagementLibrary}
                                     id={`checkbox-${formStateManagementLibrary}`}
                                     value={formStateManagementLibrary}
@@ -342,10 +348,12 @@ const LandingPageTemplate = () => {
                         control={control}
                         render={({ field }) => (
                           <CheckboxGroup {...field}>
-                            <Stack direction="column">
+                            <Stack spacing="3">
                               {Object.entries(formattingLibraries).map(
                                 ([_, formattingLibrary]) => (
                                   <Checkbox
+                                    size="lg"
+                                    colorScheme="purple"
                                     key={formattingLibrary}
                                     id={`checkbox-${formattingLibrary}`}
                                     value={formattingLibrary}
@@ -369,10 +377,12 @@ const LandingPageTemplate = () => {
                         control={control}
                         render={({ field }) => (
                           <CheckboxGroup {...field}>
-                            <Stack direction="column">
+                            <Stack spacing="3">
                               {Object.entries(componentLibraries).map(
                                 ([_, componentLibrary]) => (
                                   <Checkbox
+                                    size="lg"
+                                    colorScheme="purple"
                                     key={componentLibrary}
                                     id={`checkbox-${componentLibrary}`}
                                     value={componentLibrary}
@@ -396,10 +406,12 @@ const LandingPageTemplate = () => {
                         control={control}
                         render={({ field }) => (
                           <CheckboxGroup {...field}>
-                            <Stack direction="column">
+                            <Stack spacing="3">
                               {Object.entries(animationLibraries).map(
                                 ([_, animationLibrary]) => (
                                   <Checkbox
+                                    size="lg"
+                                    colorScheme="purple"
                                     key={animationLibrary}
                                     id={`checkbox-${animationLibrary}`}
                                     value={animationLibrary}
@@ -423,10 +435,12 @@ const LandingPageTemplate = () => {
                         control={control}
                         render={({ field }) => (
                           <CheckboxGroup {...field}>
-                            <Stack direction="column">
+                            <Stack spacing="3">
                               {Object.entries(continuousIntegrations).map(
                                 ([_, continuousIntegration]) => (
                                   <Checkbox
+                                    size="lg"
+                                    colorScheme="purple"
                                     key={continuousIntegration}
                                     id={`checkbox-${continuousIntegration}`}
                                     value={continuousIntegration}
@@ -450,10 +464,12 @@ const LandingPageTemplate = () => {
                         control={control}
                         render={({ field }) => (
                           <CheckboxGroup {...field}>
-                            <Stack direction="column">
+                            <Stack spacing="3">
                               {Object.entries(miscellaneousOptions).map(
                                 ([_, miscellaneousOption]) => (
                                   <Checkbox
+                                    size="lg"
+                                    colorScheme="purple"
                                     key={miscellaneousOption}
                                     id={`checkbox-${miscellaneousOption}`}
                                     value={miscellaneousOption}
