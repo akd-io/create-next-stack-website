@@ -21,6 +21,7 @@
     "@fortawesome/free-brands-svg-icons": "^5.15.4",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.15",
+    "@sentry/nextjs": "^6.11.0",
     "framer-motion": "^4.0.0",
     "next": "11.1.0",
     "next-transpile-modules": "^8.0.0",
