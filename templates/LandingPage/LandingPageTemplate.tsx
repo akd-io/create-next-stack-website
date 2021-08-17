@@ -6,6 +6,7 @@ import {
   CheckboxGroup,
   Code,
   Heading,
+  Input,
   Radio,
   RadioGroup,
   Stack,
@@ -97,6 +98,7 @@ const continuousIntegrations = [optionKeys.githubActions];
 const miscellaneousOptions = [optionKeys.formattingPreCommitHook];
 
 type FormData = {
+  projectName: string;
   packageManager: typeof packageManagers[number];
   stylingMethod: typeof stylingMethods[number];
   formStateManagement: Array<typeof formStateManagementLibraries[number]>;
@@ -107,6 +109,7 @@ type FormData = {
   miscellaneousOptions: Array<typeof miscellaneousOptions[number]>;
 };
 const defaultFormData: FormData = {
+  projectName: "my-app",
   packageManager: optionKeys.yarn,
   stylingMethod: optionKeys.emotion,
   formStateManagement: [optionKeys.reactHookForm],
@@ -119,7 +122,7 @@ const defaultFormData: FormData = {
 const formDataKeys = objectToKeyToKeyMap(defaultFormData);
 
 const LandingPageTemplate = () => {
-  const { control, watch, setValue } = useForm<FormData>({
+  const { register, control, watch, setValue } = useForm<FormData>({
     defaultValues: defaultFormData,
   });
   const formData = watch();
@@ -169,6 +172,8 @@ const LandingPageTemplate = () => {
     ) {
       args.push("--formatting-pre-commit-hook");
     }
+
+    args.push(formData.projectName);
 
     setOutput(args.join(" "));
   }, []);
@@ -267,6 +272,16 @@ const LandingPageTemplate = () => {
                     direction={["column", "column", "row"]}
                   >
                     <Stack spacing="8" flexBasis="100%">
+                      <Stack spacing="4">
+                        <Heading as="h3" size="md">
+                          Project name
+                        </Heading>
+                        <Input
+                          {...register(formDataKeys.projectName, {
+                            pattern: /^[a-z0-9-]+$/,
+                          })}
+                        />
+                      </Stack>
                       <Stack spacing="4">
                         <Heading as="h3" size="md">
                           Package manager
@@ -549,7 +564,6 @@ const LandingPageTemplate = () => {
                       </Stack>
                     </Stack>
                   </Stack>
-
                   <Stack spacing="4">
                     <Heading as="h2" size="lg">
                       Command
@@ -564,7 +578,6 @@ const LandingPageTemplate = () => {
                       Copy
                     </Button>
                   </Stack>
-
                   <Text align="center">
                     Missing your favorite technology or encountering a bug?{" "}
                     <br />
