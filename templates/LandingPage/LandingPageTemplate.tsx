@@ -267,16 +267,21 @@ const LandingPageTemplate = () => {
                 </Heading>
 
                 <Stack spacing="16">
-                  <Input
-                    {...register(formDataKeys.projectName, {
-                      pattern: /^[a-z0-9-]+$/,
-                    })}
-                  />
                   <Stack
                     spacing={["8", "8", "16"]}
                     direction={["column", "column", "row"]}
                   >
                     <Stack spacing="8" flexBasis="100%">
+                      <Stack spacing="4">
+                        <Heading as="h3" size="md">
+                          Project name
+                        </Heading>
+                        <Input
+                          {...register(formDataKeys.projectName, {
+                            pattern: /^[a-z0-9-]+$/,
+                          })}
+                        />
+                      </Stack>
                       <Stack spacing="4">
                         <Heading as="h3" size="md">
                           Package manager
