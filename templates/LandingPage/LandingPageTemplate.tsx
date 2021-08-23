@@ -257,7 +257,7 @@ const LandingPageTemplate = () => {
             <Box
               width="100%"
               borderRadius="50"
-              padding="70"
+              padding={[30, 50, 70]}
               background="white"
               boxShadow="0 10px 50px rgba(0,0,0,0.1)"
             >
