@@ -27,7 +27,7 @@ const Checkbox: FC<ComponentProps<typeof ChakraCheckbox>> = (props) => {
 };
 
 const Radio: FC<ComponentProps<typeof ChakraRadio>> = (props) => {
-  return <Radio size="md" colorScheme="purple" {...props} />;
+  return <ChakraRadio size="md" colorScheme="purple" {...props} />;
 };
 
 /*
