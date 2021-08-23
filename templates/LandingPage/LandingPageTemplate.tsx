@@ -594,8 +594,8 @@ const LandingPageTemplate = () => {
           </Section>
         </Stack>
 
-        <footer>
-          <Text>
+        <Section as="footer">
+          <Text align="center">
             Created by{" "}
             <Anchor href="https://akd.io/" isExternal>
               Anders Damgaard
@@ -605,7 +605,7 @@ const LandingPageTemplate = () => {
               @akd_io
             </Anchor>
           </Text>
-        </footer>
+        </Section>
       </Stack>
     </>
   );
