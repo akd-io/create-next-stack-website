@@ -66,6 +66,7 @@ const options = {
   formik: { key: "formik", value: "formik", label: "Formik" },
   prettier: { key: "prettier", value: "prettier", label: "Prettier" },
   chakra: { key: "chakra", value: "chakra", label: "Chakra UI" },
+  materialUi: { key: "materialUi", value: "material-ui", label: "Material UI" },
   framerMotion: {
     key: "framerMotion",
     value: "framer-motion",
@@ -96,7 +97,7 @@ const formStateManagementLibraries = [
   optionKeys.formik,
 ];
 const formattingLibraries = [optionKeys.prettier];
-const componentLibraries = [optionKeys.chakra];
+const componentLibraries = [optionKeys.chakra, optionKeys.materialUi];
 const animationLibraries = [optionKeys.framerMotion];
 const continuousIntegrations = [optionKeys.githubActions];
 const miscellaneousOptions = [optionKeys.formattingPreCommitHook];
@@ -134,7 +135,7 @@ export const TechnologiesForm: React.FC = () => {
   const [output, setOutput] = useState<string>("");
 
   const updateCommand: SubmitHandler<FormData> = useCallback((formData) => {
-    const args = ["npx", "create-next-stack@0.1.4"];
+    const args = ["npx", "create-next-stack@0.1.5"];
 
     // Package manager
     args.push(`--package-manager=${options[formData.packageManager].value}`);
@@ -158,6 +159,9 @@ export const TechnologiesForm: React.FC = () => {
     // Component Libraries
     if (formData.componentLibraries.includes(optionKeys.chakra)) {
       args.push("--chakra");
+    }
+    if (formData.componentLibraries.includes(optionKeys.materialUi)) {
+      args.push("--material-ui");
     }
 
     // Animation Libraries
@@ -357,7 +361,6 @@ export const TechnologiesForm: React.FC = () => {
                         isDisabled={
                           formData.stylingMethod !== optionKeys.emotion
                         }
-                        title="test"
                         onChange={(e) => {
                           if (e.target.checked) {
                             if (
@@ -374,6 +377,12 @@ export const TechnologiesForm: React.FC = () => {
                         }}
                       >
                         {options[optionKeys.chakra].label}
+                      </Checkbox>
+                      <Checkbox
+                        id={`checkbox-${optionKeys.materialUi}`}
+                        value={optionKeys.materialUi}
+                      >
+                        {options[optionKeys.materialUi].label}
                       </Checkbox>
                     </Stack>
                   </CheckboxGroup>
