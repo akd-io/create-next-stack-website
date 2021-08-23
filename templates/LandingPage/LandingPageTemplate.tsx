@@ -19,6 +19,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Anchor } from "../../components/Anchor";
 import { Section } from "../../components/Section";
 import { objectToKeyToKeyMap } from "../../utils/objectToKeyToKeyMap";
+import { DescriptionSection } from "./components/DescriptionSection";
 import { Footer } from "./components/Footer";
 
 const globalStyles = css`
@@ -229,31 +230,7 @@ const LandingPageTemplate = () => {
         </Section>
 
         <Stack as="main" spacing="16" align="center" width="100%">
-          <Section>
-            <Stack maxWidth="600" spacing="4">
-              <Text>
-                <b>Create Next Stack</b> is a website and CLI tool used to
-                easily set up the boilerplate of new{" "}
-                <Anchor href="https://nextjs.org" isExternal>
-                  Next.js <ExternalLinkIcon mx="2px" />
-                </Anchor>{" "}
-                apps.
-              </Text>
-              <Text>
-                Where{" "}
-                <Anchor
-                  href="https://nextjs.org/docs/api-reference/create-next-app"
-                  isExternal
-                >
-                  Create Next App <ExternalLinkIcon mx="2px" />
-                </Anchor>{" "}
-                lets you choose a single template only, Create Next Stack lets
-                you pick and choose an array of technologies often used
-                alongside Next.js, and free you of the pain of making them work
-                together.
-              </Text>
-            </Stack>
-          </Section>
+          <DescriptionSection />
 
           <Section>
             <Box
