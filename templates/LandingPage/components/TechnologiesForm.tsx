@@ -1,20 +1,34 @@
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import {
   Button,
-  Checkbox,
+  Checkbox as ChakraCheckbox,
   CheckboxGroup,
   Code,
   Heading,
   Input,
-  Radio,
+  Radio as ChakraRadio,
   RadioGroup,
   Stack,
   Text,
 } from "@chakra-ui/react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  ComponentProps,
+  FC,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Anchor } from "../../../components/Anchor";
 import { objectToKeyToKeyMap } from "../../../utils/objectToKeyToKeyMap";
+
+const Checkbox: FC<ComponentProps<typeof ChakraCheckbox>> = (props) => {
+  return <ChakraCheckbox size="md" colorScheme="purple" {...props} />;
+};
+
+const Radio: FC<ComponentProps<typeof ChakraRadio>> = (props) => {
+  return <Radio size="md" colorScheme="purple" {...props} />;
+};
 
 /*
 // TODO: Make use of Option when adding CIF
@@ -211,8 +225,6 @@ export const TechnologiesForm: React.FC = () => {
                     <Stack spacing="3">
                       {packageManagers.map((packageManager) => (
                         <Radio
-                          size="md"
-                          colorScheme="purple"
                           key={packageManager}
                           id={`radio-${packageManager}`}
                           value={packageManager}
@@ -238,8 +250,6 @@ export const TechnologiesForm: React.FC = () => {
                     <Stack spacing="3">
                       {stylingMethods.map((stylingMethod) => (
                         <Radio
-                          size="md"
-                          colorScheme="purple"
                           key={stylingMethod}
                           id={`radio-${stylingMethod}`}
                           value={stylingMethod}
@@ -276,8 +286,6 @@ export const TechnologiesForm: React.FC = () => {
                       {formStateManagementLibraries.map(
                         (formStateManagementLibrary) => (
                           <Checkbox
-                            size="md"
-                            colorScheme="purple"
                             key={formStateManagementLibrary}
                             id={`checkbox-${formStateManagementLibrary}`}
                             value={formStateManagementLibrary}
@@ -305,8 +313,6 @@ export const TechnologiesForm: React.FC = () => {
                   <CheckboxGroup {...rest}>
                     <Stack spacing="3">
                       <Checkbox
-                        size="md"
-                        colorScheme="purple"
                         id={`checkbox-${optionKeys.prettier}`}
                         value={optionKeys.prettier}
                         onChange={(e) => {
@@ -346,8 +352,6 @@ export const TechnologiesForm: React.FC = () => {
                   <CheckboxGroup {...rest}>
                     <Stack spacing="3">
                       <Checkbox
-                        size="md"
-                        colorScheme="purple"
                         id={`checkbox-${optionKeys.chakra}`}
                         value={optionKeys.chakra}
                         isDisabled={
@@ -389,8 +393,6 @@ export const TechnologiesForm: React.FC = () => {
                     <Stack spacing="3">
                       {animationLibraries.map((animationLibrary) => (
                         <Checkbox
-                          size="md"
-                          colorScheme="purple"
                           key={animationLibrary}
                           id={`checkbox-${animationLibrary}`}
                           value={animationLibrary}
@@ -416,8 +418,6 @@ export const TechnologiesForm: React.FC = () => {
                     <Stack spacing="3">
                       {continuousIntegrations.map((continuousIntegration) => (
                         <Checkbox
-                          size="md"
-                          colorScheme="purple"
                           key={continuousIntegration}
                           id={`checkbox-${continuousIntegration}`}
                           value={continuousIntegration}
@@ -442,8 +442,6 @@ export const TechnologiesForm: React.FC = () => {
                   <CheckboxGroup {...rest}>
                     <Stack spacing="3">
                       <Checkbox
-                        size="md"
-                        colorScheme="purple"
                         id={`checkbox-${optionKeys.formattingPreCommitHook}`}
                         value={optionKeys.formattingPreCommitHook}
                         onChange={(e) => {
