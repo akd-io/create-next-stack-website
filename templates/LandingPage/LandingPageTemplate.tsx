@@ -190,16 +190,17 @@ const LandingPageTemplate = () => {
   return (
     <>
       <Global styles={globalStyles} />
+
       <Stack spacing="16" align="center" py="16">
-        <header>
-          <Stack align="center" spacing="6">
-            <Stack align="center" spacing="1">
+        <Section as="header">
+          <Stack align={["left", "center"]} spacing="6">
+            <Stack align={["left", "center"]} spacing="1">
               <Heading
                 as="h1"
                 size="3xl"
                 bgGradient="linear(to-tr, brand.600, brand.400)"
                 bgClip="text"
-                textAlign="center"
+                textAlign={["left", "center"]}
                 fontWeight="800"
               >
                 Create Next Stack
@@ -209,7 +210,7 @@ const LandingPageTemplate = () => {
                 fontWeight="bold"
                 bgGradient="linear(to-tr, brand.600, brand.400)"
                 bgClip="text"
-                textAlign="center"
+                textAlign={["left", "center"]}
               >
                 The ultimate starter kit for Next.js
               </Text>
@@ -224,7 +225,7 @@ const LandingPageTemplate = () => {
               Star
             </GitHubButton>
           </Stack>
-        </header>
+        </Section>
 
         <Stack as="main" spacing="16" align="center" width="100%">
           <Section>
@@ -578,7 +579,7 @@ const LandingPageTemplate = () => {
                       Copy
                     </Button>
                   </Stack>
-                  <Text align="center">
+                  <Text align={["left", "center"]}>
                     Missing your favorite technology or encountering a bug?{" "}
                     <br />
                     <Anchor
@@ -594,16 +595,23 @@ const LandingPageTemplate = () => {
           </Section>
         </Stack>
 
-        <Section as="footer">
-          <Text align="center">
+        <Section
+          as="footer"
+          boxProps={{
+            alignItems: "left",
+          }}
+        >
+          <Text align={["left", "center"]}>
             Created by{" "}
             <Anchor href="https://akd.io/" isExternal>
               Anders Damgaard
             </Anchor>{" "}
-            &ndash;{" "}
-            <Anchor href="https://twitter.com/akd_io" isExternal>
-              @akd_io
-            </Anchor>
+            <Box whiteSpace="nowrap">
+              &ndash;{" "}
+              <Anchor href="https://twitter.com/akd_io" isExternal>
+                @akd_io
+              </Anchor>
+            </Box>
           </Text>
         </Section>
       </Stack>
