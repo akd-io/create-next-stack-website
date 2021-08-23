@@ -16,7 +16,7 @@ export const Footer: React.FC = () => {
         <Anchor href="https://akd.io/" isExternal>
           Anders Damgaard
         </Anchor>{" "}
-        <Box whiteSpace="nowrap">
+        <Box as="span" whiteSpace="nowrap">
           &ndash;{" "}
           <Anchor href="https://twitter.com/akd_io" isExternal>
             @akd_io
