@@ -19,6 +19,7 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Anchor } from "../../components/Anchor";
 import { Section } from "../../components/Section";
 import { objectToKeyToKeyMap } from "../../utils/objectToKeyToKeyMap";
+import { Footer } from "./components/Footer";
 
 const globalStyles = css`
   body {
@@ -595,25 +596,7 @@ const LandingPageTemplate = () => {
           </Section>
         </Stack>
 
-        <Section
-          as="footer"
-          boxProps={{
-            alignItems: "left",
-          }}
-        >
-          <Text align={["left", "center"]}>
-            Created by{" "}
-            <Anchor href="https://akd.io/" isExternal>
-              Anders Damgaard
-            </Anchor>{" "}
-            <Box whiteSpace="nowrap">
-              &ndash;{" "}
-              <Anchor href="https://twitter.com/akd_io" isExternal>
-                @akd_io
-              </Anchor>
-            </Box>
-          </Text>
-        </Section>
+        <Footer />
       </Stack>
     </>
   );
