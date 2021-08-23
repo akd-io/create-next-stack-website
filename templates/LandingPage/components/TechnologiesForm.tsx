@@ -135,7 +135,7 @@ export const TechnologiesForm: React.FC = () => {
   const [output, setOutput] = useState<string>("");
 
   const updateCommand: SubmitHandler<FormData> = useCallback((formData) => {
-    const args = ["npx", "create-next-stack@0.1.4"];
+    const args = ["npx", "create-next-stack@0.1.5"];
 
     // Package manager
     args.push(`--package-manager=${options[formData.packageManager].value}`);
