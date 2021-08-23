@@ -1,5 +1,6 @@
 import { Box, Stack } from "@chakra-ui/react";
 import { css, Global } from "@emotion/react";
+import React, { ComponentProps, FC } from "react";
 import { Section } from "../../components/Section";
 import { DescriptionSection } from "./components/DescriptionSection";
 import { Footer } from "./components/Footer";
@@ -12,30 +13,31 @@ const globalStyles = css`
   }
 `;
 
+const Card: FC<ComponentProps<typeof Box>> = (props) => (
+  <Box
+    width="100%"
+    borderRadius={[30, 50]}
+    padding={[30, 50, 70]}
+    background="white"
+    boxShadow="0 10px 50px rgba(0,0,0,0.1)"
+    {...props}
+  />
+);
+
 const LandingPageTemplate = () => {
   return (
     <>
       <Global styles={globalStyles} />
-
       <Stack spacing="16" align="center" py="16">
         <Header />
-
         <Stack as="main" spacing="16" align="center" width="100%">
           <DescriptionSection />
-
           <Section>
-            <Box
-              width="100%"
-              borderRadius={[30, 50]}
-              padding={[30, 50, 70]}
-              background="white"
-              boxShadow="0 10px 50px rgba(0,0,0,0.1)"
-            >
+            <Card>
               <TechnologiesForm />
-            </Box>
+            </Card>
           </Section>
         </Stack>
-
         <Footer />
       </Stack>
     </>
