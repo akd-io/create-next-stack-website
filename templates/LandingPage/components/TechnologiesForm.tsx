@@ -361,7 +361,6 @@ export const TechnologiesForm: React.FC = () => {
                         isDisabled={
                           formData.stylingMethod !== optionKeys.emotion
                         }
-                        title="test"
                         onChange={(e) => {
                           if (e.target.checked) {
                             if (
