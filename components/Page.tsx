@@ -6,6 +6,7 @@ type PageProps = {
   title: string;
   description: string;
   ogImageUrl: string;
+  children?: React.ReactNode;
 };
 const Page: React.FC<PageProps> = ({
   title,
