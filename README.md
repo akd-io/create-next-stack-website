@@ -1,6 +1,16 @@
-# create-next-stack-website
+<img width="100%" src="assets/banner.png" alt="A screenshot of the Create Next Stack website">
 
-🎉 Congratulations, your project was successfully bootstrapped with [Create Next Stack](https://github.com/akd-io/create-next-stack)!
+# Create Next Stack Website
+
+Welcome to the repository of the [create-next-stack.com](https://www.create-next-stack.com/) website.
+
+This project acts as the UI for the create-next-stack CLI. All issues not specific to the website should be posted to the [create-next-stack repository](https://github.com/akd-io/create-next-stack) instead.
+
+## Contributing
+
+If you've found a bug or has an idea for an improvement, please [create a new issue](https://github.com/akd-io/create-next-stack-website/issues/new) or fork the project and submit a pull request.
+
+### Getting started
 
 To get started, run:
 
