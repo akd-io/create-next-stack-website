@@ -1,7 +1,14 @@
 import { Heading, Stack, Text } from "@chakra-ui/react";
 import React from "react";
-import GitHubButton from "react-github-btn";
+import BadlyTypedGitHubButton from "react-github-btn";
+import { GitHubButtonProps } from "github-buttons";
 import { Section } from "../../../components/Section";
+
+const GitHubButton = BadlyTypedGitHubButton as unknown as React.FC<
+  GitHubButtonProps & {
+    children?: React.ReactNode;
+  }
+>;
 
 export const Header = () => {
   return (
