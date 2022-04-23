@@ -26,7 +26,7 @@ export const DescriptionSection = () => {
           </Anchor>{" "}
           lets you choose a single template only, Create Next Stack lets you
           pick and choose an array of technologies often used alongside Next.js,
-          and free you of the pain of making them work together.
+          freeing you of the pain of making them work together.
         </Text>
       </Stack>
     </Section>
