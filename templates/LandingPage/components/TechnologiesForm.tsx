@@ -53,6 +53,11 @@ const options = {
     value: "css-modules",
     label: "CSS Modules",
   },
+  tailwindCss: {
+    key: "tailwindCss",
+    value: "tailwind-css",
+    label: "Tailwind CSS",
+  },
   cssModulesWithSass: {
     key: "cssModulesWithSass",
     value: "css-modules-with-sass",
@@ -89,6 +94,7 @@ const packageManagers = [optionKeys.yarn, optionKeys.npm];
 const stylingMethods = [
   optionKeys.emotion,
   optionKeys.styledComponents,
+  optionKeys.tailwindCss,
   optionKeys.cssModules,
   optionKeys.cssModulesWithSass,
 ];
@@ -135,7 +141,7 @@ export const TechnologiesForm: React.FC = () => {
   const [output, setOutput] = useState<string>("");
 
   const updateCommand: SubmitHandler<FormData> = useCallback((formData) => {
-    const args = ["npx", "create-next-stack@0.1.5"];
+    const args = ["npx", "create-next-stack@0.1.6"];
 
     // Package manager
     args.push(`--package-manager=${options[formData.packageManager].value}`);
@@ -244,7 +250,7 @@ export const TechnologiesForm: React.FC = () => {
 
             <Stack spacing="4">
               <Heading as="h3" size="md">
-                Styling method
+                Styling
               </Heading>
               <Controller
                 name={formDataKeys.stylingMethod}
