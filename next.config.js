@@ -6,9 +6,7 @@ const config = {
   reactStrictMode: true,
 };
 
-const withTM = nextTranspileModules(["react-github-btn"]);
-
-const moduleExports = withTM(config);
+const configWithTM = nextTranspileModules(["react-github-btn"])(config);
 
 // Sentry
 const SentryWebpackPluginOptions = {
@@ -18,11 +16,12 @@ const SentryWebpackPluginOptions = {
   //   release, url, org, project, authToken, configFile, stripPrefix,
   //   urlPrefix, include, ignore
 
-  silent: true, // Suppresses all logs
+  silent: true,
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options.
 };
 
 // Make sure adding Sentry options is the last code to run before exporting, to
 // ensure that your source maps include changes from all other Webpack plugins
-module.exports = withSentryConfig(moduleExports, SentryWebpackPluginOptions);
+
+module.exports = withSentryConfig(configWithTM, SentryWebpackPluginOptions);
