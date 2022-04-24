@@ -1,14 +1,6 @@
 import { Heading, Stack, Text } from "@chakra-ui/react";
-import React from "react";
-import BadlyTypedGitHubButton from "react-github-btn";
-import { GitHubButtonProps } from "github-buttons";
 import { Section } from "../../../components/Section";
-
-const GitHubButton = BadlyTypedGitHubButton as unknown as React.FC<
-  GitHubButtonProps & {
-    children?: React.ReactNode;
-  }
->;
+import { SocialIcons } from "../../../components/SocialIcons";
 
 export const Header = () => {
   return (
@@ -35,15 +27,7 @@ export const Header = () => {
             The ultimate starter kit for Next.js
           </Text>
         </Stack>
-
-        <GitHubButton
-          href="https://github.com/akd-io/create-next-stack"
-          data-size="large"
-          data-show-count="true"
-          aria-label="Star Create Next Stack on GitHub"
-        >
-          Star
-        </GitHubButton>
+        <SocialIcons />
       </Stack>
     </Section>
   );

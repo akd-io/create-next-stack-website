@@ -2,6 +2,7 @@ import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 import { Anchor } from "../../../components/Anchor";
 import { Section } from "../../../components/Section";
+import { SocialIcons } from "../../../components/SocialIcons";
 
 export const Footer: React.FC = () => {
   return (
@@ -16,13 +17,8 @@ export const Footer: React.FC = () => {
         <Anchor href="https://akd.io/" isExternal>
           Anders Damgaard
         </Anchor>{" "}
-        <Box as="span" whiteSpace="nowrap">
-          &ndash;{" "}
-          <Anchor href="https://twitter.com/akd_io" isExternal>
-            @akd_io
-          </Anchor>
-        </Box>
       </Text>
+      <SocialIcons />
     </Section>
   );
 };
