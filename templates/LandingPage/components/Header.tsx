@@ -1,14 +1,12 @@
-import { Heading, Stack, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import React from "react";
-import BadlyTypedGitHubButton from "react-github-btn";
-import { GitHubButtonProps } from "github-buttons";
 import { Section } from "../../../components/Section";
-
-const GitHubButton = BadlyTypedGitHubButton as unknown as React.FC<
-  GitHubButtonProps & {
-    children?: React.ReactNode;
-  }
->;
+import {
+  faDiscord,
+  faGithub,
+  faTwitter,
+} from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const Header = () => {
   return (
@@ -36,14 +34,26 @@ export const Header = () => {
           </Text>
         </Stack>
 
-        <GitHubButton
-          href="https://github.com/akd-io/create-next-stack"
-          data-size="large"
-          data-show-count="true"
-          aria-label="Star Create Next Stack on GitHub"
-        >
-          Star
-        </GitHubButton>
+        <Flex direction="row" alignItems="center" gap="10px">
+          <a
+            aria-label="GitHub Repository of Create Next Stack"
+            href="https://github.com/akd-io/create-next-stack"
+          >
+            <FontAwesomeIcon icon={faGithub} />
+          </a>
+          <a
+            aria-label="Community Discord"
+            href="https://discord.gg/7Ns5WwGjjZ"
+          >
+            <FontAwesomeIcon icon={faDiscord} />
+          </a>
+          <a
+            aria-label="Twitter profile of the creator of Create Next Stack"
+            href="https://twitter.com/akd_io"
+          >
+            <FontAwesomeIcon icon={faTwitter} />
+          </a>
+        </Flex>
       </Stack>
     </Section>
   );
