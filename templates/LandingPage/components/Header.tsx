@@ -1,5 +1,4 @@
-import { Box, Flex, Heading, Stack, Text } from "@chakra-ui/react";
-import React from "react";
+import { Flex, Heading, Stack, Text } from "@chakra-ui/react";
 import { Section } from "../../../components/Section";
 import {
   faDiscord,
