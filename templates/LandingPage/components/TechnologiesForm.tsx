@@ -1,4 +1,4 @@
-import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { ExternalLinkIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import {
   Button,
   Checkbox as ChakraCheckbox,
@@ -10,6 +10,7 @@ import {
   RadioGroup,
   Stack,
   Text,
+  Tooltip,
 } from "@chakra-ui/react";
 import React, {
   ComponentProps,
@@ -312,6 +313,30 @@ export const TechnologiesForm: React.FC = () => {
           </Stack>
 
           <Stack spacing="8" flexBasis="100%">
+            <Stack spacing="4">
+              <Heading
+                as="h3"
+                size="md"
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+              >
+                <span>Types</span>
+                <Tooltip
+                  placement="top"
+                  label="TypeScript is currently required."
+                  hasArrow
+                >
+                  <InfoOutlineIcon w={"16px"} h={"16px"} marginLeft="8px" />
+                </Tooltip>
+              </Heading>
+              <RadioGroup value="TypeScript" isDisabled>
+                <Stack spacing="3">
+                  <Radio value="TypeScript">TypeScript</Radio>
+                </Stack>
+              </RadioGroup>
+            </Stack>
+
             <Stack spacing="4">
               <Heading as="h3" size="md">
                 Formatting
