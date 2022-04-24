@@ -10,6 +10,7 @@ export const Footer: React.FC = () => {
       as="footer"
       boxProps={{
         alignItems: "left",
+        gap: "24px",
       }}
     >
       <Text align={["left", "center"]}>
