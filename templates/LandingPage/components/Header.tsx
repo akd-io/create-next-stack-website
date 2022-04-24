@@ -1,11 +1,6 @@
-import { Flex, Heading, Stack, Text } from "@chakra-ui/react";
+import { Heading, Stack, Text } from "@chakra-ui/react";
 import { Section } from "../../../components/Section";
-import {
-  faDiscord,
-  faGithub,
-  faTwitter,
-} from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { SocialIcons } from "../../../components/SocialIcons";
 
 export const Header = () => {
   return (
@@ -32,27 +27,7 @@ export const Header = () => {
             The ultimate starter kit for Next.js
           </Text>
         </Stack>
-
-        <Flex direction="row" alignItems="center" gap="10px">
-          <a
-            aria-label="GitHub Repository of Create Next Stack"
-            href="https://github.com/akd-io/create-next-stack"
-          >
-            <FontAwesomeIcon icon={faGithub} />
-          </a>
-          <a
-            aria-label="Community Discord"
-            href="https://discord.gg/7Ns5WwGjjZ"
-          >
-            <FontAwesomeIcon icon={faDiscord} />
-          </a>
-          <a
-            aria-label="Twitter profile of the creator of Create Next Stack"
-            href="https://twitter.com/akd_io"
-          >
-            <FontAwesomeIcon icon={faTwitter} />
-          </a>
-        </Flex>
+        <SocialIcons />
       </Stack>
     </Section>
   );
