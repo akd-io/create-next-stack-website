@@ -4,6 +4,7 @@ import {
   Checkbox as ChakraCheckbox,
   CheckboxGroup,
   Code,
+  Flex,
   Heading,
   Input,
   Radio as ChakraRadio,
@@ -133,6 +134,19 @@ const defaultFormData: FormData = {
 };
 const formDataKeys = objectToKeyToKeyMap(defaultFormData);
 
+const categoryLabels = {
+  projectName: "Project Name",
+  packageManager: "Package Manager",
+  styling: "Styling",
+  formStateManagement: "Form State Management",
+  language: "Language",
+  formatting: "Formatting",
+  componentLibraries: "Component Libraries",
+  animation: "Animation",
+  continuousIntegration: "Continuous Integration",
+  miscellaneous: "Miscellaneous",
+};
+
 export const TechnologiesForm: React.FC = () => {
   const { register, control, watch, setValue } = useForm<FormData>({
     defaultValues: defaultFormData,
@@ -216,7 +230,7 @@ export const TechnologiesForm: React.FC = () => {
           <Stack spacing="8" flexBasis="100%">
             <Stack spacing="4">
               <Heading as="h3" size="md">
-                Project name
+                {categoryLabels.projectName}
               </Heading>
               <Input
                 {...register(formDataKeys.projectName, {
@@ -226,7 +240,7 @@ export const TechnologiesForm: React.FC = () => {
             </Stack>
             <Stack spacing="4">
               <Heading as="h3" size="md">
-                Package manager
+                {categoryLabels.packageManager}
               </Heading>
               <Controller
                 name={formDataKeys.packageManager}
@@ -251,7 +265,7 @@ export const TechnologiesForm: React.FC = () => {
 
             <Stack spacing="4">
               <Heading as="h3" size="md">
-                Styling
+                {categoryLabels.styling}
               </Heading>
               <Controller
                 name={formDataKeys.stylingMethod}
@@ -286,7 +300,7 @@ export const TechnologiesForm: React.FC = () => {
 
             <Stack spacing="4">
               <Heading as="h3" size="md">
-                Form state management
+                {categoryLabels.formStateManagement}
               </Heading>
               <Controller
                 name={formDataKeys.formStateManagement}
@@ -321,25 +335,36 @@ export const TechnologiesForm: React.FC = () => {
                 flexDirection="row"
                 alignItems="center"
               >
-                <span>Types</span>
-                <Tooltip
-                  placement="top"
-                  label="TypeScript is currently required."
-                  hasArrow
-                >
-                  <InfoOutlineIcon w={"16px"} h={"16px"} marginLeft="8px" />
-                </Tooltip>
+                {categoryLabels.language}
               </Heading>
-              <RadioGroup value="TypeScript" isDisabled>
+              <RadioGroup value="TypeScript">
                 <Stack spacing="3">
                   <Radio value="TypeScript">TypeScript</Radio>
+                  <Radio value="JavaScript" isDisabled>
+                    <Tooltip
+                      placement="top"
+                      label="JavaScript is currently not supported."
+                      hasArrow
+                      shouldWrapChildren
+                    >
+                      <Flex direction="row">
+                        JavaScript
+                        <InfoOutlineIcon
+                          w={"16px"}
+                          h={"16px"}
+                          marginLeft="8px"
+                          alignSelf="center"
+                        />
+                      </Flex>
+                    </Tooltip>
+                  </Radio>
                 </Stack>
               </RadioGroup>
             </Stack>
 
             <Stack spacing="4">
               <Heading as="h3" size="md">
-                Formatting
+                {categoryLabels.formatting}
               </Heading>
               <Controller
                 name={formDataKeys.formatting}
@@ -378,7 +403,7 @@ export const TechnologiesForm: React.FC = () => {
 
             <Stack spacing="4">
               <Heading as="h3" size="md">
-                Component libraries
+                {categoryLabels.componentLibraries}
               </Heading>
               <Controller
                 name={formDataKeys.componentLibraries}
@@ -407,7 +432,30 @@ export const TechnologiesForm: React.FC = () => {
                           }
                         }}
                       >
-                        {options[optionKeys.chakra].label}
+                        {formData.stylingMethod === optionKeys.emotion ? (
+                          options[optionKeys.chakra].label
+                        ) : (
+                          <Tooltip
+                            placement="top"
+                            label={`${
+                              options[optionKeys.chakra].label
+                            } requires ${
+                              options[optionKeys.emotion].label
+                            }. Select it under ${categoryLabels.styling}.`}
+                            hasArrow
+                            shouldWrapChildren
+                          >
+                            <Flex direction="row">
+                              {options[optionKeys.chakra].label}
+                              <InfoOutlineIcon
+                                w={"16px"}
+                                h={"16px"}
+                                marginLeft="8px"
+                                alignSelf="center"
+                              />
+                            </Flex>
+                          </Tooltip>
+                        )}
                       </Checkbox>
                       <Checkbox
                         id={`checkbox-${optionKeys.materialUi}`}
@@ -423,7 +471,7 @@ export const TechnologiesForm: React.FC = () => {
 
             <Stack spacing="4">
               <Heading as="h3" size="md">
-                Animation
+                {categoryLabels.animation}
               </Heading>
               <Controller
                 name={formDataKeys.animationLibraries}
@@ -448,7 +496,7 @@ export const TechnologiesForm: React.FC = () => {
 
             <Stack spacing="4">
               <Heading as="h3" size="md">
-                Continuous integration
+                {categoryLabels.continuousIntegration}
               </Heading>
               <Controller
                 name={formDataKeys.continuousIntegrations}
@@ -473,7 +521,7 @@ export const TechnologiesForm: React.FC = () => {
 
             <Stack spacing="4">
               <Heading as="h3" size="md">
-                Miscellaneous
+                {categoryLabels.miscellaneous}
               </Heading>
               <Controller
                 name={formDataKeys.miscellaneousOptions}
