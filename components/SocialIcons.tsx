@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import {
-  faGithub,
   faDiscord,
+  faGithub,
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

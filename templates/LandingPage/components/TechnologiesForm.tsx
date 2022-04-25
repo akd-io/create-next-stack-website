@@ -1,4 +1,4 @@
-import { ExternalLinkIcon, InfoOutlineIcon } from "@chakra-ui/icons";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 import {
   Button,
   CheckboxGroup,
@@ -14,8 +14,8 @@ import { Anchor } from "../../../components/Anchor";
 import { Checkbox } from "../../../components/Checkbox";
 import { Radio } from "../../../components/Radio";
 import { objectToKeyToKeyMap } from "../../../utils/objectToKeyToKeyMap";
-import { WithInfoIconAndTooltip } from "./InfoIconTooltip";
 import { CommandModal } from "./CommandModal";
+import { WithInfoIconAndTooltip } from "./InfoIconTooltip";
 
 // TODO: Make use of Option when adding CIF
 /*
