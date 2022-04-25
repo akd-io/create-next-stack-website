@@ -422,8 +422,14 @@ export const TechnologiesForm: React.FC = () => {
                             </WithInfoIconAndTooltip>
                           )}
                         </Checkbox>
-                        <Checkbox value={optionKeys.materialUi}>
-                          {options[optionKeys.materialUi].label}
+                        <Checkbox value={optionKeys.materialUi} isDisabled>
+                          <WithInfoIconAndTooltip
+                            tooltip={`${
+                              options[optionKeys.materialUi].label
+                            } is currently disabled while we wait for React 18 support.`}
+                          >
+                            {options[optionKeys.materialUi].label}
+                          </WithInfoIconAndTooltip>
                         </Checkbox>
                       </Stack>
                     </CheckboxGroup>
