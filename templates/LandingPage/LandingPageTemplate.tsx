@@ -2,9 +2,9 @@ import { Box, Stack } from "@chakra-ui/react"
 import { css, Global } from "@emotion/react"
 import React, { ComponentProps, FC } from "react"
 import { Section } from "../../components/Section"
-import { DescriptionSection } from "./components/DescriptionSection"
+import { Description } from "./components/DescriptionSection"
 import { Footer } from "./components/Footer"
-import { Header } from "./components/Header"
+import { HeaderSection } from "./components/Header"
 import { TechnologiesForm } from "./components/TechnologiesForm"
 
 const globalStyles = css`
@@ -29,9 +29,11 @@ const LandingPageTemplate = () => {
     <>
       <Global styles={globalStyles} />
       <Stack spacing="16" align="center" py="16">
-        <Header />
+        <HeaderSection />
         <Stack as="main" spacing="16" align="center" width="100%">
-          <DescriptionSection />
+          <Section>
+            <Description />
+          </Section>
           <Section>
             <Card>
               <TechnologiesForm />
