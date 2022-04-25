@@ -146,6 +146,7 @@ export const TechnologiesForm: React.FC = () => {
 
   const stylingMethod = watch("stylingMethod")
   const formatting = watch("formatting")
+  const animationLibraries = watch("animationLibraries")
 
   const [isCommandModalShow, setIsModalShown] = React.useState(false)
   const [command, setCommand] = React.useState("")
@@ -400,25 +401,12 @@ export const TechnologiesForm: React.FC = () => {
                       <Stack spacing="3">
                         <Checkbox
                           value={optionKeys.chakra}
-                          isDisabled={stylingMethod !== optionKeys.emotion}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              if (
-                                !getValues("animationLibraries").includes(
-                                  optionKeys.framerMotion
-                                )
-                              ) {
-                                setValue("animationLibraries", [
-                                  ...getValues("animationLibraries"),
-                                  optionKeys.framerMotion,
-                                ])
-                              }
-                            }
-                          }}
+                          isDisabled={
+                            stylingMethod !== optionKeys.emotion ||
+                            !animationLibraries.includes("framerMotion")
+                          }
                         >
-                          {stylingMethod === optionKeys.emotion ? (
-                            options[optionKeys.chakra].label
-                          ) : (
+                          {stylingMethod !== optionKeys.emotion ? (
                             <WithInfoIconAndTooltip
                               tooltip={`${
                                 options[optionKeys.chakra].label
@@ -428,6 +416,18 @@ export const TechnologiesForm: React.FC = () => {
                             >
                               {options[optionKeys.chakra].label}
                             </WithInfoIconAndTooltip>
+                          ) : !animationLibraries.includes("framerMotion") ? (
+                            <WithInfoIconAndTooltip
+                              tooltip={`${
+                                options[optionKeys.chakra].label
+                              } requires ${
+                                options[optionKeys.framerMotion].label
+                              }. Select it under ${categoryLabels.animation}.`}
+                            >
+                              {options[optionKeys.chakra].label}
+                            </WithInfoIconAndTooltip>
+                          ) : (
+                            options[optionKeys.chakra].label
                           )}
                         </Checkbox>
                         <Checkbox value={optionKeys.materialUi} isDisabled>
@@ -455,14 +455,23 @@ export const TechnologiesForm: React.FC = () => {
                   render={({ field: { ref, ...rest } }) => (
                     <CheckboxGroup {...rest}>
                       <Stack spacing="3">
-                        {animationLibraries.map((animationLibrary) => (
-                          <Checkbox
-                            key={animationLibrary}
-                            value={animationLibrary}
-                          >
-                            {options[animationLibrary].label}
-                          </Checkbox>
-                        ))}
+                        <Checkbox
+                          key={optionKeys.framerMotion}
+                          value={optionKeys.framerMotion}
+                          onChange={(e) => {
+                            if (!e.target.checked) {
+                              setValue(
+                                "componentLibraries",
+                                getValues("componentLibraries").filter(
+                                  (componentLibrary) =>
+                                    componentLibrary !== optionKeys.chakra
+                                )
+                              )
+                            }
+                          }}
+                        >
+                          {options.framerMotion.label}
+                        </Checkbox>
                       </Stack>
                     </CheckboxGroup>
                   )}
