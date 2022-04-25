@@ -26,6 +26,8 @@ type Option = {
 };
 */
 
+const cssModulesValue = "css-modules"
+
 // TODO: Strengthen types using a constrained identity function
 const options = {
   yarn: { key: "yarn", value: "yarn", label: "Yarn" },
@@ -38,7 +40,7 @@ const options = {
   },
   cssModules: {
     key: "cssModules",
-    value: "css-modules",
+    value: cssModulesValue,
     label: "CSS Modules",
   },
   tailwindCss: {
@@ -50,6 +52,11 @@ const options = {
     key: "cssModulesWithSass",
     value: "css-modules-with-sass",
     label: "CSS Modules with Sass",
+  },
+  noStyling: {
+    key: "noStyling",
+    value: cssModulesValue,
+    label: "None",
   },
   reactHookForm: {
     key: "reactHookForm",
@@ -85,6 +92,7 @@ const stylingMethods = [
   optionKeys.tailwindCss,
   optionKeys.cssModules,
   optionKeys.cssModulesWithSass,
+  optionKeys.noStyling,
 ]
 const formStateManagementLibraries = [
   optionKeys.reactHookForm,
