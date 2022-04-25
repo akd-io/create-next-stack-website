@@ -86,7 +86,7 @@ const options = {
 const optionKeys = objectToKeyToKeyMap(options)
 
 const packageManagers = [optionKeys.yarn, optionKeys.npm]
-const stylingMethods = [
+const styling = [
   optionKeys.emotion,
   optionKeys.styledComponents,
   optionKeys.tailwindCss,
@@ -94,34 +94,31 @@ const stylingMethods = [
   optionKeys.cssModulesWithSass,
   optionKeys.noStyling,
 ]
-const formStateManagementLibraries = [
-  optionKeys.reactHookForm,
-  optionKeys.formik,
-]
+const formStateManagement = [optionKeys.reactHookForm, optionKeys.formik]
 const formatting = [optionKeys.prettier, optionKeys.formattingPreCommitHook]
 const componentLibraries = [optionKeys.chakra, optionKeys.materialUi]
-const animationLibraries = [optionKeys.framerMotion]
-const continuousIntegrations = [optionKeys.githubActions]
+const animation = [optionKeys.framerMotion]
+const continuousIntegration = [optionKeys.githubActions]
 
 type TechnologiesFormData = {
   projectName: string
   packageManager: typeof packageManagers[number]
-  stylingMethod: typeof stylingMethods[number]
-  formStateManagement: Array<typeof formStateManagementLibraries[number]>
+  styling: typeof styling[number]
+  formStateManagement: Array<typeof formStateManagement[number]>
   formatting: Array<typeof formatting[number]>
   componentLibraries: Array<typeof componentLibraries[number]>
-  animationLibraries: Array<typeof animationLibraries[number]>
-  continuousIntegrations: Array<typeof continuousIntegrations[number]>
+  animation: Array<typeof animation[number]>
+  continuousIntegration: Array<typeof continuousIntegration[number]>
 }
 const defaultFormData: TechnologiesFormData = {
   projectName: "my-app",
   packageManager: optionKeys.yarn,
-  stylingMethod: optionKeys.emotion,
+  styling: optionKeys.emotion,
   formStateManagement: [optionKeys.reactHookForm],
   formatting: [optionKeys.prettier, optionKeys.formattingPreCommitHook],
   componentLibraries: [optionKeys.chakra],
-  animationLibraries: [optionKeys.framerMotion],
-  continuousIntegrations: [optionKeys.githubActions],
+  animation: [optionKeys.framerMotion],
+  continuousIntegration: [optionKeys.githubActions],
 }
 const formDataKeys = objectToKeyToKeyMap(defaultFormData)
 
@@ -144,9 +141,9 @@ export const TechnologiesForm: React.FC = () => {
       defaultValues: defaultFormData,
     })
 
-  const stylingMethod = watch("stylingMethod")
+  const styling = watch("styling")
   const formatting = watch("formatting")
-  const animationLibraries = watch("animationLibraries")
+  const animation = watch("animation")
 
   const [isCommandModalShow, setIsModalShown] = React.useState(false)
   const [command, setCommand] = React.useState("")
@@ -158,7 +155,7 @@ export const TechnologiesForm: React.FC = () => {
       const args = ["npx", "create-next-stack@0.1.6"]
 
       args.push(`--package-manager=${options[formData.packageManager].value}`)
-      args.push(`--styling=${options[formData.stylingMethod].value}`)
+      args.push(`--styling=${options[formData.styling].value}`)
 
       const pushArgs = (selectedOptionKeys: Array<keyof typeof options>) => {
         selectedOptionKeys.forEach((optionKey) => {
@@ -168,8 +165,8 @@ export const TechnologiesForm: React.FC = () => {
       pushArgs(formData.formStateManagement)
       pushArgs(formData.formatting)
       pushArgs(formData.componentLibraries)
-      pushArgs(formData.animationLibraries)
-      pushArgs(formData.continuousIntegrations)
+      pushArgs(formData.animation)
+      pushArgs(formData.continuousIntegration)
 
       args.push(formData.projectName)
 
@@ -236,15 +233,15 @@ export const TechnologiesForm: React.FC = () => {
                   {categoryLabels.styling}
                 </Heading>
                 <Controller
-                  name={formDataKeys.stylingMethod}
+                  name={formDataKeys.styling}
                   control={control}
                   render={({ field: { ref, ...rest } }) => (
                     <RadioGroup {...rest}>
                       <Stack spacing="3">
-                        {stylingMethods.map((stylingMethod) => (
+                        {styling.map((styling) => (
                           <Radio
-                            key={stylingMethod}
-                            value={stylingMethod}
+                            key={styling}
+                            value={styling}
                             onChange={(e) => {
                               if (e.target.value !== optionKeys.emotion) {
                                 setValue(
@@ -256,7 +253,7 @@ export const TechnologiesForm: React.FC = () => {
                               }
                             }}
                           >
-                            {options[stylingMethod].label}
+                            {options[styling].label}
                           </Radio>
                         ))}
                       </Stack>
@@ -275,16 +272,14 @@ export const TechnologiesForm: React.FC = () => {
                   render={({ field: { ref, ...rest } }) => (
                     <CheckboxGroup {...rest}>
                       <Stack spacing="3">
-                        {formStateManagementLibraries.map(
-                          (formStateManagementLibrary) => (
-                            <Checkbox
-                              key={formStateManagementLibrary}
-                              value={formStateManagementLibrary}
-                            >
-                              {options[formStateManagementLibrary].label}
-                            </Checkbox>
-                          )
-                        )}
+                        {formStateManagement.map((formStateManagement) => (
+                          <Checkbox
+                            key={formStateManagement}
+                            value={formStateManagement}
+                          >
+                            {options[formStateManagement].label}
+                          </Checkbox>
+                        ))}
                       </Stack>
                     </CheckboxGroup>
                   )}
@@ -402,11 +397,11 @@ export const TechnologiesForm: React.FC = () => {
                         <Checkbox
                           value={optionKeys.chakra}
                           isDisabled={
-                            stylingMethod !== optionKeys.emotion ||
-                            !animationLibraries.includes("framerMotion")
+                            styling !== optionKeys.emotion ||
+                            !animation.includes("framerMotion")
                           }
                         >
-                          {stylingMethod !== optionKeys.emotion ? (
+                          {styling !== optionKeys.emotion ? (
                             <WithInfoIconAndTooltip
                               tooltip={`${
                                 options[optionKeys.chakra].label
@@ -416,7 +411,7 @@ export const TechnologiesForm: React.FC = () => {
                             >
                               {options[optionKeys.chakra].label}
                             </WithInfoIconAndTooltip>
-                          ) : !animationLibraries.includes("framerMotion") ? (
+                          ) : !animation.includes("framerMotion") ? (
                             <WithInfoIconAndTooltip
                               tooltip={`${
                                 options[optionKeys.chakra].label
@@ -450,7 +445,7 @@ export const TechnologiesForm: React.FC = () => {
                   {categoryLabels.animation}
                 </Heading>
                 <Controller
-                  name={formDataKeys.animationLibraries}
+                  name={formDataKeys.animation}
                   control={control}
                   render={({ field: { ref, ...rest } }) => (
                     <CheckboxGroup {...rest}>
@@ -483,12 +478,12 @@ export const TechnologiesForm: React.FC = () => {
                   {categoryLabels.continuousIntegration}
                 </Heading>
                 <Controller
-                  name={formDataKeys.continuousIntegrations}
+                  name={formDataKeys.continuousIntegration}
                   control={control}
                   render={({ field: { ref, ...rest } }) => (
                     <CheckboxGroup {...rest}>
                       <Stack spacing="3">
-                        {continuousIntegrations.map((continuousIntegration) => (
+                        {continuousIntegration.map((continuousIntegration) => (
                           <Checkbox
                             key={continuousIntegration}
                             value={continuousIntegration}
