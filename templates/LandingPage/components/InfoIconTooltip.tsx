@@ -1,11 +1,11 @@
-import { InfoOutlineIcon } from "@chakra-ui/icons";
-import { Flex, Tooltip } from "@chakra-ui/react";
-import { FC } from "react";
+import { InfoOutlineIcon } from "@chakra-ui/icons"
+import { Flex, Tooltip } from "@chakra-ui/react"
+import { FC } from "react"
 
 type WithInfoIconAndTooltipProps = {
-  tooltip: string;
-  children: React.ReactNode;
-};
+  tooltip: string
+  children: React.ReactNode
+}
 export const WithInfoIconAndTooltip: FC<WithInfoIconAndTooltipProps> = ({
   tooltip,
   children,
@@ -22,5 +22,5 @@ export const WithInfoIconAndTooltip: FC<WithInfoIconAndTooltipProps> = ({
         />
       </Flex>
     </Tooltip>
-  );
-};
+  )
+}

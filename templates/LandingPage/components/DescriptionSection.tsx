@@ -1,8 +1,8 @@
-import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { Stack, Text } from "@chakra-ui/react";
-import React from "react";
-import { Anchor } from "../../../components/Anchor";
-import { Section } from "../../../components/Section";
+import { ExternalLinkIcon } from "@chakra-ui/icons"
+import { Stack, Text } from "@chakra-ui/react"
+import React from "react"
+import { Anchor } from "../../../components/Anchor"
+import { Section } from "../../../components/Section"
 
 export const DescriptionSection = () => {
   return (
@@ -30,5 +30,5 @@ export const DescriptionSection = () => {
         </Text>
       </Stack>
     </Section>
-  );
-};
+  )
+}

@@ -1,4 +1,4 @@
-import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { ExternalLinkIcon } from "@chakra-ui/icons"
 import {
   Button,
   CheckboxGroup,
@@ -7,15 +7,15 @@ import {
   RadioGroup,
   Stack,
   Text,
-} from "@chakra-ui/react";
-import React from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { Anchor } from "../../../components/Anchor";
-import { Checkbox } from "../../../components/Checkbox";
-import { Radio } from "../../../components/Radio";
-import { objectToKeyToKeyMap } from "../../../utils/objectToKeyToKeyMap";
-import { CommandModal } from "./CommandModal";
-import { WithInfoIconAndTooltip } from "./InfoIconTooltip";
+} from "@chakra-ui/react"
+import React from "react"
+import { Controller, SubmitHandler, useForm } from "react-hook-form"
+import { Anchor } from "../../../components/Anchor"
+import { Checkbox } from "../../../components/Checkbox"
+import { Radio } from "../../../components/Radio"
+import { objectToKeyToKeyMap } from "../../../utils/objectToKeyToKeyMap"
+import { CommandModal } from "./CommandModal"
+import { WithInfoIconAndTooltip } from "./InfoIconTooltip"
 
 // TODO: Make use of Option when adding CIF
 /*
@@ -74,38 +74,38 @@ const options = {
     value: "formatting-pre-commit-hook",
     label: "Formatting Pre-Commit Hook",
   },
-} as const;
-const optionKeys = objectToKeyToKeyMap(options);
+} as const
+const optionKeys = objectToKeyToKeyMap(options)
 
-const packageManagers = [optionKeys.yarn, optionKeys.npm];
+const packageManagers = [optionKeys.yarn, optionKeys.npm]
 const stylingMethods = [
   optionKeys.emotion,
   optionKeys.styledComponents,
   optionKeys.tailwindCss,
   optionKeys.cssModules,
   optionKeys.cssModulesWithSass,
-];
+]
 const formStateManagementLibraries = [
   optionKeys.reactHookForm,
   optionKeys.formik,
-];
-const formattingLibraries = [optionKeys.prettier];
-const componentLibraries = [optionKeys.chakra, optionKeys.materialUi];
-const animationLibraries = [optionKeys.framerMotion];
-const continuousIntegrations = [optionKeys.githubActions];
-const miscellaneousOptions = [optionKeys.formattingPreCommitHook];
+]
+const formattingLibraries = [optionKeys.prettier]
+const componentLibraries = [optionKeys.chakra, optionKeys.materialUi]
+const animationLibraries = [optionKeys.framerMotion]
+const continuousIntegrations = [optionKeys.githubActions]
+const miscellaneousOptions = [optionKeys.formattingPreCommitHook]
 
 type TechnologiesFormData = {
-  projectName: string;
-  packageManager: typeof packageManagers[number];
-  stylingMethod: typeof stylingMethods[number];
-  formStateManagement: Array<typeof formStateManagementLibraries[number]>;
-  formatting: Array<typeof formattingLibraries[number]>;
-  componentLibraries: Array<typeof componentLibraries[number]>;
-  animationLibraries: Array<typeof animationLibraries[number]>;
-  continuousIntegrations: Array<typeof continuousIntegrations[number]>;
-  miscellaneousOptions: Array<typeof miscellaneousOptions[number]>;
-};
+  projectName: string
+  packageManager: typeof packageManagers[number]
+  stylingMethod: typeof stylingMethods[number]
+  formStateManagement: Array<typeof formStateManagementLibraries[number]>
+  formatting: Array<typeof formattingLibraries[number]>
+  componentLibraries: Array<typeof componentLibraries[number]>
+  animationLibraries: Array<typeof animationLibraries[number]>
+  continuousIntegrations: Array<typeof continuousIntegrations[number]>
+  miscellaneousOptions: Array<typeof miscellaneousOptions[number]>
+}
 const defaultFormData: TechnologiesFormData = {
   projectName: "my-app",
   packageManager: optionKeys.yarn,
@@ -116,8 +116,8 @@ const defaultFormData: TechnologiesFormData = {
   animationLibraries: [optionKeys.framerMotion],
   continuousIntegrations: [optionKeys.githubActions],
   miscellaneousOptions: [optionKeys.formattingPreCommitHook],
-};
-const formDataKeys = objectToKeyToKeyMap(defaultFormData);
+}
+const formDataKeys = objectToKeyToKeyMap(defaultFormData)
 
 const categoryLabels = {
   projectName: "Project Name",
@@ -130,48 +130,48 @@ const categoryLabels = {
   animation: "Animation",
   continuousIntegration: "Continuous Integration",
   miscellaneous: "Miscellaneous",
-};
+}
 
 export const TechnologiesForm: React.FC = () => {
   const { register, control, setValue, getValues, watch, handleSubmit } =
     useForm<TechnologiesFormData>({
       defaultValues: defaultFormData,
-    });
+    })
 
-  const stylingMethod = watch("stylingMethod");
+  const stylingMethod = watch("stylingMethod")
 
-  const [isCommandModalShow, setIsModalShown] = React.useState(false);
-  const [command, setCommand] = React.useState("");
+  const [isCommandModalShow, setIsModalShown] = React.useState(false)
+  const [command, setCommand] = React.useState("")
 
   const handleSuccessfulSubmit: SubmitHandler<TechnologiesFormData> = (
     formData
   ) => {
     const calculateCommand = (formData: TechnologiesFormData) => {
-      const args = ["npx", "create-next-stack@0.1.6"];
+      const args = ["npx", "create-next-stack@0.1.6"]
 
-      args.push(`--package-manager=${options[formData.packageManager].value}`);
-      args.push(`--styling=${options[formData.stylingMethod].value}`);
+      args.push(`--package-manager=${options[formData.packageManager].value}`)
+      args.push(`--styling=${options[formData.stylingMethod].value}`)
 
       const pushArgs = (selectedOptionKeys: Array<keyof typeof options>) => {
         selectedOptionKeys.forEach((optionKey) => {
-          args.push(`--${options[optionKey].value}`);
-        });
-      };
-      pushArgs(formData.formStateManagement);
-      pushArgs(formData.formatting);
-      pushArgs(formData.componentLibraries);
-      pushArgs(formData.animationLibraries);
-      pushArgs(formData.continuousIntegrations);
-      pushArgs(formData.miscellaneousOptions);
+          args.push(`--${options[optionKey].value}`)
+        })
+      }
+      pushArgs(formData.formStateManagement)
+      pushArgs(formData.formatting)
+      pushArgs(formData.componentLibraries)
+      pushArgs(formData.animationLibraries)
+      pushArgs(formData.continuousIntegrations)
+      pushArgs(formData.miscellaneousOptions)
 
-      args.push(formData.projectName);
+      args.push(formData.projectName)
 
-      return args.join(" ");
-    };
+      return args.join(" ")
+    }
 
-    setCommand(calculateCommand(formData));
-    setIsModalShown(true);
-  };
+    setCommand(calculateCommand(formData))
+    setIsModalShown(true)
+  }
 
   return (
     <>
@@ -179,7 +179,7 @@ export const TechnologiesForm: React.FC = () => {
         isOpen={isCommandModalShow}
         command={command}
         onClose={() => {
-          setIsModalShown(false);
+          setIsModalShown(false)
         }}
       />
       <form onSubmit={handleSubmit(handleSuccessfulSubmit)}>
@@ -245,7 +245,7 @@ export const TechnologiesForm: React.FC = () => {
                                   getValues("componentLibraries").filter(
                                     (value) => value !== optionKeys.chakra
                                   )
-                                );
+                                )
                               }
                             }}
                           >
@@ -334,7 +334,7 @@ export const TechnologiesForm: React.FC = () => {
                                     miscellaneousOption !==
                                     optionKeys.formattingPreCommitHook
                                 )
-                              );
+                              )
                             }
                           }}
                         >
@@ -369,7 +369,7 @@ export const TechnologiesForm: React.FC = () => {
                                 setValue("animationLibraries", [
                                   ...getValues("animationLibraries"),
                                   optionKeys.framerMotion,
-                                ]);
+                                ])
                               }
                             }
                           }}
@@ -467,7 +467,7 @@ export const TechnologiesForm: React.FC = () => {
                               setValue("formatting", [
                                 ...getValues("formatting"),
                                 optionKeys.prettier,
-                              ]);
+                              ])
                             }
                           }}
                         >
@@ -499,5 +499,5 @@ export const TechnologiesForm: React.FC = () => {
         </Stack>
       </form>
     </>
-  );
-};
+  )
+}

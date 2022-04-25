@@ -1,4 +1,4 @@
-import { CheckIcon } from "@chakra-ui/icons";
+import { CheckIcon } from "@chakra-ui/icons"
 import {
   Button,
   Code,
@@ -11,34 +11,34 @@ import {
   ModalOverlay,
   Stack,
   Text,
-} from "@chakra-ui/react";
-import React, { ComponentProps, FC, useEffect, useState } from "react";
+} from "@chakra-ui/react"
+import React, { ComponentProps, FC, useEffect, useState } from "react"
 
 type PopupProps = Omit<ComponentProps<typeof Modal>, "children"> & {
-  command: string;
-};
+  command: string
+}
 export const CommandModal: FC<PopupProps> = ({
   command,
   isOpen,
   onClose,
   ...rest
 }) => {
-  const [hasCopied, setHasCopied] = useState(false);
+  const [hasCopied, setHasCopied] = useState(false)
 
   useEffect(() => {
-    setHasCopied(false);
-  }, [isOpen]);
+    setHasCopied(false)
+  }, [isOpen])
 
-  const [copyFailed, setCopyFailed] = useState(false);
+  const [copyFailed, setCopyFailed] = useState(false)
 
   const handleCopyClick = async () => {
     try {
-      await navigator.clipboard.writeText(command);
-      setHasCopied(true);
+      await navigator.clipboard.writeText(command)
+      setHasCopied(true)
     } catch (error) {
-      setCopyFailed(true);
+      setCopyFailed(true)
     }
-  };
+  }
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} {...rest}>
@@ -73,5 +73,5 @@ export const CommandModal: FC<PopupProps> = ({
         </ModalFooter>
       </ModalContent>
     </Modal>
-  );
-};
+  )
+}
