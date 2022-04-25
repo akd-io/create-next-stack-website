@@ -2,21 +2,20 @@ import { ExternalLinkIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import {
   Button,
   CheckboxGroup,
-  Code,
-  Flex,
   Heading,
   Input,
   RadioGroup,
   Stack,
   Text,
-  Tooltip,
 } from "@chakra-ui/react";
-import React, { useCallback, useEffect, useState } from "react";
+import React from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Anchor } from "../../../components/Anchor";
-import { Checkbox } from "../../../components/CheckBox";
+import { Checkbox } from "../../../components/Checkbox";
 import { Radio } from "../../../components/Radio";
 import { objectToKeyToKeyMap } from "../../../utils/objectToKeyToKeyMap";
+import { WithInfoIconAndTooltip } from "./InfoIconTooltip";
+import { CommandModal } from "./CommandModal";
 
 // TODO: Make use of Option when adding CIF
 /*
@@ -96,7 +95,7 @@ const animationLibraries = [optionKeys.framerMotion];
 const continuousIntegrations = [optionKeys.githubActions];
 const miscellaneousOptions = [optionKeys.formattingPreCommitHook];
 
-type FormData = {
+type TechnologiesFormData = {
   projectName: string;
   packageManager: typeof packageManagers[number];
   stylingMethod: typeof stylingMethods[number];
@@ -107,7 +106,7 @@ type FormData = {
   continuousIntegrations: Array<typeof continuousIntegrations[number]>;
   miscellaneousOptions: Array<typeof miscellaneousOptions[number]>;
 };
-const defaultFormData: FormData = {
+const defaultFormData: TechnologiesFormData = {
   projectName: "my-app",
   packageManager: optionKeys.yarn,
   stylingMethod: optionKeys.emotion,
@@ -134,433 +133,371 @@ const categoryLabels = {
 };
 
 export const TechnologiesForm: React.FC = () => {
-  const { register, control, watch, setValue } = useForm<FormData>({
-    defaultValues: defaultFormData,
-  });
-  const formData = watch();
+  const { register, control, setValue, getValues, watch, handleSubmit } =
+    useForm<TechnologiesFormData>({
+      defaultValues: defaultFormData,
+    });
 
-  const [output, setOutput] = useState<string>("");
+  const stylingMethod = watch("stylingMethod");
 
-  const updateCommand: SubmitHandler<FormData> = useCallback((formData) => {
-    const args = ["npx", "create-next-stack@0.1.6"];
+  const [isCommandModalShow, setIsModalShown] = React.useState(false);
+  const [command, setCommand] = React.useState("");
 
-    // Package manager
-    args.push(`--package-manager=${options[formData.packageManager].value}`);
+  const handleSuccessfulSubmit: SubmitHandler<TechnologiesFormData> = (
+    formData
+  ) => {
+    const calculateCommand = (formData: TechnologiesFormData) => {
+      const args = ["npx", "create-next-stack@0.1.6"];
 
-    // Styling method
-    args.push(`--styling=${options[formData.stylingMethod].value}`);
+      args.push(`--package-manager=${options[formData.packageManager].value}`);
+      args.push(`--styling=${options[formData.stylingMethod].value}`);
 
-    // Form State Management
-    if (formData.formStateManagement.includes(optionKeys.reactHookForm)) {
-      args.push("--react-hook-form");
-    }
-    if (formData.formStateManagement.includes(optionKeys.formik)) {
-      args.push("--formik");
-    }
+      const pushArgs = (selectedOptionKeys: Array<keyof typeof options>) => {
+        selectedOptionKeys.forEach((optionKey) => {
+          args.push(`--${options[optionKey].value}`);
+        });
+      };
+      pushArgs(formData.formStateManagement);
+      pushArgs(formData.formatting);
+      pushArgs(formData.componentLibraries);
+      pushArgs(formData.animationLibraries);
+      pushArgs(formData.continuousIntegrations);
+      pushArgs(formData.miscellaneousOptions);
 
-    // Formatting
-    if (formData.formatting.includes(optionKeys.prettier)) {
-      args.push("--prettier");
-    }
+      args.push(formData.projectName);
 
-    // Component Libraries
-    if (formData.componentLibraries.includes(optionKeys.chakra)) {
-      args.push("--chakra");
-    }
-    if (formData.componentLibraries.includes(optionKeys.materialUi)) {
-      args.push("--material-ui");
-    }
+      return args.join(" ");
+    };
 
-    // Animation Libraries
-    if (formData.animationLibraries.includes(optionKeys.framerMotion)) {
-      args.push("--framer-motion");
-    }
-
-    // Continuous Integrations
-    if (formData.continuousIntegrations.includes(optionKeys.githubActions)) {
-      args.push("--github-actions");
-    }
-
-    // Miscellaneous Options
-    if (
-      formData.miscellaneousOptions.includes(optionKeys.formattingPreCommitHook)
-    ) {
-      args.push("--formatting-pre-commit-hook");
-    }
-
-    args.push(formData.projectName);
-
-    setOutput(args.join(" "));
-  }, []);
-
-  useEffect(() => {
-    updateCommand(formData);
-  }, [updateCommand, formData]);
-
-  const handleCopyClick = useCallback(async () => {
-    await navigator.clipboard.writeText(output);
-    // TODO: Add a success popup
-  }, [output]);
+    setCommand(calculateCommand(formData));
+    setIsModalShown(true);
+  };
 
   return (
-    <form>
-      <Heading as="h2" size="lg" marginBottom="6">
-        Pick your technologies
-      </Heading>
+    <>
+      <CommandModal
+        isOpen={isCommandModalShow}
+        command={command}
+        onClose={() => {
+          setIsModalShown(false);
+        }}
+      />
+      <form onSubmit={handleSubmit(handleSuccessfulSubmit)}>
+        <Heading as="h2" size="lg" marginBottom="6">
+          Pick your technologies
+        </Heading>
 
-      <Stack spacing="16">
-        <Stack
-          spacing={["8", "8", "16"]}
-          direction={["column", "column", "row"]}
-        >
-          <Stack spacing="8" flexBasis="100%">
-            <Stack spacing="4">
-              <Heading as="h3" size="md">
-                {categoryLabels.projectName}
-              </Heading>
-              <Input
-                {...register(formDataKeys.projectName, {
-                  pattern: /^[a-z0-9-]+$/,
-                })}
-              />
-            </Stack>
-            <Stack spacing="4">
-              <Heading as="h3" size="md">
-                {categoryLabels.packageManager}
-              </Heading>
-              <Controller
-                name={formDataKeys.packageManager}
-                control={control}
-                render={({ field: { ref, ...rest } }) => (
-                  <RadioGroup {...rest}>
-                    <Stack spacing="3">
-                      {packageManagers.map((packageManager) => (
-                        <Radio
-                          key={packageManager}
-                          id={`radio-${packageManager}`}
-                          value={packageManager}
-                        >
-                          {options[packageManager].label}
-                        </Radio>
-                      ))}
-                    </Stack>
-                  </RadioGroup>
-                )}
-              />
+        <Stack spacing="16">
+          <Stack
+            spacing={["8", "8", "16"]}
+            direction={["column", "column", "row"]}
+          >
+            <Stack spacing="8" flexBasis="100%">
+              <Stack spacing="4">
+                <Heading as="h3" size="md">
+                  {categoryLabels.projectName}
+                </Heading>
+                <Input
+                  {...register(formDataKeys.projectName, {
+                    pattern: /^[a-z0-9-]+$/,
+                  })}
+                />
+              </Stack>
+              <Stack spacing="4">
+                <Heading as="h3" size="md">
+                  {categoryLabels.packageManager}
+                </Heading>
+                <Controller
+                  name={formDataKeys.packageManager}
+                  control={control}
+                  render={({ field: { ref, ...rest } }) => (
+                    <RadioGroup {...rest}>
+                      <Stack spacing="3">
+                        {packageManagers.map((packageManager) => (
+                          <Radio key={packageManager} value={packageManager}>
+                            {options[packageManager].label}
+                          </Radio>
+                        ))}
+                      </Stack>
+                    </RadioGroup>
+                  )}
+                />
+              </Stack>
+
+              <Stack spacing="4">
+                <Heading as="h3" size="md">
+                  {categoryLabels.styling}
+                </Heading>
+                <Controller
+                  name={formDataKeys.stylingMethod}
+                  control={control}
+                  render={({ field: { ref, ...rest } }) => (
+                    <RadioGroup {...rest}>
+                      <Stack spacing="3">
+                        {stylingMethods.map((stylingMethod) => (
+                          <Radio
+                            key={stylingMethod}
+                            value={stylingMethod}
+                            onChange={(e) => {
+                              if (e.target.value !== optionKeys.emotion) {
+                                setValue(
+                                  "componentLibraries",
+                                  getValues("componentLibraries").filter(
+                                    (value) => value !== optionKeys.chakra
+                                  )
+                                );
+                              }
+                            }}
+                          >
+                            {options[stylingMethod].label}
+                          </Radio>
+                        ))}
+                      </Stack>
+                    </RadioGroup>
+                  )}
+                />
+              </Stack>
+
+              <Stack spacing="4">
+                <Heading as="h3" size="md">
+                  {categoryLabels.formStateManagement}
+                </Heading>
+                <Controller
+                  name={formDataKeys.formStateManagement}
+                  control={control}
+                  render={({ field: { ref, ...rest } }) => (
+                    <CheckboxGroup {...rest}>
+                      <Stack spacing="3">
+                        {formStateManagementLibraries.map(
+                          (formStateManagementLibrary) => (
+                            <Checkbox
+                              key={formStateManagementLibrary}
+                              value={formStateManagementLibrary}
+                            >
+                              {options[formStateManagementLibrary].label}
+                            </Checkbox>
+                          )
+                        )}
+                      </Stack>
+                    </CheckboxGroup>
+                  )}
+                />
+              </Stack>
             </Stack>
 
-            <Stack spacing="4">
-              <Heading as="h3" size="md">
-                {categoryLabels.styling}
-              </Heading>
-              <Controller
-                name={formDataKeys.stylingMethod}
-                control={control}
-                render={({ field: { ref, ...rest } }) => (
-                  <RadioGroup {...rest}>
-                    <Stack spacing="3">
-                      {stylingMethods.map((stylingMethod) => (
-                        <Radio
-                          key={stylingMethod}
-                          id={`radio-${stylingMethod}`}
-                          value={stylingMethod}
+            <Stack spacing="8" flexBasis="100%">
+              <Stack spacing="4">
+                <Heading
+                  as="h3"
+                  size="md"
+                  display="flex"
+                  flexDirection="row"
+                  alignItems="center"
+                >
+                  {categoryLabels.language}
+                </Heading>
+                <RadioGroup value="TypeScript">
+                  <Stack spacing="3">
+                    <Radio value="TypeScript">TypeScript</Radio>
+                    <Radio value="JavaScript" isDisabled>
+                      <WithInfoIconAndTooltip tooltip="JavaScript is currently not supported.">
+                        JavaScript
+                      </WithInfoIconAndTooltip>
+                    </Radio>
+                  </Stack>
+                </RadioGroup>
+              </Stack>
+
+              <Stack spacing="4">
+                <Heading as="h3" size="md">
+                  {categoryLabels.formatting}
+                </Heading>
+                <Controller
+                  name={formDataKeys.formatting}
+                  control={control}
+                  render={({ field: { ref, ...rest } }) => (
+                    <CheckboxGroup {...rest}>
+                      <Stack spacing="3">
+                        <Checkbox
+                          value={optionKeys.prettier}
                           onChange={(e) => {
-                            if (e.target.value !== optionKeys.emotion) {
+                            if (
+                              !e.target.checked &&
+                              getValues("miscellaneousOptions").includes(
+                                optionKeys.formattingPreCommitHook
+                              )
+                            ) {
                               setValue(
-                                "componentLibraries",
-                                formData.componentLibraries.filter(
-                                  (value) => value !== optionKeys.chakra
+                                "miscellaneousOptions",
+                                getValues("miscellaneousOptions").filter(
+                                  (miscellaneousOption) =>
+                                    miscellaneousOption !==
+                                    optionKeys.formattingPreCommitHook
                                 )
                               );
                             }
                           }}
                         >
-                          {options[stylingMethod].label}
-                        </Radio>
-                      ))}
-                    </Stack>
-                  </RadioGroup>
-                )}
-              />
-            </Stack>
+                          {options[optionKeys.prettier].label}
+                        </Checkbox>
+                      </Stack>
+                    </CheckboxGroup>
+                  )}
+                />
+              </Stack>
 
-            <Stack spacing="4">
-              <Heading as="h3" size="md">
-                {categoryLabels.formStateManagement}
-              </Heading>
-              <Controller
-                name={formDataKeys.formStateManagement}
-                control={control}
-                render={({ field: { ref, ...rest } }) => (
-                  <CheckboxGroup {...rest}>
-                    <Stack spacing="3">
-                      {formStateManagementLibraries.map(
-                        (formStateManagementLibrary) => (
+              <Stack spacing="4">
+                <Heading as="h3" size="md">
+                  {categoryLabels.componentLibraries}
+                </Heading>
+                <Controller
+                  name={formDataKeys.componentLibraries}
+                  control={control}
+                  render={({ field: { ref, ...rest } }) => (
+                    <CheckboxGroup {...rest}>
+                      <Stack spacing="3">
+                        <Checkbox
+                          value={optionKeys.chakra}
+                          isDisabled={stylingMethod !== optionKeys.emotion}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              if (
+                                !getValues("animationLibraries").includes(
+                                  optionKeys.framerMotion
+                                )
+                              ) {
+                                setValue("animationLibraries", [
+                                  ...getValues("animationLibraries"),
+                                  optionKeys.framerMotion,
+                                ]);
+                              }
+                            }
+                          }}
+                        >
+                          {stylingMethod === optionKeys.emotion ? (
+                            options[optionKeys.chakra].label
+                          ) : (
+                            <WithInfoIconAndTooltip
+                              tooltip={`${
+                                options[optionKeys.chakra].label
+                              } requires ${
+                                options[optionKeys.emotion].label
+                              }. Select it under ${categoryLabels.styling}.`}
+                            >
+                              {options[optionKeys.chakra].label}
+                            </WithInfoIconAndTooltip>
+                          )}
+                        </Checkbox>
+                        <Checkbox value={optionKeys.materialUi}>
+                          {options[optionKeys.materialUi].label}
+                        </Checkbox>
+                      </Stack>
+                    </CheckboxGroup>
+                  )}
+                />
+              </Stack>
+
+              <Stack spacing="4">
+                <Heading as="h3" size="md">
+                  {categoryLabels.animation}
+                </Heading>
+                <Controller
+                  name={formDataKeys.animationLibraries}
+                  control={control}
+                  render={({ field: { ref, ...rest } }) => (
+                    <CheckboxGroup {...rest}>
+                      <Stack spacing="3">
+                        {animationLibraries.map((animationLibrary) => (
                           <Checkbox
-                            key={formStateManagementLibrary}
-                            id={`checkbox-${formStateManagementLibrary}`}
-                            value={formStateManagementLibrary}
+                            key={animationLibrary}
+                            value={animationLibrary}
                           >
-                            {options[formStateManagementLibrary].label}
+                            {options[animationLibrary].label}
                           </Checkbox>
-                        )
-                      )}
-                    </Stack>
-                  </CheckboxGroup>
-                )}
-              />
-            </Stack>
-          </Stack>
+                        ))}
+                      </Stack>
+                    </CheckboxGroup>
+                  )}
+                />
+              </Stack>
 
-          <Stack spacing="8" flexBasis="100%">
-            <Stack spacing="4">
-              <Heading
-                as="h3"
-                size="md"
-                display="flex"
-                flexDirection="row"
-                alignItems="center"
-              >
-                {categoryLabels.language}
-              </Heading>
-              <RadioGroup value="TypeScript">
-                <Stack spacing="3">
-                  <Radio value="TypeScript">TypeScript</Radio>
-                  <Radio value="JavaScript" isDisabled>
-                    <Tooltip
-                      placement="top"
-                      label="JavaScript is currently not supported."
-                      hasArrow
-                      shouldWrapChildren
-                    >
-                      <Flex direction="row">
-                        JavaScript
-                        <InfoOutlineIcon
-                          w={"16px"}
-                          h={"16px"}
-                          marginLeft="8px"
-                          alignSelf="center"
-                        />
-                      </Flex>
-                    </Tooltip>
-                  </Radio>
-                </Stack>
-              </RadioGroup>
-            </Stack>
+              <Stack spacing="4">
+                <Heading as="h3" size="md">
+                  {categoryLabels.continuousIntegration}
+                </Heading>
+                <Controller
+                  name={formDataKeys.continuousIntegrations}
+                  control={control}
+                  render={({ field: { ref, ...rest } }) => (
+                    <CheckboxGroup {...rest}>
+                      <Stack spacing="3">
+                        {continuousIntegrations.map((continuousIntegration) => (
+                          <Checkbox
+                            key={continuousIntegration}
+                            value={continuousIntegration}
+                          >
+                            {options[continuousIntegration].label}
+                          </Checkbox>
+                        ))}
+                      </Stack>
+                    </CheckboxGroup>
+                  )}
+                />
+              </Stack>
 
-            <Stack spacing="4">
-              <Heading as="h3" size="md">
-                {categoryLabels.formatting}
-              </Heading>
-              <Controller
-                name={formDataKeys.formatting}
-                control={control}
-                render={({ field: { ref, ...rest } }) => (
-                  <CheckboxGroup {...rest}>
-                    <Stack spacing="3">
-                      <Checkbox
-                        id={`checkbox-${optionKeys.prettier}`}
-                        value={optionKeys.prettier}
-                        onChange={(e) => {
-                          if (
-                            !e.target.checked &&
-                            formData.miscellaneousOptions.includes(
-                              optionKeys.formattingPreCommitHook
-                            )
-                          ) {
-                            setValue(
-                              "miscellaneousOptions",
-                              formData.miscellaneousOptions.filter(
-                                (miscellaneousOption) =>
-                                  miscellaneousOption !==
-                                  optionKeys.formattingPreCommitHook
-                              )
-                            );
-                          }
-                        }}
-                      >
-                        {options[optionKeys.prettier].label}
-                      </Checkbox>
-                    </Stack>
-                  </CheckboxGroup>
-                )}
-              />
-            </Stack>
-
-            <Stack spacing="4">
-              <Heading as="h3" size="md">
-                {categoryLabels.componentLibraries}
-              </Heading>
-              <Controller
-                name={formDataKeys.componentLibraries}
-                control={control}
-                render={({ field: { ref, ...rest } }) => (
-                  <CheckboxGroup {...rest}>
-                    <Stack spacing="3">
-                      <Checkbox
-                        id={`checkbox-${optionKeys.chakra}`}
-                        value={optionKeys.chakra}
-                        isDisabled={
-                          formData.stylingMethod !== optionKeys.emotion
-                        }
-                        onChange={(e) => {
-                          if (e.target.checked) {
+              <Stack spacing="4">
+                <Heading as="h3" size="md">
+                  {categoryLabels.miscellaneous}
+                </Heading>
+                <Controller
+                  name={formDataKeys.miscellaneousOptions}
+                  control={control}
+                  render={({ field: { ref, ...rest } }) => (
+                    <CheckboxGroup {...rest}>
+                      <Stack spacing="3">
+                        <Checkbox
+                          value={optionKeys.formattingPreCommitHook}
+                          onChange={(e) => {
                             if (
-                              !formData.animationLibraries.includes(
-                                optionKeys.framerMotion
+                              e.target.checked &&
+                              !getValues("formatting").includes(
+                                optionKeys.prettier
                               )
                             ) {
-                              setValue("animationLibraries", [
-                                ...formData.animationLibraries,
-                                optionKeys.framerMotion,
+                              setValue("formatting", [
+                                ...getValues("formatting"),
+                                optionKeys.prettier,
                               ]);
                             }
-                          }
-                        }}
-                      >
-                        {formData.stylingMethod === optionKeys.emotion ? (
-                          options[optionKeys.chakra].label
-                        ) : (
-                          <Tooltip
-                            placement="top"
-                            label={`${
-                              options[optionKeys.chakra].label
-                            } requires ${
-                              options[optionKeys.emotion].label
-                            }. Select it under ${categoryLabels.styling}.`}
-                            hasArrow
-                            shouldWrapChildren
-                          >
-                            <Flex direction="row">
-                              {options[optionKeys.chakra].label}
-                              <InfoOutlineIcon
-                                w={"16px"}
-                                h={"16px"}
-                                marginLeft="8px"
-                                alignSelf="center"
-                              />
-                            </Flex>
-                          </Tooltip>
-                        )}
-                      </Checkbox>
-                      <Checkbox
-                        id={`checkbox-${optionKeys.materialUi}`}
-                        value={optionKeys.materialUi}
-                      >
-                        {options[optionKeys.materialUi].label}
-                      </Checkbox>
-                    </Stack>
-                  </CheckboxGroup>
-                )}
-              />
-            </Stack>
-
-            <Stack spacing="4">
-              <Heading as="h3" size="md">
-                {categoryLabels.animation}
-              </Heading>
-              <Controller
-                name={formDataKeys.animationLibraries}
-                control={control}
-                render={({ field: { ref, ...rest } }) => (
-                  <CheckboxGroup {...rest}>
-                    <Stack spacing="3">
-                      {animationLibraries.map((animationLibrary) => (
-                        <Checkbox
-                          key={animationLibrary}
-                          id={`checkbox-${animationLibrary}`}
-                          value={animationLibrary}
+                          }}
                         >
-                          {options[animationLibrary].label}
+                          {options[optionKeys.formattingPreCommitHook].label}
                         </Checkbox>
-                      ))}
-                    </Stack>
-                  </CheckboxGroup>
-                )}
-              />
-            </Stack>
-
-            <Stack spacing="4">
-              <Heading as="h3" size="md">
-                {categoryLabels.continuousIntegration}
-              </Heading>
-              <Controller
-                name={formDataKeys.continuousIntegrations}
-                control={control}
-                render={({ field: { ref, ...rest } }) => (
-                  <CheckboxGroup {...rest}>
-                    <Stack spacing="3">
-                      {continuousIntegrations.map((continuousIntegration) => (
-                        <Checkbox
-                          key={continuousIntegration}
-                          id={`checkbox-${continuousIntegration}`}
-                          value={continuousIntegration}
-                        >
-                          {options[continuousIntegration].label}
-                        </Checkbox>
-                      ))}
-                    </Stack>
-                  </CheckboxGroup>
-                )}
-              />
-            </Stack>
-
-            <Stack spacing="4">
-              <Heading as="h3" size="md">
-                {categoryLabels.miscellaneous}
-              </Heading>
-              <Controller
-                name={formDataKeys.miscellaneousOptions}
-                control={control}
-                render={({ field: { ref, ...rest } }) => (
-                  <CheckboxGroup {...rest}>
-                    <Stack spacing="3">
-                      <Checkbox
-                        id={`checkbox-${optionKeys.formattingPreCommitHook}`}
-                        value={optionKeys.formattingPreCommitHook}
-                        onChange={(e) => {
-                          if (
-                            e.target.checked &&
-                            !formData.formatting.includes(optionKeys.prettier)
-                          ) {
-                            setValue("formatting", [
-                              ...formData.formatting,
-                              optionKeys.prettier,
-                            ]);
-                          }
-                        }}
-                      >
-                        {options[optionKeys.formattingPreCommitHook].label}
-                      </Checkbox>
-                    </Stack>
-                  </CheckboxGroup>
-                )}
-              />
+                      </Stack>
+                    </CheckboxGroup>
+                  )}
+                />
+              </Stack>
             </Stack>
           </Stack>
-        </Stack>
-        <Stack spacing="4">
-          <Heading as="h2" size="lg">
-            Command
-          </Heading>
-          <Text>Run the following command in your preferred directory:</Text>
-          <Stack>
-            <Code padding="4">{output}</Code>
+
+          <Stack direction={"row"} justifyContent={["left", "center"]}>
+            <Button type="submit" colorScheme={"purple"}>
+              Create Next Stack
+            </Button>
           </Stack>
-          <Button type="button" onClick={handleCopyClick}>
-            Copy
-          </Button>
+
+          <Text align={["left", "center"]}>
+            Missing your favorite technology or encountering a bug? <br />
+            <Anchor
+              href="https://github.com/akd-io/create-next-stack/issues"
+              isExternal
+            >
+              Open an issue on GitHub <ExternalLinkIcon mx="2px" />
+            </Anchor>
+          </Text>
         </Stack>
-        <Text align={["left", "center"]}>
-          Missing your favorite technology or encountering a bug? <br />
-          <Anchor
-            href="https://github.com/akd-io/create-next-stack/issues"
-            isExternal
-          >
-            Open an issue on GitHub <ExternalLinkIcon mx="2px" />
-          </Anchor>
-        </Text>
-      </Stack>
-    </form>
+      </form>
+    </>
   );
 };
