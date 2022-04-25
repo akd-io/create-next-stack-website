@@ -321,18 +321,29 @@ export const TechnologiesForm: React.FC = () => {
                 flexDirection="row"
                 alignItems="center"
               >
-                <span>Types</span>
-                <Tooltip
-                  placement="top"
-                  label="TypeScript is currently required."
-                  hasArrow
-                >
-                  <InfoOutlineIcon w={"16px"} h={"16px"} marginLeft="8px" />
-                </Tooltip>
+                <span>Language</span>
               </Heading>
-              <RadioGroup value="TypeScript" isDisabled>
+              <RadioGroup value="TypeScript">
                 <Stack spacing="3">
                   <Radio value="TypeScript">TypeScript</Radio>
+                  <Radio value="JavaScript" isDisabled>
+                    <Tooltip
+                      placement="top"
+                      label="JavaScript is currently not supported."
+                      hasArrow
+                      shouldWrapChildren
+                    >
+                      <Flex direction="row">
+                        JavaScript
+                        <InfoOutlineIcon
+                          w={"16px"}
+                          h={"16px"}
+                          marginLeft="8px"
+                          alignSelf="center"
+                        />
+                      </Flex>
+                    </Tooltip>
+                  </Radio>
                 </Stack>
               </RadioGroup>
             </Stack>
