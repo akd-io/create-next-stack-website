@@ -1,39 +1,25 @@
 import { ExternalLinkIcon, InfoOutlineIcon } from "@chakra-ui/icons";
 import {
   Button,
-  Checkbox as ChakraCheckbox,
   CheckboxGroup,
   Code,
   Flex,
   Heading,
   Input,
-  Radio as ChakraRadio,
   RadioGroup,
   Stack,
   Text,
   Tooltip,
 } from "@chakra-ui/react";
-import React, {
-  ComponentProps,
-  FC,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Anchor } from "../../../components/Anchor";
+import { Checkbox } from "../../../components/CheckBox";
+import { Radio } from "../../../components/Radio";
 import { objectToKeyToKeyMap } from "../../../utils/objectToKeyToKeyMap";
 
-const Checkbox: FC<ComponentProps<typeof ChakraCheckbox>> = (props) => {
-  return <ChakraCheckbox size="md" colorScheme="purple" {...props} />;
-};
-
-const Radio: FC<ComponentProps<typeof ChakraRadio>> = (props) => {
-  return <ChakraRadio size="md" colorScheme="purple" {...props} />;
-};
-
-/*
 // TODO: Make use of Option when adding CIF
+/*
 type Option = {
   key: string;
   label: string;
