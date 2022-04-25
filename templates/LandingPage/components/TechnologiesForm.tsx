@@ -2,6 +2,7 @@ import { ExternalLinkIcon } from "@chakra-ui/icons"
 import {
   Button,
   CheckboxGroup,
+  Flex,
   Heading,
   Input,
   RadioGroup,
@@ -123,6 +124,7 @@ const categoryLabels = {
   formStateManagement: "Form State Management",
   language: "Language",
   formatting: "Formatting",
+  linting: "Linting",
   componentLibraries: "Component Libraries",
   animation: "Animation",
   continuousIntegration: "Continuous Integration",
@@ -254,7 +256,7 @@ export const TechnologiesForm: React.FC = () => {
                 />
               </Stack>
 
-              <Stack spacing="4">
+              <Flex direction={"column"} gap="4">
                 <Heading as="h3" size="md">
                   {categoryLabels.formStateManagement}
                 </Heading>
@@ -278,7 +280,7 @@ export const TechnologiesForm: React.FC = () => {
                     </CheckboxGroup>
                   )}
                 />
-              </Stack>
+              </Flex>
             </Stack>
 
             <Stack spacing="8" flexBasis="100%">
@@ -361,6 +363,21 @@ export const TechnologiesForm: React.FC = () => {
                     </CheckboxGroup>
                   )}
                 />
+              </Stack>
+
+              <Stack spacing="4">
+                <Heading as="h3" size="md">
+                  {categoryLabels.linting}
+                </Heading>
+                <CheckboxGroup value={["ESLint"]}>
+                  <Stack spacing="3">
+                    <Checkbox value="ESLint" isDisabled>
+                      <WithInfoIconAndTooltip tooltip="ESLint is currently required.">
+                        ESLint
+                      </WithInfoIconAndTooltip>
+                    </Checkbox>
+                  </Stack>
+                </CheckboxGroup>
               </Stack>
 
               <Stack spacing="4">
