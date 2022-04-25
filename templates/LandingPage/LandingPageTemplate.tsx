@@ -1,17 +1,17 @@
-import { Box, Stack } from "@chakra-ui/react";
-import { css, Global } from "@emotion/react";
-import React, { ComponentProps, FC } from "react";
-import { Section } from "../../components/Section";
-import { DescriptionSection } from "./components/DescriptionSection";
-import { Footer } from "./components/Footer";
-import { Header } from "./components/Header";
-import { TechnologiesForm } from "./components/TechnologiesForm";
+import { Box, Stack } from "@chakra-ui/react"
+import { css, Global } from "@emotion/react"
+import React, { ComponentProps, FC } from "react"
+import { Section } from "../../components/Section"
+import { DescriptionSection } from "./components/DescriptionSection"
+import { Footer } from "./components/Footer"
+import { Header } from "./components/Header"
+import { TechnologiesForm } from "./components/TechnologiesForm"
 
 const globalStyles = css`
   body {
     background-color: #eee;
   }
-`;
+`
 
 const Card: FC<ComponentProps<typeof Box>> = (props) => (
   <Box
@@ -22,7 +22,7 @@ const Card: FC<ComponentProps<typeof Box>> = (props) => (
     boxShadow="0 10px 50px rgba(0,0,0,0.1)"
     {...props}
   />
-);
+)
 
 const LandingPageTemplate = () => {
   return (
@@ -41,7 +41,7 @@ const LandingPageTemplate = () => {
         <Footer />
       </Stack>
     </>
-  );
-};
+  )
+}
 
-export default LandingPageTemplate;
+export default LandingPageTemplate

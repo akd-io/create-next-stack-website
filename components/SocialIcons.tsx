@@ -1,6 +1,6 @@
-import { Flex, Stack } from "@chakra-ui/react";
-import React, { ComponentProps } from "react";
-import { FaDiscord, FaGithub, FaTwitter } from "react-icons/fa";
+import { Flex, Stack } from "@chakra-ui/react"
+import React, { ComponentProps } from "react"
+import { FaDiscord, FaGithub, FaTwitter } from "react-icons/fa"
 
 export const SocialIcons: React.FC<ComponentProps<typeof Flex>> = (props) => {
   return (
@@ -26,5 +26,5 @@ export const SocialIcons: React.FC<ComponentProps<typeof Flex>> = (props) => {
         <FaTwitter size="24px" />
       </a>
     </Flex>
-  );
-};
+  )
+}

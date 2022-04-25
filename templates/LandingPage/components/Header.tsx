@@ -1,6 +1,6 @@
-import { Heading, Stack, Text } from "@chakra-ui/react";
-import { Section } from "../../../components/Section";
-import { SocialIcons } from "../../../components/SocialIcons";
+import { Heading, Stack, Text } from "@chakra-ui/react"
+import { Section } from "../../../components/Section"
+import { SocialIcons } from "../../../components/SocialIcons"
 
 export const Header = () => {
   return (
@@ -30,5 +30,5 @@ export const Header = () => {
         <SocialIcons />
       </Stack>
     </Section>
-  );
-};
+  )
+}
