@@ -89,33 +89,30 @@ const formStateManagementLibraries = [
   optionKeys.reactHookForm,
   optionKeys.formik,
 ]
-const formattingLibraries = [optionKeys.prettier]
+const formatting = [optionKeys.prettier, optionKeys.formattingPreCommitHook]
 const componentLibraries = [optionKeys.chakra, optionKeys.materialUi]
 const animationLibraries = [optionKeys.framerMotion]
 const continuousIntegrations = [optionKeys.githubActions]
-const miscellaneousOptions = [optionKeys.formattingPreCommitHook]
 
 type TechnologiesFormData = {
   projectName: string
   packageManager: typeof packageManagers[number]
   stylingMethod: typeof stylingMethods[number]
   formStateManagement: Array<typeof formStateManagementLibraries[number]>
-  formatting: Array<typeof formattingLibraries[number]>
+  formatting: Array<typeof formatting[number]>
   componentLibraries: Array<typeof componentLibraries[number]>
   animationLibraries: Array<typeof animationLibraries[number]>
   continuousIntegrations: Array<typeof continuousIntegrations[number]>
-  miscellaneousOptions: Array<typeof miscellaneousOptions[number]>
 }
 const defaultFormData: TechnologiesFormData = {
   projectName: "my-app",
   packageManager: optionKeys.yarn,
   stylingMethod: optionKeys.emotion,
   formStateManagement: [optionKeys.reactHookForm],
-  formatting: [optionKeys.prettier],
+  formatting: [optionKeys.prettier, optionKeys.formattingPreCommitHook],
   componentLibraries: [optionKeys.chakra],
   animationLibraries: [optionKeys.framerMotion],
   continuousIntegrations: [optionKeys.githubActions],
-  miscellaneousOptions: [optionKeys.formattingPreCommitHook],
 }
 const formDataKeys = objectToKeyToKeyMap(defaultFormData)
 
@@ -129,7 +126,6 @@ const categoryLabels = {
   componentLibraries: "Component Libraries",
   animation: "Animation",
   continuousIntegration: "Continuous Integration",
-  miscellaneous: "Miscellaneous",
 }
 
 export const TechnologiesForm: React.FC = () => {
@@ -139,6 +135,7 @@ export const TechnologiesForm: React.FC = () => {
     })
 
   const stylingMethod = watch("stylingMethod")
+  const formatting = watch("formatting")
 
   const [isCommandModalShow, setIsModalShown] = React.useState(false)
   const [command, setCommand] = React.useState("")
@@ -162,7 +159,6 @@ export const TechnologiesForm: React.FC = () => {
       pushArgs(formData.componentLibraries)
       pushArgs(formData.animationLibraries)
       pushArgs(formData.continuousIntegrations)
-      pushArgs(formData.miscellaneousOptions)
 
       args.push(formData.projectName)
 
@@ -321,17 +317,12 @@ export const TechnologiesForm: React.FC = () => {
                         <Checkbox
                           value={optionKeys.prettier}
                           onChange={(e) => {
-                            if (
-                              !e.target.checked &&
-                              getValues("miscellaneousOptions").includes(
-                                optionKeys.formattingPreCommitHook
-                              )
-                            ) {
+                            if (!e.target.checked) {
                               setValue(
-                                "miscellaneousOptions",
-                                getValues("miscellaneousOptions").filter(
-                                  (miscellaneousOption) =>
-                                    miscellaneousOption !==
+                                "formatting",
+                                getValues("formatting").filter(
+                                  (formattingOption) =>
+                                    formattingOption !==
                                     optionKeys.formattingPreCommitHook
                                 )
                               )
@@ -339,6 +330,32 @@ export const TechnologiesForm: React.FC = () => {
                           }}
                         >
                           {options[optionKeys.prettier].label}
+                        </Checkbox>
+                        <Checkbox
+                          value={optionKeys.formattingPreCommitHook}
+                          isDisabled={
+                            !getValues("formatting").includes(
+                              optionKeys.prettier
+                            )
+                          }
+                        >
+                          {formatting.includes(optionKeys.prettier) ? (
+                            options[optionKeys.formattingPreCommitHook].label
+                          ) : (
+                            <WithInfoIconAndTooltip
+                              tooltip={`${
+                                options[optionKeys.formattingPreCommitHook]
+                                  .label
+                              } requires ${
+                                options[optionKeys.prettier].label
+                              }. Select it above.`}
+                            >
+                              {
+                                options[optionKeys.formattingPreCommitHook]
+                                  .label
+                              }
+                            </WithInfoIconAndTooltip>
+                          )}
                         </Checkbox>
                       </Stack>
                     </CheckboxGroup>
@@ -439,40 +456,6 @@ export const TechnologiesForm: React.FC = () => {
                             {options[continuousIntegration].label}
                           </Checkbox>
                         ))}
-                      </Stack>
-                    </CheckboxGroup>
-                  )}
-                />
-              </Stack>
-
-              <Stack spacing="4">
-                <Heading as="h3" size="md">
-                  {categoryLabels.miscellaneous}
-                </Heading>
-                <Controller
-                  name={formDataKeys.miscellaneousOptions}
-                  control={control}
-                  render={({ field: { ref, ...rest } }) => (
-                    <CheckboxGroup {...rest}>
-                      <Stack spacing="3">
-                        <Checkbox
-                          value={optionKeys.formattingPreCommitHook}
-                          onChange={(e) => {
-                            if (
-                              e.target.checked &&
-                              !getValues("formatting").includes(
-                                optionKeys.prettier
-                              )
-                            ) {
-                              setValue("formatting", [
-                                ...getValues("formatting"),
-                                optionKeys.prettier,
-                              ])
-                            }
-                          }}
-                        >
-                          {options[optionKeys.formattingPreCommitHook].label}
-                        </Checkbox>
                       </Stack>
                     </CheckboxGroup>
                   )}
