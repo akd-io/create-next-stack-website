@@ -1,15 +1,15 @@
 type KeyToKeyMap<T extends Record<string, unknown>> = {
-  [value in keyof T]: value;
-};
+  [value in keyof T]: value
+}
 
 export const objectToKeyToKeyMap = <T extends Record<string, unknown>>(
   object: T
 ): KeyToKeyMap<T> => {
-  const keyToKeyMap: { [key: string]: string } = {};
+  const keyToKeyMap: { [key: string]: string } = {}
 
   for (const key of Object.keys(object)) {
-    keyToKeyMap[key] = key;
+    keyToKeyMap[key] = key
   }
 
-  return keyToKeyMap as KeyToKeyMap<T>;
-};
+  return keyToKeyMap as KeyToKeyMap<T>
+}

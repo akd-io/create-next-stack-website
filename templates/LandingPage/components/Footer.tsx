@@ -1,8 +1,8 @@
-import { Box, Text } from "@chakra-ui/react";
-import React from "react";
-import { Anchor } from "../../../components/Anchor";
-import { Section } from "../../../components/Section";
-import { SocialIcons } from "../../../components/SocialIcons";
+import { Text } from "@chakra-ui/react"
+import React from "react"
+import { Anchor } from "../../../components/Anchor"
+import { Section } from "../../../components/Section"
+import { SocialIcons } from "../../../components/SocialIcons"
 
 export const Footer: React.FC = () => {
   return (
@@ -21,5 +21,5 @@ export const Footer: React.FC = () => {
       </Text>
       <SocialIcons />
     </Section>
-  );
-};
+  )
+}

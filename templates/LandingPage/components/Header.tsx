@@ -1,8 +1,8 @@
-import { Heading, Stack, Text } from "@chakra-ui/react";
-import { Section } from "../../../components/Section";
-import { SocialIcons } from "../../../components/SocialIcons";
+import { Heading, Stack, Text } from "@chakra-ui/react"
+import { Section } from "../../../components/Section"
+import { SocialIcons } from "../../../components/SocialIcons"
 
-export const Header = () => {
+export const HeaderSection = () => {
   return (
     <Section as="header">
       <Stack align={["left", "center"]} spacing="6">
@@ -30,5 +30,5 @@ export const Header = () => {
         <SocialIcons />
       </Stack>
     </Section>
-  );
-};
+  )
+}

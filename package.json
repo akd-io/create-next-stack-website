@@ -16,15 +16,12 @@
     "@chakra-ui/react": "^1.0.0",
     "@emotion/react": "^11.0.0",
     "@emotion/styled": "^11.0.0",
-    "@fortawesome/fontawesome-svg-core": "^6.1.1",
-    "@fortawesome/free-brands-svg-icons": "^6.1.1",
-    "@fortawesome/free-solid-svg-icons": "^6.1.1",
-    "@fortawesome/react-fontawesome": "^0.1.15",
     "framer-motion": "^6.3.1",
     "next": "12.1.5",
     "react": "18.0.0",
     "react-dom": "18.0.0",
-    "react-hook-form": "^7.0.0"
+    "react-hook-form": "^7.0.0",
+    "react-icons": "^4.3.1"
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.0.0",
