@@ -418,7 +418,30 @@ export const TechnologiesForm: React.FC = () => {
                           }
                         }}
                       >
-                        {options[optionKeys.chakra].label}
+                        {formData.stylingMethod === optionKeys.emotion ? (
+                          options[optionKeys.chakra].label
+                        ) : (
+                          <Tooltip
+                            placement="top"
+                            label={`${
+                              options[optionKeys.chakra].label
+                            } requires ${
+                              options[optionKeys.emotion].label
+                            }. Select it under Styling.`}
+                            hasArrow
+                            shouldWrapChildren
+                          >
+                            <Flex direction="row">
+                              {options[optionKeys.chakra].label}
+                              <InfoOutlineIcon
+                                w={"16px"}
+                                h={"16px"}
+                                marginLeft="8px"
+                                alignSelf="center"
+                              />
+                            </Flex>
+                          </Tooltip>
+                        )}
                       </Checkbox>
                       <Checkbox
                         id={`checkbox-${optionKeys.materialUi}`}
