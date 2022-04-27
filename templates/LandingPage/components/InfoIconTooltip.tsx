@@ -12,14 +12,9 @@ export const WithInfoIconAndTooltip: FC<WithInfoIconAndTooltipProps> = ({
 }) => {
   return (
     <Tooltip placement="top" label={tooltip} hasArrow shouldWrapChildren>
-      <Flex direction="row">
+      <Flex display={"inline-flex"} direction="row" gap="6px">
         {children}
-        <InfoOutlineIcon
-          w={"16px"}
-          h={"16px"}
-          marginLeft="8px"
-          alignSelf="center"
-        />
+        <InfoOutlineIcon w={"16px"} h={"16px"} alignSelf="center" />
       </Flex>
     </Tooltip>
   )
