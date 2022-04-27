@@ -3,6 +3,8 @@ import {
   Button,
   CheckboxGroup,
   Flex,
+  FormControl,
+  FormErrorMessage,
   Heading,
   Input,
   RadioGroup,
@@ -14,7 +16,9 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form"
 import { Anchor } from "../../../components/Anchor"
 import { Checkbox } from "../../../components/Checkbox"
 import { Radio } from "../../../components/Radio"
+import { capitalizeFirstCharacter } from "../../../utils/capitalizeFirstCharacter"
 import { objectToKeyToKeyMap } from "../../../utils/objectToKeyToKeyMap"
+import { validateProjectName } from "../../../utils/validateProjectName"
 import { CommandModal } from "./CommandModal"
 import { WithInfoIconAndTooltip } from "./InfoIconTooltip"
 
@@ -142,10 +146,19 @@ const categoryLabels = {
 }
 
 export const TechnologiesForm: React.FC = () => {
-  const { register, control, setValue, getValues, watch, handleSubmit } =
-    useForm<TechnologiesFormData>({
-      defaultValues: defaultFormData,
-    })
+  const {
+    register,
+    control,
+    setValue,
+    getValues,
+    watch,
+    handleSubmit,
+    formState,
+  } = useForm<TechnologiesFormData>({
+    defaultValues: defaultFormData,
+  })
+
+  const { errors } = formState
 
   const styling = watch("styling")
   const formatting = watch("formatting")
@@ -174,7 +187,9 @@ export const TechnologiesForm: React.FC = () => {
       pushArgs(formData.animation)
       pushArgs(formData.continuousIntegration)
 
-      args.push(formData.projectName)
+      const projectNameSegments = formData.projectName.split("/")
+      const lastPartOfProjectName = projectNameSegments.pop()!
+      args.push(lastPartOfProjectName)
 
       return args.join(" ")
     }
@@ -204,14 +219,26 @@ export const TechnologiesForm: React.FC = () => {
           >
             <Stack spacing="8" flexBasis="100%">
               <Stack spacing="4">
-                <Heading as="h3" size="md">
-                  {categoryLabels.projectName}
+                <Heading as="h3" size="md" gap="8px">
+                  <WithInfoIconAndTooltip
+                    tooltip={`Project names must be valid NPM package names.`}
+                  >
+                    {categoryLabels.projectName}
+                  </WithInfoIconAndTooltip>
                 </Heading>
-                <Input
-                  {...register(formDataKeys.projectName, {
-                    pattern: /^[a-z0-9-]+$/,
-                  })}
-                />
+                <FormControl isInvalid={errors?.projectName?.message != null}>
+                  <Input
+                    {...register(formDataKeys.projectName, {
+                      validate: validateProjectName,
+                    })}
+                  />
+                  {errors.projectName?.message != null ? (
+                    <FormErrorMessage>
+                      {capitalizeFirstCharacter(errors.projectName.message) +
+                        "."}
+                    </FormErrorMessage>
+                  ) : null}
+                </FormControl>
               </Stack>
               <Stack spacing="4">
                 <Heading as="h3" size="md">
