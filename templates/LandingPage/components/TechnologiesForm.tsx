@@ -221,7 +221,7 @@ export const TechnologiesForm: React.FC = () => {
               <Stack spacing="4">
                 <Heading as="h3" size="md" gap="8px">
                   <WithInfoIconAndTooltip
-                    tooltip={`Project names must be valid NPM package names.`}
+                    tooltip={`Project names must be valid npm package names.`}
                   >
                     {categoryLabels.projectName}
                   </WithInfoIconAndTooltip>
