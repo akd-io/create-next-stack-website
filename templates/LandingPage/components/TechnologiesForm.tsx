@@ -34,6 +34,7 @@ const cssModulesValue = "css-modules"
 
 // TODO: Strengthen types using a constrained identity function
 const options = {
+  pnpm: { key: "pnpm", value: "pnpm", label: "pnpm" },
   yarn: { key: "yarn", value: "yarn", label: "Yarn" },
   npm: { key: "npm", value: "npm", label: "npm" },
   emotion: { key: "emotion", value: "emotion", label: "Emotion" },
@@ -89,7 +90,11 @@ const options = {
 } as const
 const optionKeys = objectToKeyToKeyMap(options)
 
-const packageManagerOptionKeys = [optionKeys.yarn, optionKeys.npm]
+const packageManagerOptionKeys = [
+  optionKeys.pnpm,
+  optionKeys.yarn,
+  optionKeys.npm,
+]
 const stylingOptionKeys = [
   optionKeys.emotion,
   optionKeys.styledComponents,
