@@ -23,6 +23,25 @@ import { WithInfoIconAndTooltip } from "./InfoIconTooltip"
 
 const cssModulesValue = "css-modules"
 
+type OptionKey =
+  | "pnpm"
+  | "yarn"
+  | "npm"
+  | "emotion"
+  | "styledComponents"
+  | "cssModules"
+  | "tailwindCss"
+  | "cssModulesWithSass"
+  | "noStyling"
+  | "reactHookForm"
+  | "formik"
+  | "prettier"
+  | "chakra"
+  | "materialUi"
+  | "framerMotion"
+  | "githubActions"
+  | "formattingPreCommitHook"
+
 const options = {
   pnpm: { key: "pnpm", value: "pnpm", label: "pnpm" },
   yarn: { key: "yarn", value: "yarn", label: "Yarn" },
@@ -77,7 +96,14 @@ const options = {
     value: "formatting-pre-commit-hook",
     label: "Formatting Pre-Commit Hook",
   },
-} as const
+} satisfies {
+  [Key in OptionKey]: {
+    key: Key
+    value: string
+    label: string
+  }
+}
+
 const optionKeys = objectToKeyToKeyMap(options)
 
 const packageManagerOptionKeys = [
