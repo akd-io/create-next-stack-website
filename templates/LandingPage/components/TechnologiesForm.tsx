@@ -107,13 +107,13 @@ const continuousIntegrationOptionKeys = [optionKeys.githubActions]
 
 type TechnologiesFormData = {
   projectName: string
-  packageManager: typeof packageManagerOptionKeys[number]
-  styling: typeof stylingOptionKeys[number]
-  formStateManagement: Array<typeof formStateManagementOptionKeys[number]>
-  formatting: Array<typeof formattingOptionKeys[number]>
-  componentLibraries: Array<typeof componentLibraryOptionKeys[number]>
-  animation: Array<typeof animationOptionKeys[number]>
-  continuousIntegration: Array<typeof continuousIntegrationOptionKeys[number]>
+  packageManager: (typeof packageManagerOptionKeys)[number]
+  styling: (typeof stylingOptionKeys)[number]
+  formStateManagement: Array<(typeof formStateManagementOptionKeys)[number]>
+  formatting: Array<(typeof formattingOptionKeys)[number]>
+  componentLibraries: Array<(typeof componentLibraryOptionKeys)[number]>
+  animation: Array<(typeof animationOptionKeys)[number]>
+  continuousIntegration: Array<(typeof continuousIntegrationOptionKeys)[number]>
 }
 const defaultFormData: TechnologiesFormData = {
   projectName: "my-app",
@@ -276,7 +276,7 @@ export const TechnologiesForm: React.FC = () => {
                 />
               </Flex>
 
-              <Flex direction={"column"} gap="4">
+              <Flex direction="column" gap="4">
                 <Heading as="h3" size="md">
                   {categoryLabels.formStateManagement}
                 </Heading>
@@ -392,7 +392,7 @@ export const TechnologiesForm: React.FC = () => {
           </Flex>
 
           <Flex direction="row" justifyContent={["left", "center"]}>
-            <Button type="submit" colorScheme={"purple"}>
+            <Button type="submit" colorScheme="purple">
               Create Next Stack
             </Button>
           </Flex>
