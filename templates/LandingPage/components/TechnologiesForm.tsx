@@ -290,7 +290,11 @@ export const TechnologiesForm: React.FC = () => {
                                 setValue(
                                   "componentLibraries",
                                   getValues("componentLibraries").filter(
-                                    (value) => value !== optionKeys.chakra
+                                    (value) =>
+                                      ![
+                                        optionKeys.chakra,
+                                        optionKeys.materialUi,
+                                      ].includes(value)
                                   )
                                 )
                               }
@@ -470,14 +474,23 @@ export const TechnologiesForm: React.FC = () => {
                             options[optionKeys.chakra].label
                           )}
                         </Checkbox>
-                        <Checkbox value={optionKeys.materialUi} isDisabled>
-                          <WithInfoIconAndTooltip
-                            tooltip={`${
-                              options[optionKeys.materialUi].label
-                            } is currently disabled while we wait for React 18 support.`}
-                          >
-                            {options[optionKeys.materialUi].label}
-                          </WithInfoIconAndTooltip>
+                        <Checkbox
+                          value={optionKeys.materialUi}
+                          isDisabled={styling !== optionKeys.emotion}
+                        >
+                          {styling !== optionKeys.emotion ? (
+                            <WithInfoIconAndTooltip
+                              tooltip={`${
+                                options[optionKeys.materialUi].label
+                              } requires ${
+                                options[optionKeys.emotion].label
+                              }. Select it under ${categoryLabels.styling}.`}
+                            >
+                              {options[optionKeys.materialUi].label}
+                            </WithInfoIconAndTooltip>
+                          ) : (
+                            options[optionKeys.materialUi].label
+                          )}
                         </Checkbox>
                       </Stack>
                     </CheckboxGroup>
