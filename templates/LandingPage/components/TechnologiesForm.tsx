@@ -8,7 +8,6 @@ import {
   Heading,
   Input,
   RadioGroup,
-  Stack,
   Text,
 } from "@chakra-ui/react"
 import React from "react"
@@ -22,17 +21,8 @@ import { validateProjectName } from "../../../utils/validateProjectName"
 import { CommandModal } from "./CommandModal"
 import { WithInfoIconAndTooltip } from "./InfoIconTooltip"
 
-// TODO: Make use of Option when adding CIF
-/*
-type Option = {
-  key: string;
-  label: string;
-};
-*/
-
 const cssModulesValue = "css-modules"
 
-// TODO: Strengthen types using a constrained identity function
 const options = {
   pnpm: { key: "pnpm", value: "pnpm", label: "pnpm" },
   yarn: { key: "yarn", value: "yarn", label: "Yarn" },
@@ -127,7 +117,7 @@ type TechnologiesFormData = {
 }
 const defaultFormData: TechnologiesFormData = {
   projectName: "my-app",
-  packageManager: optionKeys.yarn,
+  packageManager: optionKeys.pnpm,
   styling: optionKeys.emotion,
   formStateManagement: [optionKeys.reactHookForm],
   formatting: [optionKeys.prettier, optionKeys.formattingPreCommitHook],
@@ -151,23 +141,12 @@ const categoryLabels = {
 }
 
 export const TechnologiesForm: React.FC = () => {
-  const {
-    register,
-    control,
-    setValue,
-    getValues,
-    watch,
-    handleSubmit,
-    formState,
-  } = useForm<TechnologiesFormData>({
-    defaultValues: defaultFormData,
-  })
+  const { register, control, watch, handleSubmit, formState } =
+    useForm<TechnologiesFormData>({
+      defaultValues: defaultFormData,
+    })
 
   const { errors } = formState
-
-  const styling = watch("styling")
-  const formatting = watch("formatting")
-  const animation = watch("animation")
 
   const [isCommandModalShow, setIsModalShown] = React.useState(false)
   const [command, setCommand] = React.useState("")
@@ -203,6 +182,30 @@ export const TechnologiesForm: React.FC = () => {
     setIsModalShown(true)
   }
 
+  const CheckboxesOfOptionKeys = (optionKeys: Array<keyof typeof options>) => {
+    return (
+      <Flex direction="column" gap="3">
+        {optionKeys.map((optionKey) => (
+          <Checkbox key={optionKey} value={optionKey}>
+            {options[optionKey].label}
+          </Checkbox>
+        ))}
+      </Flex>
+    )
+  }
+
+  const RadiosOfOptionKeys = (optionKeys: Array<keyof typeof options>) => {
+    return (
+      <Flex direction="column" gap="3">
+        {optionKeys.map((optionKey) => (
+          <Radio key={optionKey} value={optionKey}>
+            {options[optionKey].label}
+          </Radio>
+        ))}
+      </Flex>
+    )
+  }
+
   return (
     <>
       <CommandModal
@@ -217,13 +220,10 @@ export const TechnologiesForm: React.FC = () => {
           Pick your technologies
         </Heading>
 
-        <Stack spacing="16">
-          <Stack
-            spacing={["8", "8", "16"]}
-            direction={["column", "column", "row"]}
-          >
-            <Stack spacing="8" flexBasis="100%">
-              <Stack spacing="4">
+        <Flex direction="column" gap="16">
+          <Flex direction={["column", "column", "row"]} gap={["8", "8", "16"]}>
+            <Flex direction="column" gap="8" flexBasis="100%">
+              <Flex direction="column" gap="4">
                 <Heading as="h3" size="md" gap="8px">
                   <WithInfoIconAndTooltip
                     tooltip={`Project names must be valid npm package names.`}
@@ -244,8 +244,9 @@ export const TechnologiesForm: React.FC = () => {
                     </FormErrorMessage>
                   ) : null}
                 </FormControl>
-              </Stack>
-              <Stack spacing="4">
+              </Flex>
+
+              <Flex direction="column" gap="4">
                 <Heading as="h3" size="md">
                   {categoryLabels.packageManager}
                 </Heading>
@@ -254,24 +255,13 @@ export const TechnologiesForm: React.FC = () => {
                   control={control}
                   render={({ field: { ref, ...rest } }) => (
                     <RadioGroup {...rest}>
-                      <Stack spacing="3">
-                        {packageManagerOptionKeys.map(
-                          (packageManagerOptionKey) => (
-                            <Radio
-                              key={packageManagerOptionKey}
-                              value={packageManagerOptionKey}
-                            >
-                              {options[packageManagerOptionKey].label}
-                            </Radio>
-                          )
-                        )}
-                      </Stack>
+                      {RadiosOfOptionKeys(packageManagerOptionKeys)}
                     </RadioGroup>
                   )}
                 />
-              </Stack>
+              </Flex>
 
-              <Stack spacing="4">
+              <Flex direction="column" gap="4">
                 <Heading as="h3" size="md">
                   {categoryLabels.styling}
                 </Heading>
@@ -280,34 +270,11 @@ export const TechnologiesForm: React.FC = () => {
                   control={control}
                   render={({ field: { ref, ...rest } }) => (
                     <RadioGroup {...rest}>
-                      <Stack spacing="3">
-                        {stylingOptionKeys.map((stylingOptionKey) => (
-                          <Radio
-                            key={stylingOptionKey}
-                            value={stylingOptionKey}
-                            onChange={(e) => {
-                              if (e.target.value !== optionKeys.emotion) {
-                                setValue(
-                                  "componentLibraries",
-                                  getValues("componentLibraries").filter(
-                                    (value) =>
-                                      ![
-                                        optionKeys.chakra,
-                                        optionKeys.materialUi,
-                                      ].includes(value)
-                                  )
-                                )
-                              }
-                            }}
-                          >
-                            {options[stylingOptionKey].label}
-                          </Radio>
-                        ))}
-                      </Stack>
+                      {RadiosOfOptionKeys(stylingOptionKeys)}
                     </RadioGroup>
                   )}
                 />
-              </Stack>
+              </Flex>
 
               <Flex direction={"column"} gap="4">
                 <Heading as="h3" size="md">
@@ -318,26 +285,15 @@ export const TechnologiesForm: React.FC = () => {
                   control={control}
                   render={({ field: { ref, ...rest } }) => (
                     <CheckboxGroup {...rest}>
-                      <Stack spacing="3">
-                        {formStateManagementOptionKeys.map(
-                          (formStateManagementOptionKey) => (
-                            <Checkbox
-                              key={formStateManagementOptionKey}
-                              value={formStateManagementOptionKey}
-                            >
-                              {options[formStateManagementOptionKey].label}
-                            </Checkbox>
-                          )
-                        )}
-                      </Stack>
+                      {CheckboxesOfOptionKeys(formStateManagementOptionKeys)}
                     </CheckboxGroup>
                   )}
                 />
               </Flex>
-            </Stack>
+            </Flex>
 
-            <Stack spacing="8" flexBasis="100%">
-              <Stack spacing="4">
+            <Flex direction="column" gap="8" flexBasis="100%">
+              <Flex direction="column" gap="4">
                 <Heading
                   as="h3"
                   size="md"
@@ -347,19 +303,18 @@ export const TechnologiesForm: React.FC = () => {
                 >
                   {categoryLabels.language}
                 </Heading>
-                <RadioGroup value="TypeScript">
-                  <Stack spacing="3">
-                    <Radio value="TypeScript">TypeScript</Radio>
-                    <Radio value="JavaScript" isDisabled>
-                      <WithInfoIconAndTooltip tooltip="JavaScript is currently not supported.">
-                        JavaScript
+                <CheckboxGroup value={["TypeScript"]}>
+                  <Flex direction="column" gap="3">
+                    <Checkbox value="TypeScript" isDisabled>
+                      <WithInfoIconAndTooltip tooltip="TypeScript is currently required.">
+                        TypeScript
                       </WithInfoIconAndTooltip>
-                    </Radio>
-                  </Stack>
-                </RadioGroup>
-              </Stack>
+                    </Checkbox>
+                  </Flex>
+                </CheckboxGroup>
+              </Flex>
 
-              <Stack spacing="4">
+              <Flex direction="column" gap="4">
                 <Heading as="h3" size="md">
                   {categoryLabels.formatting}
                 </Heading>
@@ -368,72 +323,28 @@ export const TechnologiesForm: React.FC = () => {
                   control={control}
                   render={({ field: { ref, ...rest } }) => (
                     <CheckboxGroup {...rest}>
-                      <Stack spacing="3">
-                        <Checkbox
-                          value={optionKeys.prettier}
-                          onChange={(e) => {
-                            if (!e.target.checked) {
-                              setValue(
-                                "formatting",
-                                getValues("formatting").filter(
-                                  (formattingOption) =>
-                                    formattingOption !==
-                                    optionKeys.formattingPreCommitHook
-                                )
-                              )
-                            }
-                          }}
-                        >
-                          {options[optionKeys.prettier].label}
-                        </Checkbox>
-                        <Checkbox
-                          value={optionKeys.formattingPreCommitHook}
-                          isDisabled={
-                            !getValues("formatting").includes(
-                              optionKeys.prettier
-                            )
-                          }
-                        >
-                          {formatting.includes(optionKeys.prettier) ? (
-                            options[optionKeys.formattingPreCommitHook].label
-                          ) : (
-                            <WithInfoIconAndTooltip
-                              tooltip={`${
-                                options[optionKeys.formattingPreCommitHook]
-                                  .label
-                              } requires ${
-                                options[optionKeys.prettier].label
-                              }. Select it above.`}
-                            >
-                              {
-                                options[optionKeys.formattingPreCommitHook]
-                                  .label
-                              }
-                            </WithInfoIconAndTooltip>
-                          )}
-                        </Checkbox>
-                      </Stack>
+                      {CheckboxesOfOptionKeys(formattingOptionKeys)}
                     </CheckboxGroup>
                   )}
                 />
-              </Stack>
+              </Flex>
 
-              <Stack spacing="4">
+              <Flex direction="column" gap="4">
                 <Heading as="h3" size="md">
                   {categoryLabels.linting}
                 </Heading>
                 <CheckboxGroup value={["ESLint"]}>
-                  <Stack spacing="3">
+                  <Flex direction="column" gap="3">
                     <Checkbox value="ESLint" isDisabled>
                       <WithInfoIconAndTooltip tooltip="ESLint is currently required.">
                         ESLint
                       </WithInfoIconAndTooltip>
                     </Checkbox>
-                  </Stack>
+                  </Flex>
                 </CheckboxGroup>
-              </Stack>
+              </Flex>
 
-              <Stack spacing="4">
+              <Flex direction="column" gap="4">
                 <Heading as="h3" size="md">
                   {categoryLabels.componentLibraries}
                 </Heading>
@@ -442,63 +353,13 @@ export const TechnologiesForm: React.FC = () => {
                   control={control}
                   render={({ field: { ref, ...rest } }) => (
                     <CheckboxGroup {...rest}>
-                      <Stack spacing="3">
-                        <Checkbox
-                          value={optionKeys.chakra}
-                          isDisabled={
-                            styling !== optionKeys.emotion ||
-                            !animation.includes("framerMotion")
-                          }
-                        >
-                          {styling !== optionKeys.emotion ? (
-                            <WithInfoIconAndTooltip
-                              tooltip={`${
-                                options[optionKeys.chakra].label
-                              } requires ${
-                                options[optionKeys.emotion].label
-                              }. Select it under ${categoryLabels.styling}.`}
-                            >
-                              {options[optionKeys.chakra].label}
-                            </WithInfoIconAndTooltip>
-                          ) : !animation.includes("framerMotion") ? (
-                            <WithInfoIconAndTooltip
-                              tooltip={`${
-                                options[optionKeys.chakra].label
-                              } requires ${
-                                options[optionKeys.framerMotion].label
-                              }. Select it under ${categoryLabels.animation}.`}
-                            >
-                              {options[optionKeys.chakra].label}
-                            </WithInfoIconAndTooltip>
-                          ) : (
-                            options[optionKeys.chakra].label
-                          )}
-                        </Checkbox>
-                        <Checkbox
-                          value={optionKeys.materialUi}
-                          isDisabled={styling !== optionKeys.emotion}
-                        >
-                          {styling !== optionKeys.emotion ? (
-                            <WithInfoIconAndTooltip
-                              tooltip={`${
-                                options[optionKeys.materialUi].label
-                              } requires ${
-                                options[optionKeys.emotion].label
-                              }. Select it under ${categoryLabels.styling}.`}
-                            >
-                              {options[optionKeys.materialUi].label}
-                            </WithInfoIconAndTooltip>
-                          ) : (
-                            options[optionKeys.materialUi].label
-                          )}
-                        </Checkbox>
-                      </Stack>
+                      {CheckboxesOfOptionKeys(componentLibraryOptionKeys)}
                     </CheckboxGroup>
                   )}
                 />
-              </Stack>
+              </Flex>
 
-              <Stack spacing="4">
+              <Flex direction="column" gap="4">
                 <Heading as="h3" size="md">
                   {categoryLabels.animation}
                 </Heading>
@@ -507,31 +368,13 @@ export const TechnologiesForm: React.FC = () => {
                   control={control}
                   render={({ field: { ref, ...rest } }) => (
                     <CheckboxGroup {...rest}>
-                      <Stack spacing="3">
-                        <Checkbox
-                          key={optionKeys.framerMotion}
-                          value={optionKeys.framerMotion}
-                          onChange={(e) => {
-                            if (!e.target.checked) {
-                              setValue(
-                                "componentLibraries",
-                                getValues("componentLibraries").filter(
-                                  (componentLibrary) =>
-                                    componentLibrary !== optionKeys.chakra
-                                )
-                              )
-                            }
-                          }}
-                        >
-                          {options.framerMotion.label}
-                        </Checkbox>
-                      </Stack>
+                      {CheckboxesOfOptionKeys(animationOptionKeys)}
                     </CheckboxGroup>
                   )}
                 />
-              </Stack>
+              </Flex>
 
-              <Stack spacing="4">
+              <Flex direction="column" gap="4">
                 <Heading as="h3" size="md">
                   {categoryLabels.continuousIntegration}
                 </Heading>
@@ -540,30 +383,19 @@ export const TechnologiesForm: React.FC = () => {
                   control={control}
                   render={({ field: { ref, ...rest } }) => (
                     <CheckboxGroup {...rest}>
-                      <Stack spacing="3">
-                        {continuousIntegrationOptionKeys.map(
-                          (continuousIntegrationOptionKey) => (
-                            <Checkbox
-                              key={continuousIntegrationOptionKey}
-                              value={continuousIntegrationOptionKey}
-                            >
-                              {options[continuousIntegrationOptionKey].label}
-                            </Checkbox>
-                          )
-                        )}
-                      </Stack>
+                      {CheckboxesOfOptionKeys(continuousIntegrationOptionKeys)}
                     </CheckboxGroup>
                   )}
                 />
-              </Stack>
-            </Stack>
-          </Stack>
+              </Flex>
+            </Flex>
+          </Flex>
 
-          <Stack direction={"row"} justifyContent={["left", "center"]}>
+          <Flex direction="row" justifyContent={["left", "center"]}>
             <Button type="submit" colorScheme={"purple"}>
               Create Next Stack
             </Button>
-          </Stack>
+          </Flex>
 
           <Text align={["left", "center"]}>
             Missing your favorite technology or encountering a bug? <br />
@@ -574,7 +406,7 @@ export const TechnologiesForm: React.FC = () => {
               Open an issue on GitHub <ExternalLinkIcon mx="2px" />
             </Anchor>
           </Text>
-        </Stack>
+        </Flex>
       </form>
     </>
   )
