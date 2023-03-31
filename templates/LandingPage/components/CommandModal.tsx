@@ -12,7 +12,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react"
-import React, { ComponentProps, FC, useEffect, useState } from "react"
+import { ComponentProps, FC, useEffect, useState } from "react"
 
 type PopupProps = Omit<ComponentProps<typeof Modal>, "children"> & {
   command: string
@@ -50,26 +50,27 @@ export const CommandModal: FC<PopupProps> = ({
           <Stack spacing="4">
             <Text>Run the following command in your terminal:</Text>
             <Stack>
-              <Code padding="4">{command}</Code>
+              <Code padding="4" background="gray.100">
+                {command}
+              </Code>
             </Stack>
-            {!copyFailed && (
-              <Button colorScheme={"purple"} onClick={handleCopyClick}>
-                {hasCopied ? <CheckIcon /> : <>Copy</>}
-              </Button>
-            )}
-            {copyFailed && (
-              <Text color="red.500" fontSize="sm">
-                Failed to copy to clipboard. You will need to copy it manually.
-              </Text>
-            )}
           </Stack>
         </ModalBody>
         <ModalFooter>
-          <Stack direction={"row"}>
-            <Button variant="ghost" onClick={onClose}>
-              Close
+          {!copyFailed && (
+            <Button
+              colorScheme={"purple"}
+              flexGrow={1}
+              onClick={handleCopyClick}
+            >
+              {hasCopied ? <CheckIcon /> : <>Copy</>}
             </Button>
-          </Stack>
+          )}
+          {copyFailed && (
+            <Text color="red.500" fontSize="sm">
+              Failed to copy to clipboard. You will need to copy it manually.
+            </Text>
+          )}
         </ModalFooter>
       </ModalContent>
     </Modal>
