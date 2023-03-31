@@ -186,6 +186,7 @@ export const TechnologiesForm: React.FC = () => {
     })
 
   const { errors } = formState
+
   const formValues = watch()
 
   const [isCommandModalShow, setIsModalShown] = React.useState(false)
@@ -222,15 +223,58 @@ export const TechnologiesForm: React.FC = () => {
     setIsModalShown(true)
   }
 
-  const CheckboxesOfOptionKeys = (optionKeys: Array<keyof typeof options>) => {
+  const CheckboxesOfOptionKeys = (
+    name:
+      | "formStateManagement"
+      | "formatting"
+      | "componentLibraries"
+      | "animation"
+      | "continuousIntegration",
+    optionKeys: Array<keyof typeof options>,
+    validators?: {
+      [key in keyof typeof options]?: Array<{
+        isInvalid: boolean
+        errorMessage: string
+      }>
+    }
+  ) => {
     return (
-      <Flex direction="column" gap="3">
-        {optionKeys.map((optionKey) => (
-          <Checkbox key={optionKey} value={optionKey}>
-            {options[optionKey].label}
-          </Checkbox>
-        ))}
-      </Flex>
+      <Controller
+        name={name}
+        control={control}
+        rules={{
+          validate: () =>
+            !optionKeys.some((optionKey) =>
+              validators?.[optionKey]?.some((validator) => validator.isInvalid)
+            ),
+        }}
+        render={({ field: { ref, ...rest } }) => (
+          <CheckboxGroup {...rest}>
+            <Flex direction="column" gap="3">
+              {optionKeys.map((optionKey) => (
+                <FormControl
+                  key={optionKey}
+                  isInvalid={validators?.[optionKey]?.some(
+                    (validator) => validator.isInvalid
+                  )}
+                >
+                  <Checkbox value={optionKey}>
+                    {options[optionKey].label}
+                  </Checkbox>
+                  {validators?.[optionKey]?.map(
+                    (validator) =>
+                      validator.isInvalid && (
+                        <FormErrorMessage key={validator.errorMessage}>
+                          {validator.errorMessage}
+                        </FormErrorMessage>
+                      )
+                  )}
+                </FormControl>
+              ))}
+            </Flex>
+          </CheckboxGroup>
+        )}
+      />
     )
   }
 
@@ -322,27 +366,16 @@ export const TechnologiesForm: React.FC = () => {
                 <Heading as="h3" size="md">
                   {categoryLabels.formStateManagement}
                 </Heading>
-                <Controller
-                  name={formDataKeys.formStateManagement}
-                  control={control}
-                  render={({ field: { ref, ...rest } }) => (
-                    <CheckboxGroup {...rest}>
-                      {CheckboxesOfOptionKeys(formStateManagementOptionKeys)}
-                    </CheckboxGroup>
-                  )}
-                />
+                {CheckboxesOfOptionKeys(
+                  formDataKeys.formStateManagement,
+                  formStateManagementOptionKeys
+                )}
               </Flex>
             </Flex>
 
             <Flex direction="column" gap="8" flexBasis="100%">
               <Flex direction="column" gap="4">
-                <Heading
-                  as="h3"
-                  size="md"
-                  display="flex"
-                  flexDirection="row"
-                  alignItems="center"
-                >
+                <Heading as="h3" size="md">
                   {categoryLabels.language}
                 </Heading>
                 <CheckboxGroup value={["TypeScript"]}>
@@ -354,40 +387,6 @@ export const TechnologiesForm: React.FC = () => {
                     </Checkbox>
                   </Flex>
                 </CheckboxGroup>
-              </Flex>
-
-              <Flex direction="column" gap="4">
-                <Heading as="h3" size="md">
-                  {categoryLabels.formatting}
-                </Heading>
-                <Controller
-                  name={formDataKeys.formatting}
-                  control={control}
-                  render={({ field: { ref, ...rest } }) => (
-                    <CheckboxGroup {...rest}>
-                      <Flex direction="column" gap="3">
-                        <Checkbox value={optionKeys.prettier}>
-                          {options["prettier"].label}
-                        </Checkbox>
-                        <FormControl
-                          isInvalid={
-                            formValues.formatting.includes(
-                              optionKeys.formattingPreCommitHook
-                            ) &&
-                            !formValues.formatting.includes(optionKeys.prettier)
-                          }
-                        >
-                          <Checkbox value={optionKeys.formattingPreCommitHook}>
-                            {options["formattingPreCommitHook"].label}
-                          </Checkbox>
-                          <FormErrorMessage>
-                            Formatting pre-commit hook requires Prettier.
-                          </FormErrorMessage>
-                        </FormControl>
-                      </Flex>
-                    </CheckboxGroup>
-                  )}
-                />
               </Flex>
 
               <Flex direction="column" gap="4">
@@ -407,98 +406,85 @@ export const TechnologiesForm: React.FC = () => {
 
               <Flex direction="column" gap="4">
                 <Heading as="h3" size="md">
+                  {categoryLabels.formatting}
+                </Heading>
+                {CheckboxesOfOptionKeys(
+                  formDataKeys.formatting,
+                  formattingOptionKeys,
+                  {
+                    [optionKeys.formattingPreCommitHook]: [
+                      {
+                        isInvalid:
+                          formValues.formatting.includes(
+                            optionKeys.formattingPreCommitHook
+                          ) &&
+                          !formValues.formatting.includes(optionKeys.prettier),
+                        errorMessage:
+                          "Formatting pre-commit hook requires Prettier.",
+                      },
+                    ],
+                  }
+                )}
+              </Flex>
+
+              <Flex direction="column" gap="4">
+                <Heading as="h3" size="md">
                   {categoryLabels.componentLibraries}
                 </Heading>
-                <Controller
-                  name={formDataKeys.componentLibraries}
-                  control={control}
-                  render={({ field: { ref, ...rest } }) => (
-                    <CheckboxGroup {...rest}>
-                      <Flex direction="column" gap="3">
-                        <FormControl
-                          isInvalid={
-                            (formValues.componentLibraries.includes(
-                              optionKeys.chakra
-                            ) &&
-                              formValues.styling !== optionKeys.emotion) ||
-                            (formValues.componentLibraries.includes(
-                              optionKeys.chakra
-                            ) &&
-                              !formValues.animation.includes(
-                                optionKeys.framerMotion
-                              ))
-                          }
-                        >
-                          <Checkbox value={optionKeys.chakra}>
-                            {options["chakra"].label}
-                          </Checkbox>
-                          {formValues.componentLibraries.includes(
+                {CheckboxesOfOptionKeys(
+                  formDataKeys.componentLibraries,
+                  componentLibraryOptionKeys,
+                  {
+                    [optionKeys.chakra]: [
+                      {
+                        isInvalid:
+                          formValues.componentLibraries.includes(
+                            optionKeys.chakra
+                          ) && formValues.styling !== optionKeys.emotion,
+                        errorMessage: "Chakra UI requires Emotion",
+                      },
+                      {
+                        isInvalid:
+                          formValues.componentLibraries.includes(
                             optionKeys.chakra
                           ) &&
-                            formValues.styling !== optionKeys.emotion && (
-                              <FormErrorMessage>
-                                Chakra UI requires Emotion
-                              </FormErrorMessage>
-                            )}
-                          {formValues.componentLibraries.includes(
-                            optionKeys.chakra
-                          ) &&
-                            !formValues.animation.includes(
-                              optionKeys.framerMotion
-                            ) && (
-                              <FormErrorMessage>
-                                Chakra UI requires Framer Motion
-                              </FormErrorMessage>
-                            )}
-                        </FormControl>
-                        <FormControl
-                          isInvalid={
-                            formValues.componentLibraries.includes(
-                              optionKeys.materialUi
-                            ) && formValues.styling !== optionKeys.emotion
-                          }
-                        >
-                          <Checkbox value={optionKeys.materialUi}>
-                            {options["materialUi"].label}
-                          </Checkbox>
-                          <FormErrorMessage>
-                            Material UI requires Emotion
-                          </FormErrorMessage>
-                        </FormControl>
-                      </Flex>
-                    </CheckboxGroup>
-                  )}
-                />
+                          !formValues.animation.includes(
+                            optionKeys.framerMotion
+                          ),
+                        errorMessage: "Chakra UI requires Framer Motion",
+                      },
+                    ],
+                    [optionKeys.materialUi]: [
+                      {
+                        isInvalid:
+                          formValues.componentLibraries.includes(
+                            optionKeys.materialUi
+                          ) && !formValues.styling.includes(optionKeys.emotion),
+                        errorMessage: "Material UI requires Emotion",
+                      },
+                    ],
+                  }
+                )}
               </Flex>
 
               <Flex direction="column" gap="4">
                 <Heading as="h3" size="md">
                   {categoryLabels.animation}
                 </Heading>
-                <Controller
-                  name={formDataKeys.animation}
-                  control={control}
-                  render={({ field: { ref, ...rest } }) => (
-                    <CheckboxGroup {...rest}>
-                      {CheckboxesOfOptionKeys(animationOptionKeys)}
-                    </CheckboxGroup>
-                  )}
-                />
+                {CheckboxesOfOptionKeys(
+                  formDataKeys.animation,
+                  animationOptionKeys
+                )}
               </Flex>
 
               <Flex direction="column" gap="4">
                 <Heading as="h3" size="md">
                   {categoryLabels.continuousIntegration}
                 </Heading>
-                <Controller
-                  name={formDataKeys.continuousIntegration}
-                  control={control}
-                  render={({ field: { ref, ...rest } }) => (
-                    <CheckboxGroup {...rest}>
-                      {CheckboxesOfOptionKeys(continuousIntegrationOptionKeys)}
-                    </CheckboxGroup>
-                  )}
-                />
+                {CheckboxesOfOptionKeys(
+                  formDataKeys.continuousIntegration,
+                  continuousIntegrationOptionKeys
+                )}
               </Flex>
             </Flex>
           </Flex>
