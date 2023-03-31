@@ -10,16 +10,16 @@ export const Footer: React.FC = () => {
       as="footer"
       boxProps={{
         alignItems: "left",
-        gap: "24px",
+        gap: "32px",
       }}
     >
+      <SocialIcons />
       <Text align={["left", "center"]}>
         Created by{" "}
         <Anchor href="https://akd.io/" isExternal>
           Anders Damgaard
         </Anchor>{" "}
       </Text>
-      <SocialIcons />
     </Section>
   )
 }

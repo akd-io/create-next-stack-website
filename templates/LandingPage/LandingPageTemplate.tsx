@@ -1,6 +1,6 @@
 import { Box, Stack } from "@chakra-ui/react"
 import { css, Global } from "@emotion/react"
-import React, { ComponentProps, FC } from "react"
+import { ComponentProps, FC } from "react"
 import { Section } from "../../components/Section"
 import { Description } from "./components/DescriptionSection"
 import { Footer } from "./components/Footer"
