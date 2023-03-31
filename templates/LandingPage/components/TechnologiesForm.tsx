@@ -105,15 +105,23 @@ const componentLibraryOptionKeys = [optionKeys.chakra, optionKeys.materialUi]
 const animationOptionKeys = [optionKeys.framerMotion]
 const continuousIntegrationOptionKeys = [optionKeys.githubActions]
 
+type ProjectName = string
+type PackageManager = (typeof packageManagerOptionKeys)[number]
+type Styling = (typeof stylingOptionKeys)[number]
+type FormStateManagement = (typeof formStateManagementOptionKeys)[number]
+type Formatting = (typeof formattingOptionKeys)[number]
+type ComponentLibrary = (typeof componentLibraryOptionKeys)[number]
+type Animation = (typeof animationOptionKeys)[number]
+type ContinuousIntegration = (typeof continuousIntegrationOptionKeys)[number]
 type TechnologiesFormData = {
-  projectName: string
-  packageManager: (typeof packageManagerOptionKeys)[number]
-  styling: (typeof stylingOptionKeys)[number]
-  formStateManagement: Array<(typeof formStateManagementOptionKeys)[number]>
-  formatting: Array<(typeof formattingOptionKeys)[number]>
-  componentLibraries: Array<(typeof componentLibraryOptionKeys)[number]>
-  animation: Array<(typeof animationOptionKeys)[number]>
-  continuousIntegration: Array<(typeof continuousIntegrationOptionKeys)[number]>
+  projectName: ProjectName
+  packageManager: PackageManager
+  styling: Styling
+  formStateManagement: FormStateManagement[]
+  formatting: Formatting[]
+  componentLibraries: ComponentLibrary[]
+  animation: Animation[]
+  continuousIntegration: ContinuousIntegration[]
 }
 const defaultFormData: TechnologiesFormData = {
   projectName: "my-app",
@@ -138,15 +146,16 @@ const categoryLabels = {
   componentLibraries: "Component Libraries",
   animation: "Animation",
   continuousIntegration: "Continuous Integration",
-}
+} as const
 
 export const TechnologiesForm: React.FC = () => {
-  const { register, control, watch, handleSubmit, formState } =
+  const { register, control, watch, formState, handleSubmit } =
     useForm<TechnologiesFormData>({
       defaultValues: defaultFormData,
     })
 
   const { errors } = formState
+  const formValues = watch()
 
   const [isCommandModalShow, setIsModalShown] = React.useState(false)
   const [command, setCommand] = React.useState("")
@@ -253,6 +262,7 @@ export const TechnologiesForm: React.FC = () => {
                 <Controller
                   name={formDataKeys.packageManager}
                   control={control}
+                  rules={{ required: true }}
                   render={({ field: { ref, ...rest } }) => (
                     <RadioGroup {...rest}>
                       {RadiosOfOptionKeys(packageManagerOptionKeys)}
@@ -268,6 +278,7 @@ export const TechnologiesForm: React.FC = () => {
                 <Controller
                   name={formDataKeys.styling}
                   control={control}
+                  rules={{ required: true }}
                   render={({ field: { ref, ...rest } }) => (
                     <RadioGroup {...rest}>
                       {RadiosOfOptionKeys(stylingOptionKeys)}
@@ -323,7 +334,26 @@ export const TechnologiesForm: React.FC = () => {
                   control={control}
                   render={({ field: { ref, ...rest } }) => (
                     <CheckboxGroup {...rest}>
-                      {CheckboxesOfOptionKeys(formattingOptionKeys)}
+                      <Flex direction="column" gap="3">
+                        <Checkbox value={optionKeys.prettier}>
+                          {options["prettier"].label}
+                        </Checkbox>
+                        <FormControl
+                          isInvalid={
+                            formValues.formatting.includes(
+                              optionKeys.formattingPreCommitHook
+                            ) &&
+                            !formValues.formatting.includes(optionKeys.prettier)
+                          }
+                        >
+                          <Checkbox value={optionKeys.formattingPreCommitHook}>
+                            {options["formattingPreCommitHook"].label}
+                          </Checkbox>
+                          <FormErrorMessage>
+                            Formatting pre-commit hook requires Prettier.
+                          </FormErrorMessage>
+                        </FormControl>
+                      </Flex>
                     </CheckboxGroup>
                   )}
                 />
@@ -353,7 +383,58 @@ export const TechnologiesForm: React.FC = () => {
                   control={control}
                   render={({ field: { ref, ...rest } }) => (
                     <CheckboxGroup {...rest}>
-                      {CheckboxesOfOptionKeys(componentLibraryOptionKeys)}
+                      <Flex direction="column" gap="3">
+                        <FormControl
+                          isInvalid={
+                            (formValues.componentLibraries.includes(
+                              optionKeys.chakra
+                            ) &&
+                              formValues.styling !== optionKeys.emotion) ||
+                            (formValues.componentLibraries.includes(
+                              optionKeys.chakra
+                            ) &&
+                              !formValues.animation.includes(
+                                optionKeys.framerMotion
+                              ))
+                          }
+                        >
+                          <Checkbox value={optionKeys.chakra}>
+                            {options["chakra"].label}
+                          </Checkbox>
+                          {formValues.componentLibraries.includes(
+                            optionKeys.chakra
+                          ) &&
+                            formValues.styling !== optionKeys.emotion && (
+                              <FormErrorMessage>
+                                Chakra UI requires Emotion
+                              </FormErrorMessage>
+                            )}
+                          {formValues.componentLibraries.includes(
+                            optionKeys.chakra
+                          ) &&
+                            !formValues.animation.includes(
+                              optionKeys.framerMotion
+                            ) && (
+                              <FormErrorMessage>
+                                Chakra UI requires Framer Motion
+                              </FormErrorMessage>
+                            )}
+                        </FormControl>
+                        <FormControl
+                          isInvalid={
+                            formValues.componentLibraries.includes(
+                              optionKeys.materialUi
+                            ) && formValues.styling !== optionKeys.emotion
+                          }
+                        >
+                          <Checkbox value={optionKeys.materialUi}>
+                            {options["materialUi"].label}
+                          </Checkbox>
+                          <FormErrorMessage>
+                            Material UI requires Emotion
+                          </FormErrorMessage>
+                        </FormControl>
+                      </Flex>
                     </CheckboxGroup>
                   )}
                 />
