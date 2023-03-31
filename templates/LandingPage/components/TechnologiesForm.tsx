@@ -110,7 +110,7 @@ const packageManagerOptionKeys = [
   optionKeys.pnpm,
   optionKeys.yarn,
   optionKeys.npm,
-]
+] satisfies OptionKey[]
 const stylingOptionKeys = [
   optionKeys.emotion,
   optionKeys.styledComponents,
@@ -118,18 +118,23 @@ const stylingOptionKeys = [
   optionKeys.cssModules,
   optionKeys.cssModulesWithSass,
   optionKeys.noStyling,
-]
+] satisfies OptionKey[]
 const formStateManagementOptionKeys = [
   optionKeys.reactHookForm,
   optionKeys.formik,
-]
+] satisfies OptionKey[]
 const formattingOptionKeys = [
   optionKeys.prettier,
   optionKeys.formattingPreCommitHook,
-]
-const componentLibraryOptionKeys = [optionKeys.chakra, optionKeys.materialUi]
-const animationOptionKeys = [optionKeys.framerMotion]
-const continuousIntegrationOptionKeys = [optionKeys.githubActions]
+] satisfies OptionKey[]
+const componentLibraryOptionKeys = [
+  optionKeys.chakra,
+  optionKeys.materialUi,
+] satisfies OptionKey[]
+const animationOptionKeys = [optionKeys.framerMotion] satisfies OptionKey[]
+const continuousIntegrationOptionKeys = [
+  optionKeys.githubActions,
+] satisfies OptionKey[]
 
 type ProjectName = string
 type PackageManager = (typeof packageManagerOptionKeys)[number]
