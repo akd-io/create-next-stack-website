@@ -38,6 +38,7 @@ type OptionKey =
   | "prettier"
   | "chakra"
   | "materialUi"
+  | "reactIcons"
   | "framerMotion"
   | "githubActions"
   | "formattingPreCommitHook"
@@ -81,6 +82,7 @@ const options = {
   prettier: { key: "prettier", value: "prettier", label: "Prettier" },
   chakra: { key: "chakra", value: "chakra", label: "Chakra UI" },
   materialUi: { key: "materialUi", value: "material-ui", label: "Material UI" },
+  reactIcons: { key: "reactIcons", value: "react-icons", label: "React Icons" },
   framerMotion: {
     key: "framerMotion",
     value: "framer-motion",
@@ -131,6 +133,7 @@ const componentLibraryOptionKeys = [
   optionKeys.chakra,
   optionKeys.materialUi,
 ] satisfies OptionKey[]
+const iconLibraryOptionKeys = [optionKeys.reactIcons] satisfies OptionKey[]
 const animationOptionKeys = [optionKeys.framerMotion] satisfies OptionKey[]
 const continuousIntegrationOptionKeys = [
   optionKeys.githubActions,
@@ -142,6 +145,7 @@ type Styling = (typeof stylingOptionKeys)[number]
 type FormStateManagement = (typeof formStateManagementOptionKeys)[number]
 type Formatting = (typeof formattingOptionKeys)[number]
 type ComponentLibrary = (typeof componentLibraryOptionKeys)[number]
+type IconLibrary = (typeof iconLibraryOptionKeys)[number]
 type Animation = (typeof animationOptionKeys)[number]
 type ContinuousIntegration = (typeof continuousIntegrationOptionKeys)[number]
 type TechnologiesFormData = {
@@ -151,6 +155,7 @@ type TechnologiesFormData = {
   formStateManagement: FormStateManagement[]
   formatting: Formatting[]
   componentLibraries: ComponentLibrary[]
+  iconLibraries: IconLibrary[]
   animation: Animation[]
   continuousIntegration: ContinuousIntegration[]
 }
@@ -161,6 +166,7 @@ const defaultFormData: TechnologiesFormData = {
   formStateManagement: [optionKeys.reactHookForm],
   formatting: [optionKeys.prettier, optionKeys.formattingPreCommitHook],
   componentLibraries: [optionKeys.chakra],
+  iconLibraries: [],
   animation: [optionKeys.framerMotion],
   continuousIntegration: [optionKeys.githubActions],
 }
@@ -175,6 +181,7 @@ const categoryLabels = {
   formatting: "Formatting",
   linting: "Linting",
   componentLibraries: "Component Libraries",
+  iconLibraries: "Icon Libraries",
   animation: "Animation",
   continuousIntegration: "Continuous Integration",
 } as const
@@ -196,7 +203,7 @@ export const TechnologiesForm: React.FC = () => {
     formData
   ) => {
     const calculateCommand = (formData: TechnologiesFormData) => {
-      const args = ["npx", "create-next-stack@0.2.0"]
+      const args = ["npx", "create-next-stack@0.2.1"]
 
       args.push(`--package-manager=${options[formData.packageManager].value}`)
       args.push(`--styling=${options[formData.styling].value}`)
@@ -209,6 +216,7 @@ export const TechnologiesForm: React.FC = () => {
       pushArgs(formData.formStateManagement)
       pushArgs(formData.formatting)
       pushArgs(formData.componentLibraries)
+      pushArgs(formData.iconLibraries)
       pushArgs(formData.animation)
       pushArgs(formData.continuousIntegration)
 
@@ -228,6 +236,7 @@ export const TechnologiesForm: React.FC = () => {
       | "formStateManagement"
       | "formatting"
       | "componentLibraries"
+      | "iconLibraries"
       | "animation"
       | "continuousIntegration",
     optionKeys: Array<keyof typeof options>,
@@ -464,6 +473,16 @@ export const TechnologiesForm: React.FC = () => {
                       },
                     ],
                   }
+                )}
+              </Flex>
+
+              <Flex direction="column" gap="4">
+                <Heading as="h3" size="md">
+                  {categoryLabels.iconLibraries}
+                </Heading>
+                {CheckboxesOfOptionKeys(
+                  formDataKeys.iconLibraries,
+                  iconLibraryOptionKeys
                 )}
               </Flex>
 
